@@ -21,13 +21,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import static com.mygdx.game.Utils.Constants.PPM;
 
 public class Application extends ApplicationAdapter {
 
 	private boolean DEBUG = false;
 	private float SCALE = 1.0f;
-	private float scaleTot;
+	private float PPM;
 
 	float screenWidth, screenHeight;
 	Vector3 touchPoint;
@@ -56,9 +55,7 @@ public class Application extends ApplicationAdapter {
 		System.out.println("Screen size: "+screenWidth+" x "+screenHeight);
 		touchPoint = new Vector3();
 
-		float scale1 = 270 / screenWidth;
-		float scale2 = 480 / screenHeight;
-		scaleTot = (scale1 + scale2) / 2;
+		PPM = screenWidth / 12;
 
 		this.camera = new OrthographicCamera();
 		this.viewport = new StretchViewport(screenWidth, screenHeight, camera);
@@ -69,8 +66,8 @@ public class Application extends ApplicationAdapter {
 		b2dr = new Box2DDebugRenderer();
 		batch = new SpriteBatch();
 
-		player = createPlayerBody(0, 0, 32, 32);
-		platform = createStaticBody(0, -128, 128, 8);
+		player = createPlayerBody(0, 0, 1*(int)PPM, 1*(int)PPM);
+		platform = createStaticBody(0, -4*(int)PPM, 4*(int)PPM, (int)PPM/4);
 		createSprite();
 	}
 
@@ -102,7 +99,7 @@ public class Application extends ApplicationAdapter {
 		Body pBody;
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(x/2/PPM, y/2/PPM);
+		bodyDef.position.set(x/PPM, y/PPM);
 		bodyDef.fixedRotation = true;
 		pBody = world.createBody(bodyDef);
 
@@ -125,7 +122,7 @@ public class Application extends ApplicationAdapter {
 
 		CircleShape shape = new CircleShape();
 		shape.setPosition(new Vector2(x/2/PPM, y/2/PPM));				//calcolato dal punto centrale
-		shape.setRadius(16/PPM);
+		shape.setRadius(PPM/2/PPM);
 
 		FixtureDef circleFixture = new FixtureDef();
 		circleFixture.density=1.0f;
@@ -158,10 +155,10 @@ public class Application extends ApplicationAdapter {
 		TextureRegion currentFrame = worldAnimation.getKeyFrame(stateTime, true);
 
 		batch.begin();
-//		batch.draw(currentFrame,
-//				player.getPosition().x * PPM - 16 ,
-//				player.getPosition().y * PPM - 16 ,
-//				32, 32);
+		batch.draw(currentFrame,
+				player.getPosition().x * PPM - 16 ,
+				player.getPosition().y * PPM - 16 ,
+				32, 32);
 		batch.end();
 
 		b2dr.render(world, camera.combined.scl(PPM));
@@ -225,7 +222,6 @@ public class Application extends ApplicationAdapter {
 		position.y = 0; //player.getPosition().y * PPM;
 		camera.position.set(position);
 
-		//camera.zoom = scaleTot;
 		camera.update();
 	}
 	
