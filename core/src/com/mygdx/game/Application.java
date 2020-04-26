@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -28,6 +30,7 @@ public class Application extends ApplicationAdapter {
 	private float scaleTot;
 
 	float screenWidth, screenHeight;
+	Vector3 touchPoint;
 
 	private OrthographicCamera camera;
 	private Viewport viewport;
@@ -45,13 +48,13 @@ public class Application extends ApplicationAdapter {
 	// A variable for tracking elapsed time for the animation
 	float stateTime;
 
-
 	@Override
 	public void create () {
 
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
 		System.out.println("Screen size: "+screenWidth+" x "+screenHeight);
+		touchPoint = new Vector3();
 
 		float scale1 = 270 / screenWidth;
 		float scale2 = 480 / screenHeight;
@@ -66,8 +69,8 @@ public class Application extends ApplicationAdapter {
 		b2dr = new Box2DDebugRenderer();
 		batch = new SpriteBatch();
 
-		player = createBody(0, 32, 32, 32, false);
-		platform = createBody(0, -128, 128, 8, true);
+		player = createPlayerBody(0, 0, 32, 32);
+		platform = createStaticBody(0, -128, 128, 8);
 		createSprite();
 	}
 
@@ -94,19 +97,43 @@ public class Application extends ApplicationAdapter {
 		stateTime = 0f;
 	}
 
-	public Body createBody(int x, int y, int width, int height, boolean isStatic){
+	public Body createStaticBody(int x, int y, int width, int height){
 
 		Body pBody;
 		BodyDef bodyDef = new BodyDef();
-		if(isStatic) bodyDef.type = BodyDef.BodyType.StaticBody;
-		else bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set(x/PPM, y/PPM);
+		bodyDef.type = BodyDef.BodyType.StaticBody;
+		bodyDef.position.set(x/2/PPM, y/2/PPM);
 		bodyDef.fixedRotation = true;
 		pBody = world.createBody(bodyDef);
 
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(width/2/PPM, height/2/PPM );				//calcolato dal punto centrale
+
 		pBody.createFixture(shape, 1.0f);
+		shape.dispose();
+		return pBody;
+	}
+
+	public Body createPlayerBody(int x, int y, int width, int height){
+
+		Body pBody;
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		bodyDef.position.set(x/2/PPM, y/2/PPM);
+		bodyDef.fixedRotation = false;
+		pBody = world.createBody(bodyDef);
+
+		CircleShape shape = new CircleShape();
+		shape.setPosition(new Vector2(x/2/PPM, y/2/PPM));				//calcolato dal punto centrale
+		shape.setRadius(16/PPM);
+
+		FixtureDef circleFixture = new FixtureDef();
+		circleFixture.density=1.0f;
+		circleFixture.shape = shape;
+		circleFixture.restitution = 0.8f;
+		circleFixture.friction=0.0f;
+
+		pBody.createFixture(circleFixture);
 		shape.dispose();
 		return pBody;
 	}
@@ -131,10 +158,10 @@ public class Application extends ApplicationAdapter {
 		TextureRegion currentFrame = worldAnimation.getKeyFrame(stateTime, true);
 
 		batch.begin();
-		batch.draw(currentFrame,
-				player.getPosition().x * PPM - 16 ,
-				player.getPosition().y * PPM - 16 ,
-				32, 32);
+//		batch.draw(currentFrame,
+//				player.getPosition().x * PPM - 16 ,
+//				player.getPosition().y * PPM - 16 ,
+//				32, 32);
 		batch.end();
 
 		b2dr.render(world, camera.combined.scl(PPM));
@@ -169,10 +196,24 @@ public class Application extends ApplicationAdapter {
 			player.applyForceToCenter(0, 300, false);
 		}
 		if(Gdx.input.justTouched()){
-			player.applyForceToCenter(0, 300 , false);
+
+			camera.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(), 0));
+			createPlayerBody((int)(touchPoint.x), (int)(touchPoint.y), 32, 32);
+
+			if(!DEBUG){
+				platform.setTransform(0, -4, 0.5f);
+				player.applyForceToCenter(0, 300 , false);
+				DEBUG = true;
+			}
+			else {
+				platform.setTransform(0, -4, 0f);
+				player.applyForceToCenter(-0, 300 , false);
+				DEBUG = false;
+			}
+
 		}
 
-		player.setLinearVelocity(horizontalForce * 5, player.getLinearVelocity().y);		//per muovere numero metri al secondo
+		player.setLinearVelocity(player.getLinearVelocity().x, player.getLinearVelocity().y);		//per muovere numero metri al secondo
 		//System.out.println("player.getLinearVelocity().y "+player.getLinearVelocity().y);
 	}
 
@@ -184,7 +225,7 @@ public class Application extends ApplicationAdapter {
 		position.y = 0; //player.getPosition().y * PPM;
 		camera.position.set(position);
 
-		camera.zoom = scaleTot;
+		//camera.zoom = scaleTot;
 		camera.update();
 	}
 	
