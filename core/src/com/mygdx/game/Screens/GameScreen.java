@@ -161,9 +161,9 @@ public class GameScreen extends ScreenAdapter {
 
         game.batch.begin();
         game.batch.draw(currentFrame,
-                player.getPosition().x * PPM - 16 ,
-                player.getPosition().y * PPM - 16 ,
-                32, 32);
+                player.getPosition().x * PPM - (int)PPM/2 ,
+                player.getPosition().y * PPM - (int)PPM/2 ,
+                1*(int)PPM, 1*(int)PPM);
         game.batch.end();
 
         b2dr.render(world, camera.combined.scl(PPM));
@@ -212,14 +212,13 @@ public class GameScreen extends ScreenAdapter {
         position.x = 0; //player.getPosition().x * PPM;
         position.y = 0; //player.getPosition().y * PPM;
         camera.position.set(position);
-
         camera.update();
     }
 
-    @Override
-    public void hide(){
-        Gdx.input.setInputProcessor(null);
-    }
+//    @Override
+//    public void hide(){
+//        Gdx.input.setInputProcessor(null);
+//    }
 
     @Override
     public void dispose () {
