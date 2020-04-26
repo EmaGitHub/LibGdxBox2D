@@ -12,9 +12,6 @@ import com.mygdx.game.Utils.Global;
 
 public class AppGame extends Game {
 
-	private float SCALE = 1;
-	private boolean DEBUG = false;
-
 	float screenWidth, screenHeight;
 
 	public OrthographicCamera camera;
@@ -43,7 +40,7 @@ public class AppGame extends Game {
 
 //	@Override
 //	public void resize (int width, int height){
-//		camera.setToOrtho(false, width/SCALE, height/SCALE);
-//		viewport.update(width/(int)SCALE, height/(int)SCALE);
+//		camera.setToOrtho(false, width/Global.SCALE, height/Global.SCALE);
+//		viewport.update(width/(int)Global.SCALE, height/(int)Global.SCALE);
 //	}
 }
