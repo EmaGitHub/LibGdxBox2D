@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import static com.mygdx.game.Utils.Constants.PPM;
 
@@ -24,11 +25,12 @@ public class Application extends ApplicationAdapter {
 
 	private boolean DEBUG = false;
 	private float SCALE = 1.0f;
+	private float scaleTot;
 
 	float screenWidth, screenHeight;
 
 	private OrthographicCamera camera;
-	private StretchViewport viewport;
+	private Viewport viewport;
 
 	private Box2DDebugRenderer b2dr;
 	private World world;
@@ -51,6 +53,10 @@ public class Application extends ApplicationAdapter {
 		screenHeight = Gdx.graphics.getHeight();
 		System.out.println("Screen size: "+screenWidth+" x "+screenHeight);
 
+		float scale1 = 270 / screenWidth;
+		float scale2 = 480 / screenHeight;
+		scaleTot = (scale1 + scale2) / 2;
+
 		this.camera = new OrthographicCamera();
 		this.viewport = new StretchViewport(screenWidth, screenHeight, camera);
 		viewport.apply();
@@ -60,8 +66,8 @@ public class Application extends ApplicationAdapter {
 		b2dr = new Box2DDebugRenderer();
 		batch = new SpriteBatch();
 
-		player = createBox(0, 32, 32, 32, false);
-		platform = createBox(0, 0, 128, 8, true);
+		player = createBody(0, 32, 32, 32, false);
+		platform = createBody(0, -128, 128, 8, true);
 		createSprite();
 	}
 
@@ -88,7 +94,7 @@ public class Application extends ApplicationAdapter {
 		stateTime = 0f;
 	}
 
-	public Body createBox(int x, int y, int width, int height, boolean isStatic){
+	public Body createBody(int x, int y, int width, int height, boolean isStatic){
 
 		Body pBody;
 		BodyDef bodyDef = new BodyDef();
@@ -99,7 +105,7 @@ public class Application extends ApplicationAdapter {
 		pBody = world.createBody(bodyDef);
 
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(width/2/PPM*screenWidth/270, height/2/PPM*screenHeight/480 );				//calcolato dal punto centrale
+		shape.setAsBox(width/2/PPM, height/2/PPM );				//calcolato dal punto centrale
 		pBody.createFixture(shape, 1.0f);
 		shape.dispose();
 		return pBody;
@@ -126,9 +132,9 @@ public class Application extends ApplicationAdapter {
 
 		batch.begin();
 		batch.draw(currentFrame,
-				player.getPosition().x * PPM - 16 * screenWidth/270,
-				player.getPosition().y * PPM - 16 * screenHeight/480,
-				32 * screenWidth/270, 32 * screenHeight/480);
+				player.getPosition().x * PPM - 16 ,
+				player.getPosition().y * PPM - 16 ,
+				32, 32);
 		batch.end();
 
 		b2dr.render(world, camera.combined.scl(PPM));
@@ -174,9 +180,11 @@ public class Application extends ApplicationAdapter {
 	public void cameraUpdate(float delta) {
 
 		Vector3 position = camera.position;				//per centrare camera sul player
-		position.x = player.getPosition().x * PPM;
-		position.y = player.getPosition().y * PPM;
+		position.x = 0; //player.getPosition().x * PPM;
+		position.y = 0; //player.getPosition().y * PPM;
 		camera.position.set(position);
+
+		camera.zoom = scaleTot;
 		camera.update();
 	}
 	
