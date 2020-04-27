@@ -11,13 +11,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.AppGame;
+import com.mygdx.game.Utils.BodyFactory;
 import com.mygdx.game.Utils.Global;
 
 public class GameScreen extends ScreenAdapter {
@@ -30,6 +27,7 @@ public class GameScreen extends ScreenAdapter {
 
     private Box2DDebugRenderer b2dr;
     private World world;
+    private BodyFactory bodyFactory;
     private Body player, platform;
 
     Vector3 touchPoint;
@@ -54,31 +52,14 @@ public class GameScreen extends ScreenAdapter {
     public void show(){                                             // Prima funzione chiamata
 
         world = new World(new Vector2(0, -9.8f), false);	//-9.8f
+        bodyFactory = new BodyFactory(world);
         b2dr = new Box2DDebugRenderer();
-        player = createPlayerBody(0, 0, 1*(int)PPM, 1*(int)PPM);
-        platform = createStaticBody(0, -4*(int)PPM, 4*(int)PPM, (int)PPM/4);
-
         touchPoint = new Vector3();
 
+        player = bodyFactory.createPlayerBody(0, 0);
+        platform = bodyFactory.createStaticBody(0, -4*(int)PPM, 4*(int)PPM, (int)PPM/4);
+
         createSprite();
-
-//        Gdx.input.setInputProcessor(new InputAdapter() {
-//
-//            @Override
-//            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//                System.out.println("TOUCH DOWN");
-//                return true;
-//            }
-//            @Override
-//            public boolean keyDown(int keycode){
-//                int horizontalForce = 0;
-//                if(keycode == Input.Keys.LEFT) horizontalForce -= 1;
-//                if(keycode == Input.Keys.RIGHT) horizontalForce -= 1;
-//                return true;
-//            }
-//        });
-
-
     }
 
     public void createSprite(){
@@ -104,54 +85,13 @@ public class GameScreen extends ScreenAdapter {
         stateTime = 0f;
     }
 
-    public Body createStaticBody(int x, int y, int width, int height){
-
-        Body pBody;
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(x/PPM, y/PPM);
-        bodyDef.fixedRotation = true;
-        pBody = world.createBody(bodyDef);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/2/PPM, height/2/PPM );				//calcolato dal punto centrale
-
-        pBody.createFixture(shape, 1.0f);
-        shape.dispose();
-        return pBody;
-    }
-
-    public Body createPlayerBody(int x, int y, int width, int height){
-
-        Body pBody;
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(x/2/PPM, y/2/PPM);
-        bodyDef.fixedRotation = false;
-        pBody = world.createBody(bodyDef);
-
-        CircleShape shape = new CircleShape();
-        shape.setPosition(new Vector2(x/2/PPM, y/2/PPM));				//calcolato dal punto centrale
-        shape.setRadius(PPM/2/PPM);
-
-        FixtureDef circleFixture = new FixtureDef();
-        circleFixture.density=1.0f;
-        circleFixture.shape = shape;
-        circleFixture.restitution = 0.8f;
-        circleFixture.friction=0.6f;
-
-        pBody.createFixture(circleFixture);
-        shape.dispose();
-        return pBody;
-    }
-
     @Override
     public void render(float delta){
 
         // Update Logic
         this.update(Gdx.graphics.getDeltaTime());
 
-        // Render Draw
+        // Draw Render
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -159,12 +99,12 @@ public class GameScreen extends ScreenAdapter {
         // Get current frame of animation for the current stateTime
         TextureRegion currentFrame = worldAnimation.getKeyFrame(stateTime, true);
 
-        game.batch.begin();
-        game.batch.draw(currentFrame,
-                player.getPosition().x * PPM - (int)PPM/2 ,
-                player.getPosition().y * PPM - (int)PPM/2 ,
-                1*(int)PPM, 1*(int)PPM);
-        game.batch.end();
+//        game.batch.begin();
+//        game.batch.draw(currentFrame,
+//                player.getPosition().x * PPM - (int)PPM/2 ,
+//                player.getPosition().y * PPM - (int)PPM/2 ,
+//                1*(int)PPM, 1*(int)PPM);
+//        game.batch.end();
 
         b2dr.render(world, camera.combined.scl(PPM));
     }
@@ -188,7 +128,7 @@ public class GameScreen extends ScreenAdapter {
             if(firstTouch) firstTouch = false;
             else {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-                createPlayerBody((int) (touchPoint.x), (int) (touchPoint.y), 1*(int)PPM, 1*(int)PPM);
+                bodyFactory.createPlayerBody((int) (touchPoint.x), (int) (touchPoint.y));
 
                 if (!DEBUG) {
                     platform.setTransform(0, -4, 0.5f);
@@ -214,11 +154,6 @@ public class GameScreen extends ScreenAdapter {
         camera.position.set(position);
         camera.update();
     }
-
-//    @Override
-//    public void hide(){
-//        Gdx.input.setInputProcessor(null);
-//    }
 
     @Override
     public void dispose () {
