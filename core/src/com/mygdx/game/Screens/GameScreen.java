@@ -8,14 +8,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.AppGame;
+import com.mygdx.game.Objects.BounceBall;
 import com.mygdx.game.Utils.BodyFactory;
 import com.mygdx.game.Utils.Global;
+import com.mygdx.game.Utils.ObjectFactory;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -28,6 +31,11 @@ public class GameScreen extends ScreenAdapter {
     private Box2DDebugRenderer b2dr;
     private World world;
     private BodyFactory bodyFactory;
+    private ObjectFactory objectFactory;
+
+    private static ShapeRenderer debugRenderer = new ShapeRenderer();
+
+
     private Body player, platform;
 
     Vector3 touchPoint;
@@ -46,18 +54,28 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         this.PPM = Global.PPM;
         this.camera = game.camera;
+
+        game.batch.setProjectionMatrix(camera.combined);
+
     }
 
     @Override
     public void show(){                                             // Prima funzione chiamata
 
         world = new World(new Vector2(0, -9.8f), false);	//-9.8f
-        bodyFactory = new BodyFactory(world);
         b2dr = new Box2DDebugRenderer();
         touchPoint = new Vector3();
 
-        player = bodyFactory.createPlayerBody(0, 0);
-        platform = bodyFactory.createStaticBody(0, -4*(int)PPM, 4*(int)PPM, (int)PPM/4);
+        bodyFactory = new BodyFactory(world);
+        objectFactory = new ObjectFactory(world, game.stage);
+
+        //this.objectFactory.createBounceBallObject(PPM*0, PPM*0, PPM*1);
+
+        platform = bodyFactory.createStaticBody(0, -PPM/2-PPM/10, PPM*5, PPM/5);
+
+        player = bodyFactory.createBallBody(PPM*0,  PPM*0, PPM*1);
+        BounceBall ball = new BounceBall(player);
+        this.game.stage.addActor(ball);
 
         createSprite();
     }
@@ -97,25 +115,20 @@ public class GameScreen extends ScreenAdapter {
 
         stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
         // Get current frame of animation for the current stateTime
-        TextureRegion currentFrame = worldAnimation.getKeyFrame(stateTime, true);
+        //TextureRegion currentFrame = worldAnimation.getKeyFrame(stateTime, true);
 
-//        game.batch.begin();
-//        game.batch.draw(currentFrame,
-//                player.getPosition().x * PPM - (int)PPM/2 ,
-//                player.getPosition().y * PPM - (int)PPM/2 ,
-//                1*(int)PPM, 1*(int)PPM);
-//        game.batch.end();
+        this.game.stage.act(delta);
 
+        this.game.stage.draw();
         b2dr.render(world, camera.combined.scl(PPM));
     }
     public void update(float delta) {
 
-        world.step(1/60f, 6, 2);
+        world.step(1/60f, 1, 1);
 
         inputUpdate(delta);
         cameraUpdate(delta);
 
-        game.batch.setProjectionMatrix(camera.combined);
     }
 
     public void inputUpdate(float delta) {
@@ -128,14 +141,14 @@ public class GameScreen extends ScreenAdapter {
             if(firstTouch) firstTouch = false;
             else {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-                bodyFactory.createPlayerBody((int) (touchPoint.x), (int) (touchPoint.y));
+                bodyFactory.createBallBody((touchPoint.x), (touchPoint.y), 1*PPM);
 
                 if (!DEBUG) {
-                    platform.setTransform(0, -4, 0.5f);
+                    //platform.setTransform(0, 0, 0.5f);
                     player.applyForceToCenter(0, 300, false);
                     DEBUG = true;
                 } else {
-                    platform.setTransform(0, -4, 0f);
+                    //platform.setTransform(0, 0, 0f);
                     player.applyForceToCenter(-0, 300, false);
                     DEBUG = false;
                 }
@@ -150,7 +163,7 @@ public class GameScreen extends ScreenAdapter {
 
         Vector3 position = camera.position;				//per centrare camera sul player
         position.x = 0; //player.getPosition().x * PPM;
-        position.y = 0; //player.getPosition().y * PPM;
+        position.y = 7*PPM; //player.getPosition().y * PPM;
         camera.position.set(position);
         camera.update();
     }
@@ -159,5 +172,6 @@ public class GameScreen extends ScreenAdapter {
     public void dispose () {
         world.dispose();
         b2dr.dispose();
+        this.game.stage.dispose();
     }
 }
