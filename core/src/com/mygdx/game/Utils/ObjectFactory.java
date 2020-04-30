@@ -20,11 +20,12 @@ public class ObjectFactory {
         this.bodyFactory = new BodyFactory(world);
     }
 
-    public void createBounceBallObject(float x, float y, float diam){
+    public BounceBall createBounceBallObject(float x, float y, float diam){
 
         this.body = this.bodyFactory.createBallBody(x, y, diam);
         BounceBall ball = new BounceBall(this.body);
         this.stage.addActor(ball);
+        return ball;
     }
 
 }

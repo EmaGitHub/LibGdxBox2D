@@ -28,29 +28,15 @@ public class BounceBall extends Object{
         this.worldAnimation = FramesFactory.createBallFrames();
 
         setOrigin(rad, rad);
-
-//        bodySprite = new Sprite(new Texture("Images/ball.png"));
-//        bodySprite.setSize(PPM*1 , PPM*1);
-//        bodySprite.setOrigin( PPM/2 , PPM/2);
-//        body.setUserData(bodySprite);
+        this.body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y);		//per muovere numero metri al secondo
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
-//        Sprite sprite = (Sprite) this.body.getUserData();
-//        sprite.setPosition((this.body.getPosition().x)*PPM - sprite.getWidth()/2, (this.body.getPosition().y)*PPM - sprite.getHeight()/2);
-//        sprite.setRotation(this.body.getAngle() * MathUtils.radiansToDegrees);
-//        sprite.draw(batch);
-
         batch.draw(currentFrame, super.body.getPosition().x*PPM - rad,
                 super.body.getPosition().y*PPM - rad,
                 diam , diam);
-
-//        System.out.println("BODY Y "+(super.body.getPosition().y));
-//        System.out.println("B Y "+(super.body.getPosition().y));
-        //System.out.println("position: "+(super.body.getPosition().x*PPM-rad)+"    .    "+ (super.body.getPosition().y*PPM-rad));
-
     }
 
     @Override
@@ -64,6 +50,12 @@ public class BounceBall extends Object{
         stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
         // Get current frame of animation for the current stateTime
         this.currentFrame = this.worldAnimation.getKeyFrame(stateTime, true);
+    }
+
+    public void jump(){
+
+        body.applyForceToCenter(0, 300, false);
+        //if(Gdx.input.isKeyPressed(Input.Keys.LEFT))player.applyForceToCenter(-6, 0, false);
     }
 
     public void dispose(){

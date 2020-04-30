@@ -20,7 +20,7 @@ public class GameScreen extends ScreenAdapter {
 
     private AppGame game;
     private OrthographicCamera camera;
-    private boolean DEBUG = false;
+    private boolean FIRST = true;
     private float PPM;
 
     private Box2DDebugRenderer b2dr;
@@ -47,18 +47,12 @@ public class GameScreen extends ScreenAdapter {
 
         world = new World(new Vector2(0, -9.8f), false);	//-9.8f
         b2dr = new Box2DDebugRenderer();
-        touchPoint = new Vector3();
 
         bodyFactory = new BodyFactory(world);
         objectFactory = new ObjectFactory(world, game.stage);
 
-        //this.objectFactory.createBounceBallObject(PPM*0, PPM*0, PPM*1);
-
+        ball = this.objectFactory.createBounceBallObject(PPM*0, PPM*0, PPM*1);
         platform = bodyFactory.createStaticBody(0, -PPM/2-PPM/10, PPM*5, PPM/5);
-
-        player = bodyFactory.createBallBody(PPM*0,  PPM*0, PPM*1);
-        ball = new BounceBall(player);
-        this.game.stage.addActor(ball);
     }
 
     @Override
@@ -86,32 +80,15 @@ public class GameScreen extends ScreenAdapter {
 
     public void inputUpdate(float delta) {
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT))player.applyForceToCenter(-6, 0, false);
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))player.applyForceToCenter(6, 0, false);
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP))player.applyForceToCenter(0, 300, false);
         if(Gdx.input.justTouched()){
 
-            if(firstTouch) firstTouch = false;
-            else {
-                camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-                bodyFactory.createBallBody((touchPoint.x), (touchPoint.y), 1*PPM);
-
-                if (!DEBUG) {
-                    //platform.setTransform(0, 0, 0.5f);
-                    player.applyForceToCenter(0, 300, false);
-                    DEBUG = true;
-                } else {
-                    //platform.setTransform(0, 0, 0f);
-                    player.applyForceToCenter(-0, 300, false);
-                    DEBUG = false;
-                }
-            }
+            if(firstTouch) firstTouch=false;
+            else this.ball.jump();
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.setScreen(game.titleScreen);
             ball.dispose();
         }
-        player.setLinearVelocity(player.getLinearVelocity().x, player.getLinearVelocity().y);		//per muovere numero metri al secondo
     }
 
 
