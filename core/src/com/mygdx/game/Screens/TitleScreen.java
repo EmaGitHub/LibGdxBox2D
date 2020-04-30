@@ -7,24 +7,19 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.AppGame;
-import com.mygdx.game.Utils.Global;
 
 public class TitleScreen extends ScreenAdapter {
 
     private AppGame game;
     private OrthographicCamera camera;
 
-    private float PPM;
-
     public TitleScreen(AppGame game){
         this.game = game;
-        this.PPM = Global.PPM;
         this.camera = game.camera;
     }
 
     @Override
     public void show(){                                             // Prima funzione chiamata
-
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -38,19 +33,12 @@ public class TitleScreen extends ScreenAdapter {
     public void render(float delta) {
 
         cameraUpdate();
-
         game.batch.setProjectionMatrix(camera.combined);
-
         Gdx.gl.glClearColor(0, .20f, 50, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
         game.font.draw(game.batch, "Please touch to play.", Gdx.graphics.getWidth() * .32f, Gdx.graphics.getHeight() * .35f);
         game.batch.end();
-    }
-
-    @Override
-    public void hide(){
-        Gdx.input.setInputProcessor(null);
     }
 
     public void cameraUpdate() {
@@ -61,4 +49,7 @@ public class TitleScreen extends ScreenAdapter {
         camera.position.set(position);
         camera.update();
     }
+
+    @Override
+    public void hide(){Gdx.input.setInputProcessor(null);}
 }

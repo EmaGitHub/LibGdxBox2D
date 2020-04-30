@@ -31,7 +31,6 @@ public class BodyFactory {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width/2/PPM, height/2/PPM );				//calcolato dal punto centrale
 
-
         pBody.createFixture(shape, 1.0f);
         shape.dispose();
         return pBody;
@@ -43,7 +42,6 @@ public class BodyFactory {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x/2/PPM, y/2/PPM);
-        //System.out.println("Body position circle "+bodyDef.position.x+" real ("+x+") / "+bodyDef.position.y+" real ("+y+")");
         bodyDef.fixedRotation = false;
         pBody = world.createBody(bodyDef);
 
@@ -52,8 +50,8 @@ public class BodyFactory {
         shape.setRadius(diam/2/PPM);
 
         FixtureDef circleFixture = new FixtureDef();
-        circleFixture.density=1.0f;
         circleFixture.shape = shape;
+        circleFixture.density=1.0f;
         circleFixture.restitution = 0.8f;       //0,8f
         circleFixture.friction=0.6f;
 

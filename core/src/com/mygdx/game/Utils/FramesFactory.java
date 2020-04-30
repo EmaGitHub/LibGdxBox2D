@@ -13,10 +13,10 @@ public class FramesFactory {
 
     public static Animation<TextureRegion> createBallFrames(){
 
-        int FRAME_COLS = 8;
-        int FRAME_ROWS = 6;
+        int FRAME_COLS = 9;
+        int FRAME_ROWS = 8;
         // Load the sprite sheet as a Texture
-        worldSheet = new Texture(Gdx.files.internal("Sprites/worldSprite.gif"));
+        worldSheet = new Texture(Gdx.files.internal("Sprites/globe-resized.png"));          //pref: globe.png
         TextureRegion[][] tmp = TextureRegion.split(worldSheet,
                 worldSheet.getWidth() / FRAME_COLS,
                 worldSheet.getHeight() / FRAME_ROWS);

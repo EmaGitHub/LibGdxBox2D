@@ -8,7 +8,6 @@ public class Object extends Actor {
     protected Body body;
 
     public Object(Body body){
-
         this.body = body;
     }
 }

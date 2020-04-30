@@ -16,6 +16,8 @@ import com.mygdx.game.Utils.BodyFactory;
 import com.mygdx.game.Utils.Global;
 import com.mygdx.game.Utils.ObjectFactory;
 
+import java.util.ArrayList;
+
 public class GameScreen extends ScreenAdapter {
 
     private AppGame game;
@@ -24,22 +26,23 @@ public class GameScreen extends ScreenAdapter {
     private float PPM;
 
     private Box2DDebugRenderer b2dr;
+    private boolean DEBUG;
     private World world;
     private BodyFactory bodyFactory;
     private ObjectFactory objectFactory;
-    private Body player, platform;
+    private Body platform;
 
     Vector3 touchPoint;
     private boolean firstTouch = true;
 
-    BounceBall ball;
+    ArrayList<BounceBall> balls;
 
     public GameScreen(AppGame game){
 
         this.game = game;
         this.PPM = Global.PPM;
         this.camera = game.camera;
-
+        this.DEBUG = Global.DEBUG;
     }
 
     @Override
@@ -50,8 +53,9 @@ public class GameScreen extends ScreenAdapter {
 
         bodyFactory = new BodyFactory(world);
         objectFactory = new ObjectFactory(world, game.stage);
+        touchPoint = new Vector3();
 
-        ball = this.objectFactory.createBounceBallObject(PPM*0, PPM*0, PPM*1);
+        balls = new ArrayList<>();
         platform = bodyFactory.createStaticBody(0, -PPM/2-PPM/10, PPM*5, PPM/5);
     }
 
@@ -69,6 +73,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.game.stage.act(delta);
         this.game.stage.draw();
+
         b2dr.render(world, camera.combined.scl(PPM));
     }
     public void update(float delta) {
@@ -80,14 +85,18 @@ public class GameScreen extends ScreenAdapter {
 
     public void inputUpdate(float delta) {
 
-        if(Gdx.input.justTouched()){
+        if(Gdx.input.isTouched()){
 
             if(firstTouch) firstTouch=false;
-            else this.ball.jump();
+            else {
+                camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+                balls.add(this.objectFactory.createBounceBallObject(touchPoint.x, touchPoint.y, PPM * 1));
+            }
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.setScreen(game.titleScreen);
-            ball.dispose();
+            for(BounceBall ball: balls)
+                ball.dispose();
         }
     }
 
