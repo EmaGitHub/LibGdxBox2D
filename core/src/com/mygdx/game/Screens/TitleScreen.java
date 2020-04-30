@@ -4,14 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.AppGame;
+import com.mygdx.game.Utils.Global;
 
 public class TitleScreen extends ScreenAdapter {
 
     private AppGame game;
+    private OrthographicCamera camera;
+
+    private float PPM;
 
     public TitleScreen(AppGame game){
         this.game = game;
+        this.PPM = Global.PPM;
+        this.camera = game.camera;
     }
 
     @Override
@@ -29,16 +37,28 @@ public class TitleScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor(0, .25f, 0, 1);
+        cameraUpdate();
+
+        game.batch.setProjectionMatrix(camera.combined);
+
+        Gdx.gl.glClearColor(0, .20f, 50, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
-        game.font.draw(game.batch, "Title Screen!", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
-        game.font.draw(game.batch, "Please touch to play.", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .25f);
+        game.font.draw(game.batch, "Please touch to play.", Gdx.graphics.getWidth() * .32f, Gdx.graphics.getHeight() * .35f);
         game.batch.end();
     }
 
     @Override
     public void hide(){
         Gdx.input.setInputProcessor(null);
+    }
+
+    public void cameraUpdate() {
+
+        Vector3 position = camera.position;
+        position.x = Gdx.graphics.getWidth()/2;
+        position.y = Gdx.graphics.getHeight()/2;
+        camera.position.set(position);
+        camera.update();
     }
 }

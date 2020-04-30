@@ -1,12 +1,12 @@
 package com.mygdx.game.Objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.Utils.FramesFactory;
 import com.mygdx.game.Utils.Global;
 
@@ -27,10 +27,12 @@ public class BounceBall extends Object{
         stateTime = 0f;
         this.worldAnimation = FramesFactory.createBallFrames();
 
-        bodySprite = new Sprite(new Texture("Images/ball.png"));
-        bodySprite.setSize(PPM*1 , PPM*1);
-        bodySprite.setOrigin( PPM/2 , PPM/2);
-        body.setUserData(bodySprite);
+        setOrigin(rad, rad);
+
+//        bodySprite = new Sprite(new Texture("Images/ball.png"));
+//        bodySprite.setSize(PPM*1 , PPM*1);
+//        bodySprite.setOrigin( PPM/2 , PPM/2);
+//        body.setUserData(bodySprite);
     }
 
     @Override
@@ -41,17 +43,19 @@ public class BounceBall extends Object{
 //        sprite.setRotation(this.body.getAngle() * MathUtils.radiansToDegrees);
 //        sprite.draw(batch);
 
-        this.setOrigin(rad, rad);
-
         batch.draw(currentFrame, super.body.getPosition().x*PPM - rad,
                 super.body.getPosition().y*PPM - rad,
                 diam , diam);
 
 //        System.out.println("BODY Y "+(super.body.getPosition().y));
 //        System.out.println("B Y "+(super.body.getPosition().y));
-
         //System.out.println("position: "+(super.body.getPosition().x*PPM-rad)+"    .    "+ (super.body.getPosition().y*PPM-rad));
 
+    }
+
+    @Override
+    public void setStage(Stage stage) {
+        super.setStage(stage);
     }
 
     @Override
@@ -62,4 +66,7 @@ public class BounceBall extends Object{
         this.currentFrame = this.worldAnimation.getKeyFrame(stateTime, true);
     }
 
+    public void dispose(){
+        currentFrame.getTexture().dispose();
+    }
 }

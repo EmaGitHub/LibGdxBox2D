@@ -54,7 +54,7 @@ public class BodyFactory {
         FixtureDef circleFixture = new FixtureDef();
         circleFixture.density=1.0f;
         circleFixture.shape = shape;
-        circleFixture.restitution = 1f;       //0,8f
+        circleFixture.restitution = 0.8f;       //0,8f
         circleFixture.friction=0.6f;
 
         pBody.createFixture(circleFixture);

@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,6 +14,7 @@ import com.mygdx.game.Utils.Global;
 
 public class AppGame extends Game {
 
+	private Game game;
 	float screenWidth, screenHeight;
 
 	public OrthographicCamera camera;
@@ -22,9 +24,12 @@ public class AppGame extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
 
+	public Screen titleScreen;
+
 	@Override
 	public void create () {
 
+		game = this;
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
 
@@ -43,7 +48,8 @@ public class AppGame extends Game {
 		this.stage = new Stage(this.viewport, batch);
 		font = new BitmapFont();
 
-		setScreen(new TitleScreen(this));
+		titleScreen = new TitleScreen(this);
+		setScreen(titleScreen);
 	}
 
 	@Override
