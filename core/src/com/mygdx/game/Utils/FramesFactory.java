@@ -16,7 +16,7 @@ public class FramesFactory {
         int FRAME_COLS = 9;
         int FRAME_ROWS = 8;
         // Load the sprite sheet as a Texture
-        worldSheet = new Texture(Gdx.files.internal("Sprites/globe-resized.png"));          //pref: globe.png
+        worldSheet = new Texture(Gdx.files.internal("Sprites/globe-resized.png"));          //pref: globe-resized.png
         TextureRegion[][] tmp = TextureRegion.split(worldSheet,
                 worldSheet.getWidth() / FRAME_COLS,
                 worldSheet.getHeight() / FRAME_ROWS);
