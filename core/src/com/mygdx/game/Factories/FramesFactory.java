@@ -1,4 +1,4 @@
-package com.mygdx.game.Utils;
+package com.mygdx.game.Factories;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -7,13 +7,14 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.Utils.Global;
 
-public class BodyFactory {
+public class FramesFactory {
 
     static World world;
     private float PPM = Global.PPM;
 
-    public BodyFactory(World world){
+    public FramesFactory(World world){
 
         this.world = world;
     }
@@ -24,7 +25,6 @@ public class BodyFactory {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(x/PPM, y/PPM);
-        //System.out.println("Body position rect "+bodyDef.position.x+" real ("+x+") / "+bodyDef.position.y+" real ("+y+")");
         bodyDef.fixedRotation = true;
         pBody = world.createBody(bodyDef);
 

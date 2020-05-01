@@ -1,17 +1,16 @@
-package com.mygdx.game.Utils;
+package com.mygdx.game.Factories;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class FramesFactory {
+public class SpritesFactory {
 
     // Objects used
-    Animation<TextureRegion> worldAnimation; // Must declare frame type (TextureRegion)
     private static Texture worldSheet;
 
-    public static Animation<TextureRegion> createBallFrames(){
+    public static Animation<TextureRegion> getBallFrames(){
 
         int FRAME_COLS = 9;
         int FRAME_ROWS = 8;
@@ -31,6 +30,6 @@ public class FramesFactory {
             }
         }
         // Initialize the Animation with the frame interval and array of frames
-        return new Animation<TextureRegion>(0.010f, walkFrames);
+        return new Animation<>(0.010f, walkFrames);
     }
 }

@@ -7,14 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.AppGame;
-import com.mygdx.game.Objects.BounceBall;
-import com.mygdx.game.Utils.BodyFactory;
+import com.mygdx.game.Factories.ObjectFactory;
+import com.mygdx.game.RealObjects.BounceBall;
 import com.mygdx.game.Utils.Global;
-import com.mygdx.game.Utils.ObjectFactory;
 
 import java.util.ArrayList;
 
@@ -26,11 +24,8 @@ public class GameScreen extends ScreenAdapter {
     private float PPM;
 
     private Box2DDebugRenderer b2dr;
-    private boolean DEBUG;
     private World world;
-    private BodyFactory bodyFactory;
     private ObjectFactory objectFactory;
-    private Body platform;
 
     Vector3 touchPoint;
     private boolean firstTouch = true;
@@ -42,7 +37,6 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         this.PPM = Global.PPM;
         this.camera = game.camera;
-        this.DEBUG = Global.DEBUG;
     }
 
     @Override
@@ -51,12 +45,11 @@ public class GameScreen extends ScreenAdapter {
         world = new World(new Vector2(0, -9.8f), false);	//-9.8f
         b2dr = new Box2DDebugRenderer();
 
-        bodyFactory = new BodyFactory(world);
         objectFactory = new ObjectFactory(world, game.stage);
         touchPoint = new Vector3();
 
         balls = new ArrayList<>();
-        platform = bodyFactory.createStaticBody(0, -PPM/2-PPM/10, PPM*5, PPM/5);
+        this.objectFactory.createScreenBoundaries();
     }
 
     @Override
@@ -104,7 +97,7 @@ public class GameScreen extends ScreenAdapter {
     public void cameraUpdate(float delta) {
         Vector3 position = camera.position;
         position.x = 0; //player.getPosition().x * PPM;
-        position.y = 8*PPM; //player.getPosition().y * PPM;
+        position.y = 0; //player.getPosition().y * PPM;
         camera.position.set(position);
         camera.update();
     }
