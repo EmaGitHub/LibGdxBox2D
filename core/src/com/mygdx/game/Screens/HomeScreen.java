@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.AppGame;
-import com.mygdx.game.Utils.Global;
+import com.mygdx.game.Utils.GlobalVar;
 
 public class HomeScreen extends ScreenAdapter {
 
@@ -41,7 +41,7 @@ public class HomeScreen extends ScreenAdapter {
         this.game = game;
         this.camera = game.camera;
         this.homeStage = new Stage(game.viewport, game.batch);
-        PPM = Global.PPM;
+        PPM = GlobalVar.PPM;
         skin = new Skin(Gdx.files.internal("Skins/skin/glassy-ui.json"));
     }
 
@@ -52,7 +52,7 @@ public class HomeScreen extends ScreenAdapter {
         testButtonLabel.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new TestScreen(game));
                 return true;
             }
         });
@@ -130,7 +130,7 @@ public class HomeScreen extends ScreenAdapter {
         homeStage.addActor(startButtonLabel);
         homeStage.addActor(exitButton);
         homeStage.addActor(exitButtonLabel);
-        Gdx.gl.glClearColor(.05f, .05f, .05f, 1);
+        Gdx.gl.glClearColor(.0f, .0f, .0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
         homeStage.act(delta);

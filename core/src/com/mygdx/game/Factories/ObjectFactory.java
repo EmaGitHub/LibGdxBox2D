@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.RealObjects.BounceBall;
-import com.mygdx.game.Utils.Global;
+import com.mygdx.game.Utils.GlobalVar;
 
 public class ObjectFactory {
 
@@ -18,7 +18,7 @@ public class ObjectFactory {
     public ObjectFactory(World world, Stage stage){
         this.world = world;
         this.stage = stage;
-        this.PPM = Global.PPM;
+        this.PPM = GlobalVar.PPM;
         this.frameFactory = new FramesFactory(world);
     }
 
@@ -35,11 +35,22 @@ public class ObjectFactory {
         body.setTransform(new Vector2(x/PPM, y/PPM), 0);
     }
 
-    public void createScreenBoundaries(){
+    public void createScreen2Boundaries(){
+        this.frameFactory.createStaticBody(PPM*-6-1, PPM*0, 1, Gdx.graphics.getHeight());
+        this.frameFactory.createStaticBody(PPM*6+1, PPM*0, 1, Gdx.graphics.getHeight());
+    }
+
+    public void createScreen3Boundaries(){
         this.frameFactory.createStaticBody(PPM*-6-1, PPM*0, 1, Gdx.graphics.getHeight());
         this.frameFactory.createStaticBody(PPM*6+1, PPM*0, 1, Gdx.graphics.getHeight());
         this.frameFactory.createStaticBody(PPM*0, -Gdx.graphics.getHeight()/2-1, Gdx.graphics.getHeight(), 1);
-//        this.frameFactory.createStaticBody(PPM*-6-1, PPM*0, 1, Gdx.graphics.getHeight());
+    }
+
+    public void createScreen4Boundaries(){
+        this.frameFactory.createStaticBody(PPM*-6-1, PPM*0, 1, Gdx.graphics.getHeight());       //x-1
+        this.frameFactory.createStaticBody(PPM*6+1, PPM*0, 1, Gdx.graphics.getHeight());        //x+1
+        this.frameFactory.createStaticBody(PPM*0, -Gdx.graphics.getHeight()/2-1-2*PPM, Gdx.graphics.getHeight(), 4*PPM);      //y-1
+        this.frameFactory.createStaticBody(PPM*0, Gdx.graphics.getHeight()/2+1+2, Gdx.graphics.getHeight(), 1);       //y+1
     }
 
 }

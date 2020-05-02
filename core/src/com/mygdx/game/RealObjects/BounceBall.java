@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.game.Factories.SpritesFactory;
-import com.mygdx.game.Utils.Global;
+import com.mygdx.game.Utils.GlobalVar;
 
 public class BounceBall extends Object{
 
-    float PPM = Global.PPM;
+    float PPM = GlobalVar.PPM;
     float diam;
     float rad;
     float stateTime;
@@ -24,7 +24,7 @@ public class BounceBall extends Object{
         this.diam = diam;
         this.rad = diam/2;
         setOrigin(rad, rad);
-        this.DEBUG = Global.DEBUG;
+        this.DEBUG = GlobalVar.DEBUG;
         this.framesAnimation = SpritesFactory.getBallFrames();
         this.body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y);		//per muovere numero metri al secondo
     }

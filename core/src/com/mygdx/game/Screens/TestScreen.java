@@ -17,7 +17,7 @@ import com.mygdx.game.Utils.GlobalVar;
 
 import java.util.ArrayList;
 
-public class GameScreen extends ScreenAdapter {
+public class TestScreen extends ScreenAdapter {
 
     private AppGame game;
     private Stage gameStage;
@@ -35,7 +35,7 @@ public class GameScreen extends ScreenAdapter {
 
     ArrayList<BounceBall> balls;
 
-    public GameScreen(AppGame game){
+    public TestScreen(AppGame game){
 
         this.game = game;
         this.PPM = GlobalVar.PPM;
@@ -81,7 +81,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void inputUpdate(float delta) {
-        if(Gdx.input.justTouched()){
+        if(Gdx.input.isTouched()){
             if(firstTouch) firstTouch=false;
             else {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -99,7 +99,7 @@ public class GameScreen extends ScreenAdapter {
     public void cameraUpdate(float delta) {
         Vector3 position = camera.position;
         position.x = 0; //player.getPosition().x * PPM;
-        position.y = 0; //player.getPosition().y * PPM;
+        position.y = 0 - GlobalVar.safeAreaInsetBottom; //player.getPosition().y * PPM;
         camera.position.set(position);
         camera.update();
     }
