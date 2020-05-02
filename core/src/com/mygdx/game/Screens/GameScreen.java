@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.AppGame;
 import com.mygdx.game.Factories.ObjectFactory;
 import com.mygdx.game.RealObjects.BounceBall;
@@ -19,7 +20,9 @@ import java.util.ArrayList;
 public class GameScreen extends ScreenAdapter {
 
     private AppGame game;
+    private Stage gameStage;
     private OrthographicCamera camera;
+    private boolean DEBUG;
     private boolean FIRST = true;
     private float PPM;
 
@@ -36,7 +39,9 @@ public class GameScreen extends ScreenAdapter {
 
         this.game = game;
         this.PPM = Global.PPM;
+        this.DEBUG = Global.DEBUG;
         this.camera = game.camera;
+        this.gameStage = new Stage(game.viewport, game.batch);
     }
 
     @Override
@@ -45,7 +50,8 @@ public class GameScreen extends ScreenAdapter {
         world = new World(new Vector2(0, -9.8f), false);	//-9.8f
         b2dr = new Box2DDebugRenderer();
 
-        objectFactory = new ObjectFactory(world, game.stage);
+        objectFactory = new ObjectFactory(world, gameStage);
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
         touchPoint = new Vector3();
 
         balls = new ArrayList<>();
@@ -64,20 +70,18 @@ public class GameScreen extends ScreenAdapter {
 
         game.batch.setProjectionMatrix(camera.combined);
 
-        this.game.stage.act(delta);
-        this.game.stage.draw();
+        this.gameStage.act(delta);
+        this.gameStage.draw();
 
-        b2dr.render(world, camera.combined.scl(PPM));
+        if(DEBUG) b2dr.render(world, camera.combined.scl(PPM));
     }
     public void update(float delta) {
-
         world.step(1/60f, 1, 1);
         inputUpdate(delta);
         cameraUpdate(delta);
     }
 
     public void inputUpdate(float delta) {
-
         if(Gdx.input.isTouched()){
 
             if(firstTouch) firstTouch=false;
@@ -86,8 +90,8 @@ public class GameScreen extends ScreenAdapter {
                 balls.add(this.objectFactory.createBounceBallObject(touchPoint.x, touchPoint.y, PPM * 1));
             }
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(game.titleScreen);
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            game.setScreen(game.homeScreen);
             for(BounceBall ball: balls)
                 ball.dispose();
         }
@@ -103,8 +107,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
-    public void dispose () {
+    public void hide(){
         world.dispose();
         b2dr.dispose();
+        Gdx.input.setInputProcessor(null);
     }
 }
