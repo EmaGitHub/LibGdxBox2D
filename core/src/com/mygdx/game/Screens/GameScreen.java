@@ -41,13 +41,13 @@ public class GameScreen extends ScreenAdapter {
         this.PPM = GlobalVar.PPM;
         this.DEBUG = GlobalVar.DEBUG;
         this.camera = game.camera;
-        this.gameStage = new Stage(game.viewport, game.batch);
     }
 
     @Override
     public void show(){                                             // Prima funzione chiamata
 
         world = new World(new Vector2(0, -9.8f), false);	//-9.8f
+        this.gameStage = new Stage(game.viewport, game.batch);
         b2dr = new Box2DDebugRenderer();
 
         objectFactory = new ObjectFactory(world, gameStage);
@@ -68,14 +68,12 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.setProjectionMatrix(camera.combined);
-
         this.gameStage.act(delta);
         this.gameStage.draw();
-
         if(DEBUG) b2dr.render(world, camera.combined.scl(PPM));
     }
     public void update(float delta) {
-        world.step(1/60f, 1, 1);
+        world.step(1/60f, 6, 2);
         inputUpdate(delta);
         cameraUpdate(delta);
     }
@@ -90,8 +88,7 @@ public class GameScreen extends ScreenAdapter {
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             game.setScreen(game.homeScreen);
-            for(BounceBall ball: balls)
-                ball.dispose();
+
         }
     }
 
@@ -106,8 +103,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void hide(){
-        world.dispose();
-        b2dr.dispose();
         Gdx.input.setInputProcessor(null);
     }
 }
