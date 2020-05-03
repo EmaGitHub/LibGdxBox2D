@@ -49,7 +49,6 @@ public class BounceBall extends Object{
         else
             if(!this.body.getLinearVelocity().equals(new Vector2(0, 0)))
                 this.body.setLinearVelocity(new Vector2(0, 0));
-
     }
 
     @Override

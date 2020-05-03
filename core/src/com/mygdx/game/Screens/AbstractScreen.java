@@ -47,7 +47,7 @@ public class AbstractScreen extends ScreenAdapter {
     @Override
     public void show(){                                                             // Prima funzione chiamata
 
-        world = new World(new Vector2(0, -9.8f), false);	//-9.8f
+        world = new World(new Vector2(0, -9.8f), false);    	//-9.8f
         stage = new Stage(game.viewport, game.batch);
         b2dr = new Box2DDebugRenderer();
         objectFactory = new ObjectFactory(this.world, this.stage);
@@ -62,7 +62,7 @@ public class AbstractScreen extends ScreenAdapter {
                 }
             });
             pauseButton.setX(-PPM/2);
-            pauseButton.setY(GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2);
+            pauseButton.setY(GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
             this.stage.addActor(pauseButton);
         }
         Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
