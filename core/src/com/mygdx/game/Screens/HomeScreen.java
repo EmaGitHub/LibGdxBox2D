@@ -1,29 +1,18 @@
 package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.AppGame;
-import com.mygdx.game.Utils.GlobalVar;
 
-public class HomeScreen extends ScreenAdapter {
-
-    private AppGame game;
-    private OrthographicCamera camera;
-    private Stage homeStage;
-    private float PPM;
+public class HomeScreen extends AbstractScreen {
 
     Skin skin;
     BitmapFont titleFont;
@@ -38,16 +27,14 @@ public class HomeScreen extends ScreenAdapter {
     TextButton testButton;
 
     public HomeScreen(AppGame game){
-        this.game = game;
-        this.camera = game.camera;
-        this.homeStage = new Stage(game.viewport, game.batch);
-        PPM = GlobalVar.PPM;
+        super(game);
         skin = new Skin(Gdx.files.internal("Skins/skin/glassy-ui.json"));
+        pauseButtonVisible = false;
     }
 
     @Override
     public void show(){                                             // Prima funzione chiamata in Screen
-
+        super.show();
         createScreenContent();
         testButtonLabel.addListener(new InputListener(){
             @Override
@@ -70,7 +57,7 @@ public class HomeScreen extends ScreenAdapter {
                 return true;
             }
         });
-        Gdx.input.setInputProcessor(this.homeStage);
+        Gdx.input.setInputProcessor(this.stage);
     }
 
     private void createScreenContent(){
@@ -122,31 +109,13 @@ public class HomeScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        cameraUpdate();
-        homeStage.addActor(gameTitle);
-        homeStage.addActor(testButton);
-        homeStage.addActor(testButtonLabel);
-        homeStage.addActor(startButton);
-        homeStage.addActor(startButtonLabel);
-        homeStage.addActor(exitButton);
-        homeStage.addActor(exitButtonLabel);
-        Gdx.gl.glClearColor(.0f, .0f, .0f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        game.batch.setProjectionMatrix(camera.combined);
-        homeStage.act(delta);
-        homeStage.draw();
-    }
-
-    public void cameraUpdate() {
-        Vector3 position = camera.position;
-        position.x = 0;
-        position.y = 0;
-        camera.position.set(position);
-        camera.update();
-    }
-
-    @Override
-    public void hide(){
-        Gdx.input.setInputProcessor(null);
+        super.render(delta);
+        stage.addActor(gameTitle);
+        stage.addActor(testButton);
+        stage.addActor(testButtonLabel);
+        stage.addActor(startButton);
+        stage.addActor(startButtonLabel);
+        stage.addActor(exitButton);
+        stage.addActor(exitButtonLabel);
     }
 }

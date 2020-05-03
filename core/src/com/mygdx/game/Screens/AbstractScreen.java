@@ -30,6 +30,7 @@ public class AbstractScreen extends ScreenAdapter {
 
     protected Vector3 touchPoint;
     protected boolean firstTouch = true;
+    protected boolean pauseButtonVisible = true;
 
     public AbstractScreen(AppGame game){
 
@@ -47,7 +48,7 @@ public class AbstractScreen extends ScreenAdapter {
         b2dr = new Box2DDebugRenderer();
         objectFactory = new ObjectFactory(this.world, this.stage);
         touchPoint = new Vector3();
-        this.stage.addActor(new PauseButton());
+        if(pauseButtonVisible) this.stage.addActor(new PauseButton());
         Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
     }
 
@@ -65,7 +66,7 @@ public class AbstractScreen extends ScreenAdapter {
         if(DEBUG) b2dr.render(this.world, this.camera.combined.scl(PPM));
     }
     public void update(float delta) {
-        world.step(1/60f, 6, 2);
+        world.step(1/60f, 1, 1);
         inputUpdate(delta);
         cameraUpdate(delta);
     }
