@@ -56,8 +56,16 @@ public class AbstractScreen extends ScreenAdapter {
             pauseButton.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    pauseGame();
-                    return super.touchDown(event, x, y, pointer, button);
+                    if(!PAUSE) {
+                        pauseGame();
+                        return false;
+                    }
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    if(PAUSE) resumeGame();
                 }
             });
             pauseButton.setX(-PPM/2);
@@ -101,19 +109,18 @@ public class AbstractScreen extends ScreenAdapter {
         }
     }
 
-    protected void pauseGame(){
-        if(!PAUSE) {
-            Gdx.app.log("Info", "Game in Pause");
-            this.PAUSE = true;
-            this.pauseButton.switchState();
-            this.freezeScene();
-        }
-        else {
-            Gdx.app.log("Info", "Resume to Game");
-            this.PAUSE = false;
-            this.pauseButton.switchState();
-            this.resumeScene();
-        }
+    protected void pauseGame() {
+        this.PAUSE = true;
+        Gdx.app.log("Info", "Game in Pause");
+        this.pauseButton.switchState();
+        this.freezeScene();
+    }
+
+    protected void resumeGame(){
+        Gdx.app.log("Info", "Resume to Game");
+        this.pauseButton.switchState();
+        this.resumeScene();
+        this.PAUSE = false;
     }
 
     protected void touched(){ }
