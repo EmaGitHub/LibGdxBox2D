@@ -56,10 +56,12 @@ public class AbstractScreen extends ScreenAdapter {
             pauseButton.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    System.out.println("asd");
+                    System.out.println("Pause");
                     return super.touchDown(event, x, y, pointer, button);
                 }
             });
+            pauseButton.setX(-PPM/2);
+            pauseButton.setY(GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2);
             this.stage.addActor(pauseButton);
         }
         Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back

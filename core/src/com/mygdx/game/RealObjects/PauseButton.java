@@ -1,5 +1,7 @@
 package com.mygdx.game.RealObjects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -14,8 +16,10 @@ public class PauseButton extends Button {
     private float diameter = PPM;
     private float radius = diameter/2;
 
+    Texture texture = new Texture(Gdx.files.internal("Images/ball.png"));
+
+
     public PauseButton() {
-        setPosition(0, GlobalVar.heightInPPM * PPM / 2 - PPM - GlobalVar.safeAreaInsetTop);
         setSize(diameter, diameter);
         sr = new ShapeRenderer();
         sr.setAutoShapeType(true);
@@ -33,11 +37,11 @@ public class PauseButton extends Button {
         sr.setProjectionMatrix(batch.getProjectionMatrix());
         Vector2 coords = new Vector2(getX(),getY());
         sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.circle(coords.x, coords.y, radius);
-        sr.rectLine(coords.x - diameter /10, coords.y+ diameter /5,coords.x- diameter /10,
-                coords.y- diameter /5, diameter /10);
-        sr.rectLine(coords.x + diameter /10, coords.y+ diameter /5,coords.x+ diameter /10,
-                coords.y- diameter /5, diameter /10);
+        sr.circle(coords.x+radius, coords.y+radius, radius);
+        sr.rectLine(coords.x-(diameter/10)+radius, coords.y+(diameter/5)+radius,
+                coords.x-(diameter/10)+radius, coords.y-(diameter/5)+radius, diameter /10);
+        sr.rectLine(coords.x+(diameter/10)+radius, coords.y+(diameter/5)+radius,
+                coords.x+(diameter/10)+radius, coords.y-(diameter/5)+radius, diameter/10);
         sr.end();
 
         batch.begin();
