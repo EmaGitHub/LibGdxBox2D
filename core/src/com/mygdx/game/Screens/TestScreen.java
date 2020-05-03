@@ -22,6 +22,13 @@ public class TestScreen extends AbstractScreen {
 
     @Override
     public void touched(){
-        balls.add(this.objectFactory.createBounceBallObject(touchPoint.x, touchPoint.y, PPM * 1));
+        balls.add(this.objectFactory.createBounceBallObject(touchPoint.x, touchPoint.y, PPM*1));
+    }
+
+    @Override
+    protected void freezeActors() {
+        super.freezeActors();
+        for(BounceBall ball: balls)
+            ball.freezeObject();
     }
 }

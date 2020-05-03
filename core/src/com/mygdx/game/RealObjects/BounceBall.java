@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.game.Factories.SpritesFactory;
 import com.mygdx.game.Utils.GlobalVar;
@@ -14,9 +15,12 @@ public class BounceBall extends Object{
     float diam;
     float rad;
     float stateTime;
+
     TextureRegion currentFrame;
+    TextureRegion pausedFrame;
     Animation<TextureRegion> framesAnimation;
-    boolean DEBUG;
+    private boolean DEBUG;
+    private boolean PAUSED;
 
     public BounceBall(Body body, float diam){
         super(body);
@@ -26,13 +30,13 @@ public class BounceBall extends Object{
         setOrigin(rad, rad);
         this.DEBUG = GlobalVar.DEBUG;
         this.framesAnimation = SpritesFactory.getBallFrames();
-        this.body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y);		//per muovere numero metri al secondo
+        body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y);		//per muovere numero metri al secondo
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if(!DEBUG) batch.draw(currentFrame, super.body.getPosition().x*PPM - rad,
-                super.body.getPosition().y*PPM - rad,
+        if(!DEBUG) batch.draw(currentFrame, body.getPosition().x*PPM - rad,
+                body.getPosition().y*PPM - rad,
                 diam, diam);
     }
 
@@ -40,10 +44,20 @@ public class BounceBall extends Object{
     public void act(float delta) {
         super.act(delta);
         stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
-        this.currentFrame = this.framesAnimation.getKeyFrame(stateTime, true);
+
+        if (!PAUSED) this.currentFrame = framesAnimation.getKeyFrame(stateTime, true);
+        else
+            if(!this.body.getLinearVelocity().equals(new Vector2(0, 0)))
+                this.body.setLinearVelocity(new Vector2(0, 0));
+
     }
 
-    public void dispose(){
-        currentFrame.getTexture().dispose();
+    @Override
+    public void freezeObject() {
+        super.freezeObject();
+        this.PAUSED = true;
+        this.pausedFrame = this.currentFrame;
     }
+
+    public void dispose(){ currentFrame.getTexture().dispose(); }
 }

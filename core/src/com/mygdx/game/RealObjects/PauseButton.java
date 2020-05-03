@@ -1,7 +1,5 @@
 package com.mygdx.game.RealObjects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -16,8 +14,7 @@ public class PauseButton extends Button {
     private float diameter = PPM;
     private float radius = diameter/2;
 
-    Texture texture = new Texture(Gdx.files.internal("Images/ball.png"));
-
+    private boolean gameInPause = false;
 
     public PauseButton() {
         setSize(diameter, diameter);
@@ -31,7 +28,6 @@ public class PauseButton extends Button {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.end();
-
         this.toFront();
 
         sr.setProjectionMatrix(batch.getProjectionMatrix());
@@ -43,7 +39,10 @@ public class PauseButton extends Button {
         sr.rectLine(coords.x+(diameter/10)+radius, coords.y+(diameter/5)+radius,
                 coords.x+(diameter/10)+radius, coords.y-(diameter/5)+radius, diameter/10);
         sr.end();
-
         batch.begin();
+    }
+
+    public void switchState(){
+        this.gameInPause = !this.gameInPause;
     }
 }

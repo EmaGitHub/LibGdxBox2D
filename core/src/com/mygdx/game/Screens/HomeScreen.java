@@ -57,11 +57,9 @@ public class HomeScreen extends AbstractScreen {
                 return true;
             }
         });
-        Gdx.input.setInputProcessor(this.stage);
     }
 
     private void createScreenContent(){
-
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Griffin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
