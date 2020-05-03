@@ -58,5 +58,11 @@ public class BounceBall extends Object{
         this.pausedFrame = this.currentFrame;
     }
 
+    @Override
+    public void resumeObject() {
+        super.resumeObject();
+        this.PAUSED = false;
+    }
+
     public void dispose(){ currentFrame.getTexture().dispose(); }
 }

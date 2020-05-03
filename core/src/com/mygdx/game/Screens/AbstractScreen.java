@@ -20,12 +20,12 @@ import com.mygdx.game.Utils.GlobalVar;
 public class AbstractScreen extends ScreenAdapter {
 
     protected AppGame game;
-    protected boolean gameInPause = false;
     protected Stage stage;
     protected OrthographicCamera camera;
     protected Box2DDebugRenderer b2dr;
 
     protected boolean DEBUG;
+    protected boolean PAUSE = false;
     protected World world;
     protected float PPM;
 
@@ -46,7 +46,6 @@ public class AbstractScreen extends ScreenAdapter {
 
     @Override
     public void show(){                                                             // Prima funzione chiamata
-
         world = new World(new Vector2(0, -9.8f), false);    	//-9.8f
         stage = new Stage(game.viewport, game.batch);
         b2dr = new Box2DDebugRenderer();
@@ -57,7 +56,7 @@ public class AbstractScreen extends ScreenAdapter {
             pauseButton.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    pauseScreen();
+                    pauseGame();
                     return super.touchDown(event, x, y, pointer, button);
                 }
             });
@@ -72,7 +71,7 @@ public class AbstractScreen extends ScreenAdapter {
     @Override
     public void render(float delta){
         // Update Logic
-        this.update(delta);
+        this.update();
         // Draw Render
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -82,14 +81,15 @@ public class AbstractScreen extends ScreenAdapter {
         this.stage.draw();
         if(DEBUG) b2dr.render(this.world, this.camera.combined.scl(PPM));
     }
-    public void update(float delta) {
+
+    public void update() {
         world.step(1/60f, 1, 1);
-        inputUpdate(delta);
-        cameraUpdate(delta);
+        inputUpdate();
+        cameraUpdate();
     }
 
-    protected void inputUpdate(float delta) {
-        if(Gdx.input.isTouched() && !gameInPause){
+    protected void inputUpdate() {
+        if(Gdx.input.isTouched() && !PAUSE){
             if(firstTouch) firstTouch=false;
             else {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -101,27 +101,37 @@ public class AbstractScreen extends ScreenAdapter {
         }
     }
 
-    protected void pauseScreen(){
-        if(!gameInPause) {
+    protected void pauseGame(){
+        if(!PAUSE) {
             Gdx.app.log("Info", "Game in Pause");
-            this.gameInPause = true;
+            this.PAUSE = true;
             this.pauseButton.switchState();
-            this.freezeActors();
+            this.freezeScene();
+        }
+        else {
+            Gdx.app.log("Info", "Resume to Game");
+            this.PAUSE = false;
+            this.pauseButton.switchState();
+            this.resumeScene();
         }
     }
 
     protected void touched(){ }
 
-    protected void cameraUpdate(float delta) {
+    protected void cameraUpdate() {
         Vector3 position = camera.position;
-        position.x = 0; //player.getPosition().x * PPM;
-        position.y = 0 - GlobalVar.safeAreaInsetBottom; //player.getPosition().y * PPM;
+        position.x = 0;                                          //player.getPosition().x * PPM;
+        position.y = 0 - GlobalVar.safeAreaInsetBottom;         //player.getPosition().y * PPM;
         camera.position.set(position);
         camera.update();
     }
 
-    protected void freezeActors(){
+    protected void freezeScene(){
         this.world.setGravity(new Vector2(0, 0));
+    }
+
+    protected void resumeScene(){
+        this.world.setGravity(new Vector2(0, -9.8f));
     }
 
     @Override

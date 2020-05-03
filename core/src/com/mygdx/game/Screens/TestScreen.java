@@ -26,9 +26,16 @@ public class TestScreen extends AbstractScreen {
     }
 
     @Override
-    protected void freezeActors() {
-        super.freezeActors();
+    protected void freezeScene() {
+        super.freezeScene();
         for(BounceBall ball: balls)
             ball.freezeObject();
+    }
+
+    @Override
+    protected void resumeScene() {
+        super.resumeScene();
+        for(BounceBall ball: balls)
+            ball.resumeObject();
     }
 }
