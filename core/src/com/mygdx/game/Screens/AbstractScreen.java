@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.AppGame;
 import com.mygdx.game.Factories.ObjectFactory;
@@ -48,8 +50,19 @@ public class AbstractScreen extends ScreenAdapter {
         b2dr = new Box2DDebugRenderer();
         objectFactory = new ObjectFactory(this.world, this.stage);
         touchPoint = new Vector3();
-        if(pauseButtonVisible) this.stage.addActor(new PauseButton());
+        PauseButton pauseButton = new PauseButton();
+        if(pauseButtonVisible) this.stage.addActor(pauseButton);
         Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
+
+        pauseButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("Pause");
+                world.setGravity(new Vector2(0, 0));
+                return true;
+            }
+
+        });
     }
 
     @Override
@@ -71,17 +84,20 @@ public class AbstractScreen extends ScreenAdapter {
         cameraUpdate(delta);
     }
 
-    public void inputUpdate(float delta) {
-        if(Gdx.input.justTouched()){
+    protected void inputUpdate(float delta) {
+        if(Gdx.input.isTouched()){
             if(firstTouch) firstTouch=false;
             else {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+                touched();
             }
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             game.setScreen(game.homeScreen);
         }
     }
+
+    protected void touched(){ }
 
     protected void cameraUpdate(float delta) {
         Vector3 position = camera.position;
