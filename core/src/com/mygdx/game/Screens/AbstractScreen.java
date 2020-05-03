@@ -52,17 +52,15 @@ public class AbstractScreen extends ScreenAdapter {
         touchPoint = new Vector3();
         PauseButton pauseButton = new PauseButton();
         if(pauseButtonVisible) this.stage.addActor(pauseButton);
-        Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
-
         pauseButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("Pause");
-                world.setGravity(new Vector2(0, 0));
+                pauseScreen();
                 return true;
             }
-
         });
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -97,12 +95,16 @@ public class AbstractScreen extends ScreenAdapter {
         }
     }
 
+    protected void pauseScreen(){
+        System.out.println("Pause");
+    }
+
     protected void touched(){ }
 
     protected void cameraUpdate(float delta) {
         Vector3 position = camera.position;
         position.x = 0; //player.getPosition().x * PPM;
-        position.y = 0; //player.getPosition().y * PPM;
+        position.y = 0 - GlobalVar.safeAreaInsetBottom; //player.getPosition().y * PPM;
         camera.position.set(position);
         camera.update();
     }

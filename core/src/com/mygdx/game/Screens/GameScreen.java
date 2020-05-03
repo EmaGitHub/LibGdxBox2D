@@ -23,4 +23,10 @@ public class GameScreen extends AbstractScreen {
     public void touched(){
         System.out.println("Touched "+touchPoint.x+", "+touchPoint.y);
     }
+
+    @Override
+    public void hide(){
+        super.hide();
+        this.ball.dispose();
+    }
 }
