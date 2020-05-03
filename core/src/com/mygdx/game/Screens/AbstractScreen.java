@@ -47,20 +47,22 @@ public class AbstractScreen extends ScreenAdapter {
 
         world = new World(new Vector2(0, -9.8f), false);	//-9.8f
         stage = new Stage(game.viewport, game.batch);
+        Gdx.input.setInputProcessor(stage);
         b2dr = new Box2DDebugRenderer();
         objectFactory = new ObjectFactory(this.world, this.stage);
         touchPoint = new Vector3();
-        PauseButton pauseButton = new PauseButton();
-        if(pauseButtonVisible) this.stage.addActor(pauseButton);
-        pauseButton.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                pauseScreen();
-                return true;
-            }
-        });
+        if(pauseButtonVisible) {
+            PauseButton pauseButton = new PauseButton();
+            pauseButton.addListener(new InputListener(){
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    System.out.println("asd");
+                    return super.touchDown(event, x, y, pointer, button);
+                }
+            });
+            this.stage.addActor(pauseButton);
+        }
         Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
