@@ -15,22 +15,23 @@ import com.mygdx.game.Factories.ObjectFactory;
 import com.mygdx.game.RealObjects.PauseButton;
 import com.mygdx.game.Utils.GlobalVar;
 
-public class GameScreen extends ScreenAdapter {
+public class AbstractScreen extends ScreenAdapter {
 
-    private AppGame game;
-    private Stage gameStage;
-    private OrthographicCamera camera;
-    private boolean DEBUG;
-    private float PPM;
+    protected AppGame game;
+    protected Stage stage;
+    protected OrthographicCamera camera;
+    protected Box2DDebugRenderer b2dr;
 
-    private Box2DDebugRenderer b2dr;
-    private World world;
-    private ObjectFactory objectFactory;
+    protected boolean DEBUG;
+    protected World world;
+    protected float PPM;
 
-    Vector3 touchPoint;
-    private boolean firstTouch = true;
+    protected ObjectFactory objectFactory;
 
-    public GameScreen(AppGame game){
+    protected Vector3 touchPoint;
+    protected boolean firstTouch = true;
+
+    public AbstractScreen(AppGame game){
 
         this.game = game;
         this.PPM = GlobalVar.PPM;
@@ -39,34 +40,29 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
-    public void show(){                                             // Prima funzione chiamata
+    public void show(){                                                             // Prima funzione chiamata
 
         world = new World(new Vector2(0, -9.8f), false);	//-9.8f
-        this.gameStage = new Stage(game.viewport, game.batch);
+        stage = new Stage(game.viewport, game.batch);
         b2dr = new Box2DDebugRenderer();
-
-        objectFactory = new ObjectFactory(world, gameStage);
-        Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
+        objectFactory = new ObjectFactory(this.world, this.stage);
         touchPoint = new Vector3();
-
-        this.gameStage.addActor(new PauseButton());
-        this.objectFactory.createScreen3Boundaries();
-        this.objectFactory.createBounceBallObject(0, GlobalVar.heightInPPM*PPM/2 - 3*PPM, PPM*1);
+        this.stage.addActor(new PauseButton());
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
     }
 
     @Override
     public void render(float delta){
         // Update Logic
-        this.update(Gdx.graphics.getDeltaTime());
-
+        this.update(delta);
         // Draw Render
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.setProjectionMatrix(camera.combined);
-        this.gameStage.act(delta);
-        this.gameStage.draw();
-        if(DEBUG) b2dr.render(world, camera.combined.scl(PPM));
+        this.stage.act(delta);
+        this.stage.draw();
+        if(DEBUG) b2dr.render(this.world, this.camera.combined.scl(PPM));
     }
     public void update(float delta) {
         world.step(1/60f, 6, 2);
@@ -83,12 +79,10 @@ public class GameScreen extends ScreenAdapter {
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             game.setScreen(game.homeScreen);
-
         }
     }
 
-
-    public void cameraUpdate(float delta) {
+    protected void cameraUpdate(float delta) {
         Vector3 position = camera.position;
         position.x = 0; //player.getPosition().x * PPM;
         position.y = 0; //player.getPosition().y * PPM;
@@ -98,6 +92,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void hide(){
+        super.hide();
         Gdx.input.setInputProcessor(null);
     }
 }

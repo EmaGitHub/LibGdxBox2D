@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.AppGame;
 import com.mygdx.game.Factories.ObjectFactory;
 import com.mygdx.game.RealObjects.BounceBall;
+import com.mygdx.game.RealObjects.PauseButton;
 import com.mygdx.game.Utils.GlobalVar;
 
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class TestScreen extends ScreenAdapter {
         touchPoint = new Vector3();
 
         balls = new ArrayList<>();
+        this.gameStage.addActor(new PauseButton());
         this.objectFactory.createScreen3Boundaries();
     }
 
