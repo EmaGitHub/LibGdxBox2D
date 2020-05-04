@@ -30,6 +30,7 @@ public class HomeScreen extends AbstractScreen {
         super(game);
         skin = new Skin(Gdx.files.internal("Skins/skin/glassy-ui.json"));
         pauseButtonVisible = false;
+        scoreBoardVisible = false;
     }
 
     @Override
@@ -62,14 +63,14 @@ public class HomeScreen extends AbstractScreen {
     private void createScreenContent(){
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Griffin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-
         parameter.size = (int)PPM*2;
         titleFont = generator.generateFont(parameter);
+
         Label.LabelStyle titleStyle = new Label.LabelStyle();
         titleStyle.font = titleFont;
         titleStyle.fontColor = Color.BLUE;
 
-        gameTitle = new Label("Bounce\nWorld", titleStyle);
+        gameTitle = new Label("Bouncing\nWorld", titleStyle);
         gameTitle.setSize(6*PPM, PPM);
         gameTitle.setPosition(-3*PPM, 7*PPM);
         gameTitle.setAlignment(Align.center);

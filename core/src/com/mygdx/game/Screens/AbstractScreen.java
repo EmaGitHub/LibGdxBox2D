@@ -14,27 +14,34 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.AppGame;
 import com.mygdx.game.Factories.ObjectFactory;
-import com.mygdx.game.RealObjects.PauseButton;
 import com.mygdx.game.Utils.GlobalVar;
+
+import GameEntities.PauseButton;
+import GameEntities.ScoreBoard;
 
 public class AbstractScreen extends ScreenAdapter {
 
     protected AppGame game;
+    protected World world;
     protected Stage stage;
     protected OrthographicCamera camera;
     protected Box2DDebugRenderer b2dr;
 
     protected boolean DEBUG;
     protected boolean PAUSE = false;
-    protected World world;
+
     protected float PPM;
 
     protected ObjectFactory objectFactory;
 
     protected Vector3 touchPoint;
     protected boolean firstTouch = true;
+
     PauseButton pauseButton;
     protected boolean pauseButtonVisible = true;
+
+    ScoreBoard scoreBoard;
+    protected boolean scoreBoardVisible = true;
 
     public AbstractScreen(AppGame game){
 
@@ -51,6 +58,12 @@ public class AbstractScreen extends ScreenAdapter {
         b2dr = new Box2DDebugRenderer();
         objectFactory = new ObjectFactory(this.world, this.stage);
         touchPoint = new Vector3();
+        if(scoreBoardVisible) {
+            scoreBoard = new ScoreBoard();
+            scoreBoard.setX(-PPM/2);
+            scoreBoard.setY(GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
+            this.stage.addActor(scoreBoard);
+        }
         if(pauseButtonVisible) {
             pauseButton = new PauseButton();
             pauseButton.addListener(new InputListener(){
@@ -87,7 +100,7 @@ public class AbstractScreen extends ScreenAdapter {
         game.batch.setProjectionMatrix(camera.combined);
         this.stage.act(delta);
         this.stage.draw();
-        if(DEBUG) b2dr.render(this.world, this.camera.combined.scl(PPM));
+        b2dr.render(this.world, this.camera.combined.scl(PPM));
     }
 
     public void update() {
@@ -106,6 +119,9 @@ public class AbstractScreen extends ScreenAdapter {
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             game.setScreen(game.homeScreen);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+            GlobalVar.DEBUG = !GlobalVar.DEBUG;
         }
     }
 

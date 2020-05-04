@@ -10,5 +10,5 @@ public final class GlobalVar {
     public static float safeAreaInsetBottom;
 
     public static float SCALE = 1;
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 }

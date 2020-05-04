@@ -35,7 +35,7 @@ public class BounceBall extends Object{
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if(!DEBUG) batch.draw(currentFrame, body.getPosition().x*PPM - rad,
+        if(!GlobalVar.DEBUG) batch.draw(currentFrame, body.getPosition().x*PPM - rad,
                 body.getPosition().y*PPM - rad,
                 diam, diam);
     }

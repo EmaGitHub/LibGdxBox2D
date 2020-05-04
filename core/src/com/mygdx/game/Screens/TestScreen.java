@@ -22,7 +22,8 @@ public class TestScreen extends AbstractScreen {
 
     @Override
     public void touched(){
-        balls.add(this.objectFactory.createBounceBallObject(touchPoint.x, touchPoint.y, PPM*1));
+        balls.add(this.objectFactory.createBounceBallObject(touchPoint.x, touchPoint.y, PPM));
+        super.scoreBoard.updateValue(this.balls.size());
     }
 
     @Override
