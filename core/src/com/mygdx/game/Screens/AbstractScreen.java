@@ -16,7 +16,7 @@ import com.mygdx.game.AppGame;
 import com.mygdx.game.Factories.ObjectFactory;
 import com.mygdx.game.Utils.GlobalVar;
 
-import GameEntities.PauseButton;
+import GameEntities.MenuButton;
 import GameEntities.ScoreBoard;
 
 public class AbstractScreen extends ScreenAdapter {
@@ -37,8 +37,8 @@ public class AbstractScreen extends ScreenAdapter {
     protected Vector3 touchPoint;
     protected boolean firstTouch = true;
 
-    PauseButton pauseButton;
-    protected boolean pauseButtonVisible = true;
+    MenuButton menuButton;
+    protected boolean menuButtonVisible = true;
 
     ScoreBoard scoreBoard;
     protected boolean scoreBoardVisible = true;
@@ -64,9 +64,9 @@ public class AbstractScreen extends ScreenAdapter {
             scoreBoard.setY(GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
             this.stage.addActor(scoreBoard);
         }
-        if(pauseButtonVisible) {
-            pauseButton = new PauseButton();
-            pauseButton.addListener(new InputListener(){
+        if(menuButtonVisible) {
+            menuButton = new MenuButton();
+            menuButton.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     if(!PAUSE) {
@@ -81,9 +81,9 @@ public class AbstractScreen extends ScreenAdapter {
                     if(PAUSE) resumeGame();
                 }
             });
-            pauseButton.setX(-PPM/2);
-            pauseButton.setY(GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
-            this.stage.addActor(pauseButton);
+            menuButton.setX(-PPM/2);
+            menuButton.setY(GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
+            this.stage.addActor(menuButton);
         }
         Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
         Gdx.input.setInputProcessor(stage);
@@ -128,13 +128,13 @@ public class AbstractScreen extends ScreenAdapter {
     protected void pauseGame() {
         this.PAUSE = true;
         Gdx.app.log("Info", "Game in Pause");
-        this.pauseButton.switchState();
+        this.menuButton.switchState();
         this.freezeScene();
     }
 
     protected void resumeGame(){
         Gdx.app.log("Info", "Resume to Game");
-        this.pauseButton.switchState();
+        this.menuButton.switchState();
         this.resumeScene();
         this.PAUSE = false;
     }

@@ -9,21 +9,21 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.mygdx.game.Utils.GlobalVar;
 
-public class PauseButton extends Button {
+public class MenuButton extends Button {
 
     private ShapeRenderer shapeRenderer;
     private float PPM = GlobalVar.PPM;
     private float diameter = PPM;
     private float radius = diameter/2;
 
-    private boolean gameInPause = false;
+    private boolean menuSelected = false;
 
-    public PauseButton() {
+    public MenuButton() {
         setSize(diameter, diameter);
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
         this.setBounds(getX()-radius, getY()-radius,
-                diameter+radius, diameter+radius);
+                diameter, diameter);
     }
 
     @Override
@@ -38,8 +38,8 @@ public class PauseButton extends Button {
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0, 0, 0, 0.8f);
-        shapeRenderer.circle(coords.x+radius, coords.y+radius, radius+PPM);
+        shapeRenderer.setColor(0, 0, 0, 0.6f);
+        shapeRenderer.circle(coords.x+radius, coords.y+radius, radius+PPM/3);
         shapeRenderer.end();
 
         gl.glDisable(GL20.GL_BLEND);
@@ -50,21 +50,12 @@ public class PauseButton extends Button {
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        if(gameInPause){
-            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
-                    coords.x - (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
-                    coords.x + (diameter / 5) + radius, coords.y  + radius, diameter / 10);
-            shapeRenderer.rectLine(coords.x + (diameter / 5) + radius, coords.y  + radius,
-                    coords.x - (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-                   }
-        else {
-            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
-                    coords.x - (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-            shapeRenderer.rectLine(coords.x + (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
-                    coords.x + (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-        }
-
+        shapeRenderer.rectLine(coords.x + radius/2, coords.y + (diameter / 5) + radius,
+                coords.x + PPM*4/5, coords.y + (diameter / 5) + radius, radius / 8);
+        shapeRenderer.rectLine(coords.x + radius/2, coords.y + radius,
+                coords.x + PPM*4/5, coords.y + radius, radius / 8);
+        shapeRenderer.rectLine(coords.x + radius/2, coords.y + radius - (diameter / 5),
+                coords.x + PPM*4/5, coords.y + radius -( diameter / 5), radius / 8);
 
 
         shapeRenderer.end();
@@ -72,6 +63,6 @@ public class PauseButton extends Button {
     }
 
     public void switchState(){
-        this.gameInPause = !this.gameInPause;
+        this.menuSelected = !this.menuSelected;
     }
 }
