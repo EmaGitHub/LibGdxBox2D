@@ -32,7 +32,6 @@ public class PauseButton extends Button {
         Vector2 coords = new Vector2(getX(),getY());
         batch.end();
 
-
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         GL20 gl = Gdx.graphics.getGL20();
         gl.glEnable(GL20.GL_BLEND);

@@ -19,6 +19,8 @@ public class ScoreBoard extends Actor {
     private float PPM = GlobalVar.PPM;
     private BitmapFont font;
 
+    private float heigth = GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop;
+
     private ShapeRenderer shapeRenderer;
 
     private int score = 0;
@@ -52,14 +54,15 @@ public class ScoreBoard extends Actor {
         this.toFront();
 
         batch.end();
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
 
         GL20 gl = Gdx.graphics.getGL20();
         gl.glEnable(GL20.GL_BLEND);
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0, 0, 0, 0.8f);
-        shapeRenderer.rect(PPM + 2*PPM/3,GlobalVar.heightInPPM*PPM - PPM - PPM/2,PPM*2, PPM);
-        shapeRenderer.rect(8*PPM,GlobalVar.heightInPPM*PPM - PPM - PPM/2,PPM*3, PPM);
+        shapeRenderer.rect(-PPM*4-PPM/4, heigth,PPM*2, PPM);
+        shapeRenderer.rect(2*PPM,heigth,PPM*3, PPM);
         shapeRenderer.end();
         gl.glDisable(GL20.GL_BLEND);
 
