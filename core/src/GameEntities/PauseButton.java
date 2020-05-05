@@ -1,5 +1,7 @@
 package GameEntities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -9,7 +11,7 @@ import com.mygdx.game.Utils.GlobalVar;
 
 public class PauseButton extends Button {
 
-    private ShapeRenderer sr;
+    private ShapeRenderer shapeRenderer;
     private float PPM = GlobalVar.PPM;
     private float diameter = PPM;
     private float radius = diameter/2;
@@ -18,8 +20,7 @@ public class PauseButton extends Button {
 
     public PauseButton() {
         setSize(diameter, diameter);
-        sr = new ShapeRenderer();
-        sr.setAutoShapeType(true);
+        shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
         this.setBounds(getX()-radius, getY()-radius,
                 diameter, diameter);
@@ -28,29 +29,46 @@ public class PauseButton extends Button {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         this.toFront();
-
-        batch.end();
-        sr.setProjectionMatrix(batch.getProjectionMatrix());
         Vector2 coords = new Vector2(getX(),getY());
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.circle(coords.x+radius, coords.y+radius, radius);
-        sr.end();
-        sr.begin(ShapeRenderer.ShapeType.Filled);
+        batch.end();
+
+
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        GL20 gl = Gdx.graphics.getGL20();
+        gl.glEnable(GL20.GL_BLEND);
+        gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0, 0, 0, 0.8f);
+        shapeRenderer.circle(coords.x+radius, coords.y+radius, radius+PPM/3);
+        shapeRenderer.end();
+
+        gl.glDisable(GL20.GL_BLEND);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1, 1, 1, 1);
+        shapeRenderer.circle(coords.x+radius, coords.y+radius, radius);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if(gameInPause){
-            sr.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
+            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
                     coords.x - (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-            sr.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
+            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
                     coords.x + (diameter / 5) + radius, coords.y  + radius, diameter / 10);
-            sr.rectLine(coords.x + (diameter / 5) + radius, coords.y  + radius,
+            shapeRenderer.rectLine(coords.x + (diameter / 5) + radius, coords.y  + radius,
                     coords.x - (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
                    }
         else {
-            sr.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
+            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
                     coords.x - (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-            sr.rectLine(coords.x + (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
+            shapeRenderer.rectLine(coords.x + (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
                     coords.x + (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
         }
-        sr.end();
+
+
+
+        shapeRenderer.end();
         batch.begin();
     }
 

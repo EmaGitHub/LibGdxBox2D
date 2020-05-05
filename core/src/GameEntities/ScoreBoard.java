@@ -2,7 +2,7 @@ package GameEntities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -53,19 +53,19 @@ public class ScoreBoard extends Actor {
 
         batch.end();
 
-        Gdx.gl.glEnable(GL30.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
+        GL20 gl = Gdx.graphics.getGL20();
+        gl.glEnable(GL20.GL_BLEND);
+        gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(new Color(0, 0, 0, 0.9f));
+        shapeRenderer.setColor(0, 0, 0, 0.8f);
         shapeRenderer.rect(PPM + 2*PPM/3,GlobalVar.heightInPPM*PPM - PPM - PPM/2,PPM*2, PPM);
         shapeRenderer.rect(8*PPM,GlobalVar.heightInPPM*PPM - PPM - PPM/2,PPM*3, PPM);
         shapeRenderer.end();
-        Gdx.gl.glDisable(GL30.GL_BLEND);
+        gl.glDisable(GL20.GL_BLEND);
 
         batch.begin();
         this.scoreLabel.draw(batch, parentAlpha);
         this.scoreValue.draw(batch, parentAlpha);
-
     }
 
     public void updateValue(int value){
