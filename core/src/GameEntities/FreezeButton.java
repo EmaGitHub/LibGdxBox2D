@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.mygdx.game.Utils.GlobalVar;
 
-public class PauseButton extends Button {
+public class FreezeButton extends Button {
 
     private ShapeRenderer shapeRenderer;
     private float PPM = GlobalVar.PPM;
@@ -18,12 +18,13 @@ public class PauseButton extends Button {
 
     private boolean gameInPause = false;
 
-    public PauseButton() {
+    public FreezeButton() {
         setSize(diameter, diameter);
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
         this.setBounds(getX()-radius, getY()-radius,
                 diameter+radius, diameter+radius);
+
     }
 
     @Override
@@ -39,7 +40,7 @@ public class PauseButton extends Button {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0, 0, 0, 0.8f);
-        shapeRenderer.circle(coords.x+radius, coords.y+radius, radius+PPM);
+        shapeRenderer.circle(coords.x+radius, coords.y+radius, diameter);
         shapeRenderer.end();
 
         gl.glDisable(GL20.GL_BLEND);
@@ -64,8 +65,6 @@ public class PauseButton extends Button {
             shapeRenderer.rectLine(coords.x + (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
                     coords.x + (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
         }
-
-
 
         shapeRenderer.end();
         batch.begin();

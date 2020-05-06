@@ -31,6 +31,7 @@ public class HomeScreen extends AbstractScreen {
         skin = new Skin(Gdx.files.internal("Skins/skin/glassy-ui.json"));
         menuButtonVisible = false;
         scoreBoardVisible = false;
+        freezeButtonVisible = false;
     }
 
     @Override

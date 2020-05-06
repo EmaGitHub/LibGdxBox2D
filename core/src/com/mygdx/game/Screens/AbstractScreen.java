@@ -16,6 +16,7 @@ import com.mygdx.game.AppGame;
 import com.mygdx.game.Factories.ObjectFactory;
 import com.mygdx.game.Utils.GlobalVar;
 
+import GameEntities.FreezeButton;
 import GameEntities.MenuButton;
 import GameEntities.ScoreBoard;
 
@@ -29,6 +30,7 @@ public class AbstractScreen extends ScreenAdapter {
 
     protected boolean DEBUG;
     protected boolean PAUSE = false;
+    protected boolean FREEZED = false;
 
     protected float PPM;
 
@@ -42,6 +44,9 @@ public class AbstractScreen extends ScreenAdapter {
 
     ScoreBoard scoreBoard;
     protected boolean scoreBoardVisible = true;
+
+    FreezeButton freezeButton;
+    protected boolean freezeButtonVisible = true;
 
     public AbstractScreen(AppGame game){
 
@@ -85,6 +90,27 @@ public class AbstractScreen extends ScreenAdapter {
             menuButton.setY(GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
             this.stage.addActor(menuButton);
         }
+        if(freezeButtonVisible) {
+            freezeButton = new FreezeButton();
+            freezeButton.addListener(new InputListener(){
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    if(!FREEZED) {
+                        freeze();
+                        return false;
+                    }
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    if(FREEZED) unfreeze();
+                }
+            });
+            freezeButton.setX(4*PPM);
+            freezeButton.setY(-GlobalVar.heightInPPM*PPM/2 + PPM);
+            this.stage.addActor(freezeButton);
+        }
         Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
         Gdx.input.setInputProcessor(stage);
     }
@@ -110,7 +136,7 @@ public class AbstractScreen extends ScreenAdapter {
     }
 
     protected void inputUpdate() {
-        if(Gdx.input.isTouched() && !PAUSE){
+        if(Gdx.input.isTouched() && !PAUSE && !FREEZED){
             if(firstTouch) firstTouch=false;
             else {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -139,6 +165,29 @@ public class AbstractScreen extends ScreenAdapter {
         this.PAUSE = false;
     }
 
+    protected void freeze() {
+        this.FREEZED = true;
+        Gdx.app.log("Info", "Game in Pause");
+        this.freezeButton.switchState();
+        this.freezeScene();
+    }
+
+    protected void unfreeze() {
+        Gdx.app.log("Info", "Resume to Game");
+        this.freezeButton.switchState();
+        this.resumeScene();
+        this.FREEZED = false;
+    }
+
+    protected void freezeScene(){
+        Gdx.app.log("Info", "Game freezed");
+        this.world.setGravity(new Vector2(0, 0));
+    }
+
+    protected void resumeScene(){
+        this.world.setGravity(new Vector2(0, -9.8f));
+    }
+
     protected void touched(){ }
 
     protected void cameraUpdate() {
@@ -147,14 +196,6 @@ public class AbstractScreen extends ScreenAdapter {
         position.y = 0 - GlobalVar.safeAreaInsetBottom;         //player.getPosition().y * PPM;
         camera.position.set(position);
         camera.update();
-    }
-
-    protected void freezeScene(){
-        this.world.setGravity(new Vector2(0, 0));
-    }
-
-    protected void resumeScene(){
-        this.world.setGravity(new Vector2(0, -9.8f));
     }
 
     @Override
