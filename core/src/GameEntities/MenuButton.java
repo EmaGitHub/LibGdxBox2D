@@ -16,6 +16,12 @@ public class MenuButton extends Button {
     private float diameter = PPM;
     private float radius = diameter/2;
 
+    private float circleX;
+    private float circleY;
+    private float linesInitialX;
+    private float linesFinalX;
+    private float baseY;
+
     private boolean menuSelected = false;
 
     public MenuButton() {
@@ -24,12 +30,18 @@ public class MenuButton extends Button {
         this.setTouchable(Touchable.enabled);
         this.setBounds(getX()-radius, getY()-radius,
                 diameter, diameter);
+
+        Vector2 coords = new Vector2(-PPM/2, GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
+        this.circleX =  coords.x+radius;
+        this.circleY = coords.y+radius;
+        this.linesInitialX = coords.x + radius/3;
+        this.linesFinalX = coords.x + PPM*5/6;
+        this.baseY = GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         this.toFront();
-        Vector2 coords = new Vector2(getX(),getY());
         batch.end();
 
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
@@ -37,25 +49,26 @@ public class MenuButton extends Button {
         gl.glEnable(GL20.GL_BLEND);
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);                    // Circle shadow
         shapeRenderer.setColor(0, 0, 0, 0.6f);
-        shapeRenderer.circle(coords.x+radius, coords.y+radius, radius+PPM/3);
+        shapeRenderer.circle(circleX, circleY, radius+PPM/3);
         shapeRenderer.end();
 
         gl.glDisable(GL20.GL_BLEND);
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);                      // Circle line
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(coords.x+radius, coords.y+radius, radius);
+        shapeRenderer.circle(circleX, circleY, radius);
+        shapeRenderer.circle(circleX, circleY, radius+1);
         shapeRenderer.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.rectLine(coords.x + radius/2, coords.y + (diameter / 5) + radius,
-                coords.x + PPM*4/5, coords.y + (diameter / 5) + radius, radius / 8);
-        shapeRenderer.rectLine(coords.x + radius/2, coords.y + radius,
-                coords.x + PPM*4/5, coords.y + radius, radius / 8);
-        shapeRenderer.rectLine(coords.x + radius/2, coords.y + radius - (diameter / 5),
-                coords.x + PPM*4/5, coords.y + radius -( diameter / 5), radius / 8);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);                            // Menu bars
+        shapeRenderer.rectLine(linesInitialX, baseY + (diameter / 5) + radius,
+                linesFinalX, baseY + (diameter / 5) + radius, radius / 8);
+        shapeRenderer.rectLine(linesInitialX, baseY + radius,
+                linesFinalX, baseY + radius, radius / 8);
+        shapeRenderer.rectLine(linesInitialX, baseY + radius - (diameter / 5),
+                linesFinalX, baseY + radius - (diameter / 5), radius / 8);
 
 
         shapeRenderer.end();
