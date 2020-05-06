@@ -70,7 +70,7 @@ public class HomeScreen extends AbstractScreen {
         titleStyle.font = titleFont;
         titleStyle.fontColor = Color.BLUE;
 
-        gameTitle = new Label("Bouncing\nWorld", titleStyle);
+        gameTitle = new Label("Lorem\nIpsum", titleStyle);
         gameTitle.setSize(6*PPM, PPM);
         gameTitle.setPosition(-3*PPM, 7*PPM);
         gameTitle.setAlignment(Align.center);

@@ -40,13 +40,13 @@ public class ScoreBoard extends Actor {
 
         scoreLabel = new Label("Score ", titleStyle);
         scoreLabel.setSize(2*PPM, PPM);
-        scoreLabel.setPosition(-4*PPM, heigth);
-        scoreLabel.setAlignment(Align.center);
+        scoreLabel.setPosition(PPM - PPM/16, heigth);
+        scoreLabel.setAlignment(Align.left);
 
         scoreValue = new Label("0", titleStyle);
         scoreValue.setSize(3*PPM, PPM);
-        scoreValue.setPosition(2*PPM, heigth);
-        scoreValue.setAlignment(Align.center);
+        scoreValue.setPosition(-4*PPM, heigth);
+        scoreValue.setAlignment(Align.right);
         this.scoreValue.setText(score);
     }
 
@@ -61,8 +61,7 @@ public class ScoreBoard extends Actor {
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0, 0, 0, 0.6f);
-        shapeRenderer.rect(-PPM*4, heigth,PPM*2, PPM);
-        shapeRenderer.rect(2*PPM,heigth,PPM*3, PPM);
+        shapeRenderer.rect(-4*PPM, heigth,PPM*7, PPM);
         shapeRenderer.end();
         gl.glDisable(GL20.GL_BLEND);
 
