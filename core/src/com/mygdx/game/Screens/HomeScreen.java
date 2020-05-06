@@ -32,6 +32,7 @@ public class HomeScreen extends AbstractScreen {
         menuButtonVisible = false;
         scoreBoardVisible = false;
         freezeButtonVisible = false;
+        moveButtonVisible = false;
     }
 
     @Override

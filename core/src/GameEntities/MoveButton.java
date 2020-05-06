@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.mygdx.game.Utils.GlobalVar;
 
-public class FreezeButton extends Button {
+public class MoveButton extends Button {
 
     private ShapeRenderer shapeRenderer;
     private float PPM = GlobalVar.PPM;
@@ -18,7 +18,7 @@ public class FreezeButton extends Button {
 
     private boolean gameInPause = false;
 
-    public FreezeButton() {
+    public MoveButton() {
         setSize(diameter, diameter);
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
@@ -50,24 +50,7 @@ public class FreezeButton extends Button {
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        if(gameInPause){
-            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 4) + radius,
-                    coords.x - (diameter / 10) + radius, coords.y - (diameter / 4) + radius, diameter / 10);
-            shapeRenderer.rectLine(coords.x  + radius, coords.y + (diameter / 5) + radius,
-                    coords.x + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-            shapeRenderer.circle(coords.x+radius, coords.y+radius, radius/5);
-            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
-                    coords.x + (diameter / 5) + radius, coords.y  + radius, diameter / 10);
-            shapeRenderer.rectLine(coords.x + (diameter / 5) + radius, coords.y  + radius,
-                    coords.x - (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-                   }
-        else {
-            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
-                    coords.x - (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-            shapeRenderer.rectLine(coords.x + (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
-                    coords.x + (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-        }
-
+        shapeRenderer.circle(coords.x+radius, coords.y+radius, radius/3);
         shapeRenderer.end();
         batch.begin();
     }

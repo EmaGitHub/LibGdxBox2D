@@ -18,6 +18,7 @@ import com.mygdx.game.Utils.GlobalVar;
 
 import GameEntities.FreezeButton;
 import GameEntities.MenuButton;
+import GameEntities.MoveButton;
 import GameEntities.ScoreBoard;
 
 public class AbstractScreen extends ScreenAdapter {
@@ -29,7 +30,7 @@ public class AbstractScreen extends ScreenAdapter {
     protected Box2DDebugRenderer b2dr;
 
     protected boolean DEBUG;
-    protected boolean PAUSE = false;
+    protected boolean PAUSED = false;
     protected boolean FREEZED = false;
 
     protected float PPM;
@@ -47,6 +48,9 @@ public class AbstractScreen extends ScreenAdapter {
 
     FreezeButton freezeButton;
     protected boolean freezeButtonVisible = true;
+
+    MoveButton moveButton;
+    protected boolean moveButtonVisible = true;
 
     public AbstractScreen(AppGame game){
 
@@ -74,7 +78,7 @@ public class AbstractScreen extends ScreenAdapter {
             menuButton.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if(!PAUSE) {
+                    if(!PAUSED && !FREEZED) {
                         pauseGame();
                         return false;
                     }
@@ -83,7 +87,7 @@ public class AbstractScreen extends ScreenAdapter {
 
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    if(PAUSE) resumeGame();
+                    if(PAUSED && !FREEZED) resumeGame();
                 }
             });
             menuButton.setX(-PPM/2);
@@ -95,7 +99,7 @@ public class AbstractScreen extends ScreenAdapter {
             freezeButton.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if(!FREEZED) {
+                    if(!FREEZED && !PAUSED) {
                         freeze();
                         return false;
                     }
@@ -104,12 +108,25 @@ public class AbstractScreen extends ScreenAdapter {
 
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    if(FREEZED) unfreeze();
+                    if(FREEZED && !PAUSED) unfreeze();
                 }
             });
-            freezeButton.setX(4*PPM);
-            freezeButton.setY(-GlobalVar.heightInPPM*PPM/2 + PPM);
+            freezeButton.setX(4*PPM + PPM/2);
+            freezeButton.setY(-GlobalVar.heightInPPM*PPM/2 + PPM/2);
             this.stage.addActor(freezeButton);
+        }
+        if(moveButtonVisible) {
+            moveButton = new MoveButton();
+            moveButton.addListener(new InputListener(){
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {return false; }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) { }
+            });
+            moveButton.setX(-5*PPM -PPM/2);
+            moveButton.setY(-GlobalVar.heightInPPM*PPM/2 + PPM/2);
+            this.stage.addActor(moveButton);
         }
         Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
         Gdx.input.setInputProcessor(stage);
@@ -126,7 +143,8 @@ public class AbstractScreen extends ScreenAdapter {
         game.batch.setProjectionMatrix(camera.combined);
         this.stage.act(delta);
         this.stage.draw();
-        b2dr.render(this.world, this.camera.combined.scl(PPM));
+        //if(DEBUG)
+            b2dr.render(this.world, this.camera.combined.scl(PPM));
     }
 
     public void update() {
@@ -136,7 +154,7 @@ public class AbstractScreen extends ScreenAdapter {
     }
 
     protected void inputUpdate() {
-        if(Gdx.input.isTouched() && !PAUSE && !FREEZED){
+        if(Gdx.input.isTouched() && !PAUSED && !FREEZED){
             if(firstTouch) firstTouch=false;
             else {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -152,7 +170,7 @@ public class AbstractScreen extends ScreenAdapter {
     }
 
     protected void pauseGame() {
-        this.PAUSE = true;
+        this.PAUSED = true;
         Gdx.app.log("Info", "Game in Pause");
         this.menuButton.switchState();
         this.freezeScene();
@@ -162,7 +180,7 @@ public class AbstractScreen extends ScreenAdapter {
         Gdx.app.log("Info", "Resume to Game");
         this.menuButton.switchState();
         this.resumeScene();
-        this.PAUSE = false;
+        this.PAUSED = false;
     }
 
     protected void freeze() {
