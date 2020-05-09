@@ -28,14 +28,14 @@ public class TestScreen extends AbstractScreen {
 
     @Override
     protected void freezeScene() {
-        super.freezeScene();
+        super.freezeScene();            //gravity
         for(BounceBall ball: balls)
             ball.freezeObject();
     }
 
     @Override
     protected void resumeScene() {
-        super.resumeScene();
+        super.resumeScene();            //gravity
         for(BounceBall ball: balls)
             ball.resumeObject();
     }

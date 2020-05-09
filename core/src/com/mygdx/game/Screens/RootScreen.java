@@ -1,14 +1,14 @@
 package com.mygdx.game.Screens;
 
+import com.mygdx.game.Actors.EActor;
 import com.mygdx.game.AppGame;
-import com.mygdx.game.RealObjects.BounceBall;
 import com.mygdx.game.Utils.GlobalVar;
 
-public class GameScreen extends AbstractScreen {
+public class RootScreen extends AbstractScreen {
 
-    BounceBall ball;
+    private float PPM = GlobalVar.PPM;
 
-    public GameScreen(AppGame game){
+    public RootScreen(AppGame game){
         super(game);
         super.freezeButtonVisible = false;
         super.moveButtonVisible = false;
@@ -18,7 +18,10 @@ public class GameScreen extends AbstractScreen {
     public void show(){                                             // Prima funzione chiamata
         super.show();
         this.objectFactory.createScreen2Boundaries();
-        this.ball = this.objectFactory.createBounceBallObject(0, GlobalVar.heightInPPM*PPM/2 - 3*PPM, PPM);
+
+        EActor e = new EActor();
+
+        super.stage.addActor(new EActor());
     }
 
     @Override
@@ -29,18 +32,15 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void hide(){
         super.hide();
-        this.ball.dispose();
     }
 
     @Override
     protected void freezeScene() {
-        super.freezeScene();                    //gravity
-        this.ball.freezeObject();
+        super.freezeScene();
     }
 
     @Override
     protected void resumeScene() {
-        super.resumeScene();                    //gravity
-        this.ball.resumeObject();
+        super.resumeScene();
     }
 }
