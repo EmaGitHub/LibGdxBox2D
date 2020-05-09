@@ -1,7 +1,6 @@
 package GameEntities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,8 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.mygdx.game.Utils.GlobalVar;
 
 public class MenuButton extends Button {
-
-    private Screen screen;
 
     private ShapeRenderer shapeRenderer;
     private float PPM = GlobalVar.PPM;
@@ -32,7 +29,7 @@ public class MenuButton extends Button {
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
         this.setBounds(getX()-radius, getY()-radius,
-                diameter, diameter);
+                diameter*2, diameter*2);
 
         Vector2 coords = new Vector2(-PPM/2, GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
         this.circleX =  coords.x+radius;

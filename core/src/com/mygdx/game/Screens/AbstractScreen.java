@@ -63,9 +63,10 @@ public class AbstractScreen extends ScreenAdapter {
         world = new World(new Vector2(0, -9.8f), false);    	//-9.8f
         stage = new Stage(game.viewport, game.batch);
 
+        touchPoint = new Vector3();
         b2dr = new Box2DDebugRenderer();
         objectFactory = new ObjectFactory(this.world, this.stage);
-        touchPoint = new Vector3();
+
         if(scoreBoardVisible) {
             scoreBoard = new ScoreBoard();
             scoreBoard.setX(-PPM/2);
@@ -80,7 +81,7 @@ public class AbstractScreen extends ScreenAdapter {
                     if(!PAUSED) {
                         pauseGame();
                         menu = new MenuPanel(game);
-                        stage.addActor(menu);
+                        menu.openMenu(stage);
                         return false;
                     }
                     return true;
@@ -89,10 +90,7 @@ public class AbstractScreen extends ScreenAdapter {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     if(PAUSED) {
-                        menu.remove();
-                        PAUSED = false;
-                        if (!FREEZED) resumeGame();
-                        else menuButton.switchState();
+                        menu.closeMenu();
                     }
                 }
             });
@@ -212,6 +210,13 @@ public class AbstractScreen extends ScreenAdapter {
 
     protected void resumeScene(){
         this.world.setGravity(new Vector2(0, -9.8f));
+    }
+
+    public void closeMenuCallback(){
+        System.out.println("Callback");
+        PAUSED = false;
+        if(!FREEZED) resumeGame();
+        else menuButton.switchState();
     }
 
     protected void touched(){ }

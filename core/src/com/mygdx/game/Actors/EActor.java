@@ -47,7 +47,7 @@ public class EActor extends Actor {
         rotate.setDuration(1f);
 
         sequence = new SequenceAction(move, rotate);
-        this.addAction(Actions.moveTo(getX(), GlobalVar.heightInPPM*PPM/2 - 3*PPM, 1));
+        this.addAction(Actions.moveTo(getX(), (GlobalVar.heightInPPM*PPM-GlobalVar.safeAreaInsetTop)/2 - 3*PPM, 1));
 
 
     }
