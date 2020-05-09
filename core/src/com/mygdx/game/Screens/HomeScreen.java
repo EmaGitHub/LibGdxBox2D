@@ -19,13 +19,9 @@ public class HomeScreen extends AbstractScreen {
     BitmapFont textFont;
 
     Label gameTitle;
-    Label startButtonLabel;
     TextButton startButton;
-    Label exitButtonLabel;
     TextButton exitButton;
-    Label testButtonLabel;
     TextButton testButton;
-    Label rootButtonLabel;
     TextButton rootButton;
 
     public HomeScreen(AppGame game){
@@ -41,32 +37,44 @@ public class HomeScreen extends AbstractScreen {
     public void show(){                                             // Prima funzione chiamata in Screen
         super.show();
         createScreenContent();
-        testButtonLabel.addListener(new InputListener(){
+        testButton.addListener(new InputListener(){
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(new TestScreen(game));
-                return true;
             }
         });
-        startButtonLabel.addListener(new InputListener(){
+        startButton.addListener(new InputListener(){
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(new GameScreen(game));
-                return true;
             }
         });
-        exitButtonLabel.addListener(new InputListener(){
+        exitButton.addListener(new InputListener(){
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.exit();
-                return true;
             }
         });
-        rootButtonLabel.addListener(new InputListener(){
+        rootButton.addListener(new InputListener(){
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new RootScreen(game));
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
+            }
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new RootScreen(game));
             }
         });
     }
@@ -82,7 +90,7 @@ public class HomeScreen extends AbstractScreen {
         titleStyle.fontColor = Color.BLUE;
 
         gameTitle = new Label("Lorem\nIpsum", titleStyle);
-        gameTitle.setSize(6*PPM, 6*PPM);
+        gameTitle.setSize(6*PPM, 5*PPM);
         gameTitle.setPosition(-3*PPM, 4*PPM);
         gameTitle.setAlignment(Align.center);
 
@@ -94,34 +102,29 @@ public class HomeScreen extends AbstractScreen {
         textStyle.font = textFont;
         textStyle.fontColor = Color.WHITE;
 
-        testButtonLabel = new Label("Test", textStyle);
-        testButtonLabel.setSize(PPM*6, PPM*2);
-        testButtonLabel.setPosition(-3*PPM,-1*PPM);
-        testButtonLabel.setAlignment(Align.center);
         testButton = new TextButton("",skin,"small");
+        testButton.setLabel(new Label("Test", textStyle));
+        testButton.getLabel().setAlignment(Align.center);
         testButton.setSize(PPM*6, PPM*2);
-        testButton.setPosition(-3*PPM,-1*PPM);
-        startButtonLabel = new Label("Start game", textStyle);
-        startButtonLabel.setSize(PPM*6, PPM*2);
-        startButtonLabel.setPosition(-3*PPM,-4*PPM);
-        startButtonLabel.setAlignment(Align.center);
+        testButton.setPosition(-3*PPM,0*PPM);
+
         startButton = new TextButton("",skin,"small");
         startButton.setSize(PPM*6, PPM*2);
-        startButton.setPosition(-3*PPM,-4*PPM);
-        exitButtonLabel = new Label("Quit", textStyle);
-        exitButtonLabel.setSize(PPM*6, PPM*2);
-        exitButtonLabel.setPosition(-3*PPM,-7*PPM);
-        exitButtonLabel.setAlignment(Align.center);
-        exitButton = new TextButton("",skin,"small");
-        exitButton.setSize(PPM*6, PPM*2);
-        exitButton.setPosition(-3*PPM,-7*PPM);
-        rootButtonLabel = new Label("Root", textStyle);
-        rootButtonLabel.setSize(PPM*6, PPM*2);
-        rootButtonLabel.setPosition(-3*PPM,-10*PPM);
-        rootButtonLabel.setAlignment(Align.center);
+        startButton.setPosition(-3*PPM,-3*PPM);
+        startButton.setLabel(new Label("Start", textStyle));
+        startButton.getLabel().setAlignment(Align.center);
+
         rootButton = new TextButton("",skin,"small");
         rootButton.setSize(PPM*6, PPM*2);
-        rootButton.setPosition(-3*PPM,-10*PPM);
+        rootButton.setPosition(-3*PPM,-6*PPM);
+        rootButton.setLabel(new Label("Root", textStyle));
+        rootButton.getLabel().setAlignment(Align.center);
+
+        exitButton = new TextButton("",skin,"small");
+        exitButton.setSize(PPM*6, PPM*2);
+        exitButton.setPosition(-3*PPM,-9*PPM);
+        exitButton.setLabel(new Label("Exit", textStyle));
+        exitButton.getLabel().setAlignment(Align.center);
     }
 
     @Override
@@ -129,12 +132,8 @@ public class HomeScreen extends AbstractScreen {
         super.render(delta);
         stage.addActor(gameTitle);
         stage.addActor(testButton);
-        stage.addActor(testButtonLabel);
         stage.addActor(startButton);
-        stage.addActor(startButtonLabel);
         stage.addActor(exitButton);
-        stage.addActor(exitButtonLabel);
         stage.addActor(rootButton);
-        stage.addActor(rootButtonLabel);
     }
 }
