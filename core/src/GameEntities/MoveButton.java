@@ -19,7 +19,7 @@ public class MoveButton extends Button {
     private boolean gameInPause = false;
 
     public MoveButton() {
-        setSize(diameter, diameter);
+        setSize(diameter*2, diameter*2);
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
     }
@@ -35,20 +35,20 @@ public class MoveButton extends Button {
         gl.glEnable(GL20.GL_BLEND);
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);                            //shadow
         shapeRenderer.setColor(0, 0, 0, 0.6f);
-        shapeRenderer.circle(coords.x+radius, coords.y+radius, diameter);
+        shapeRenderer.circle(coords.x+diameter, coords.y+diameter, diameter);
         shapeRenderer.end();
 
         gl.glDisable(GL20.GL_BLEND);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(coords.x+radius, coords.y+radius, radius);
+        shapeRenderer.circle(coords.x+diameter, coords.y+diameter, radius);
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(coords.x+radius, coords.y+radius, radius/3);
+        shapeRenderer.circle(coords.x+diameter, coords.y+diameter, radius/3);
         shapeRenderer.end();
         batch.begin();
     }

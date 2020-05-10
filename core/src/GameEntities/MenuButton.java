@@ -26,7 +26,7 @@ public class MenuButton extends Button {
     private boolean menuSelected = false;
 
     public MenuButton() {
-        setSize(diameter, diameter);
+        setSize(diameter*2, diameter*2);
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
 
@@ -50,7 +50,7 @@ public class MenuButton extends Button {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);                    // Circle shadow
         shapeRenderer.setColor(0, 0, 0, 0.6f);
-        shapeRenderer.circle(circleX, circleY, radius+PPM/3);
+        shapeRenderer.circle(circleX, circleY, diameter);
         shapeRenderer.end();
 
         gl.glDisable(GL20.GL_BLEND);

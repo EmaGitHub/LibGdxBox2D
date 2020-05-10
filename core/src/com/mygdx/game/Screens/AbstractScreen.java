@@ -52,7 +52,6 @@ public class AbstractScreen extends ScreenAdapter {
     protected boolean moveButtonVisible = true;
 
     public AbstractScreen(AppGame game){
-
         this.game = game;
         this.PPM = GlobalVar.PPM;
         this.UHM = GlobalVar.UHM;
@@ -95,8 +94,8 @@ public class AbstractScreen extends ScreenAdapter {
                     }
                 }
             });
-            menuButton.setX(-PPM/2);
-            menuButton.setY(GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
+            menuButton.setX(-PPM);
+            menuButton.setY(GlobalVar.heightInUHM*UHM/2 - PPM*2 - GlobalVar.safeAreaInsetTop);
             this.stage.addActor(menuButton);
         }
         if(freezeButtonVisible) {
@@ -116,8 +115,8 @@ public class AbstractScreen extends ScreenAdapter {
                     if(FREEZED && !PAUSED) unfreeze();
                 }
             });
-            freezeButton.setX(4*PPM + PPM/2);
-            freezeButton.setY(-GlobalVar.heightInUHM*UHM/2 + PPM/2);
+            freezeButton.setX(4*PPM);
+            freezeButton.setY(-GlobalVar.heightInUHM*UHM/2);
             this.stage.addActor(freezeButton);
         }
         if(moveButtonVisible) {
@@ -125,13 +124,20 @@ public class AbstractScreen extends ScreenAdapter {
             moveButton.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    return false; }
+                    if(!FREEZED && !PAUSED) {
+                        freeze();
+                        return false;
+                    }
+                    return true;
+                }
 
                 @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button) { }
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    if(FREEZED && !PAUSED) unfreeze();
+                }
             });
-            moveButton.setX(-5*PPM -PPM/2);
-            moveButton.setY(-GlobalVar.heightInUHM*UHM/2 + PPM/2);
+            moveButton.setX(-6*PPM);
+            moveButton.setY(-GlobalVar.heightInUHM*UHM/2);
             this.stage.addActor(moveButton);
         }
         Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back

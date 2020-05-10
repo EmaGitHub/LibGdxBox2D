@@ -19,7 +19,7 @@ public class FreezeButton extends Button {
     private boolean gameInPause = false;
 
     public FreezeButton() {
-        setSize(diameter, diameter);
+        setSize(diameter*2, diameter*2);
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
     }
@@ -35,35 +35,35 @@ public class FreezeButton extends Button {
         gl.glEnable(GL20.GL_BLEND);
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);                                //shadow
         shapeRenderer.setColor(0, 0, 0, 0.6f);
-        shapeRenderer.circle(coords.x+radius, coords.y+radius, diameter);
+        shapeRenderer.circle(coords.x+diameter, coords.y+diameter, diameter);
         shapeRenderer.end();
 
         gl.glDisable(GL20.GL_BLEND);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(coords.x+radius, coords.y+radius, radius);
+        shapeRenderer.circle(coords.x+diameter, coords.y+diameter, radius);
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if(gameInPause){
-            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 4) + radius,
-                    coords.x - (diameter / 10) + radius, coords.y - (diameter / 4) + radius, diameter / 10);
-            shapeRenderer.rectLine(coords.x  + radius, coords.y + (diameter / 5) + radius,
-                    coords.x + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-            shapeRenderer.circle(coords.x+radius, coords.y+radius, radius/5);
-            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
-                    coords.x + (diameter / 5) + radius, coords.y  + radius, diameter / 10);
-            shapeRenderer.rectLine(coords.x + (diameter / 5) + radius, coords.y  + radius,
-                    coords.x - (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
+            shapeRenderer.rectLine(coords.x - (diameter / 10) + diameter, coords.y + (diameter / 4) + diameter,
+                    coords.x - (diameter / 10) + diameter, coords.y - (diameter / 4) + diameter, diameter / 10);
+            shapeRenderer.rectLine(coords.x  + diameter, coords.y + (diameter / 5) + diameter,
+                    coords.x + diameter, coords.y - (diameter / 5) + diameter, diameter / 10);
+            shapeRenderer.circle(coords.x+diameter, coords.y+diameter, radius/5);
+            shapeRenderer.rectLine(coords.x - (diameter / 10) + diameter, coords.y + (diameter / 5) + diameter,
+                    coords.x + (diameter / 5) + diameter, coords.y  + diameter, diameter / 10);
+            shapeRenderer.rectLine(coords.x + (diameter / 5) + diameter, coords.y  + diameter,
+                    coords.x - (diameter / 10) + diameter, coords.y - (diameter / 5) + diameter, diameter / 10);
                    }
         else {
-            shapeRenderer.rectLine(coords.x - (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
-                    coords.x - (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
-            shapeRenderer.rectLine(coords.x + (diameter / 10) + radius, coords.y + (diameter / 5) + radius,
-                    coords.x + (diameter / 10) + radius, coords.y - (diameter / 5) + radius, diameter / 10);
+            shapeRenderer.rectLine(coords.x - (diameter / 10) + diameter, coords.y + (diameter / 5) + diameter,
+                    coords.x - (diameter / 10) + diameter, coords.y - (diameter / 5) + diameter, diameter / 10);
+            shapeRenderer.rectLine(coords.x + (diameter / 10) + diameter, coords.y + (diameter / 5) + diameter,
+                    coords.x + (diameter / 10) + diameter, coords.y - (diameter / 5) + diameter, diameter / 10);
         }
 
         shapeRenderer.end();
