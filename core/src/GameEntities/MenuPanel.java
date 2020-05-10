@@ -42,9 +42,9 @@ public class MenuPanel extends Table {
     BitmapFont textFont;
 
     public MenuPanel(final AppGame game){
-        this.setHeight(maxHeight);
         this.setWidth(10*PPM);
-        this.setPosition(-getWidth()/2, -(getHeight()-GlobalVar.safeAreaInsetTop)/2);
+        this.setHeight(maxHeight);
+        this.setPosition(-getWidth()/2, -(getHeight())/2);
         appGame = game;
         shapeRenderer = new ShapeRenderer();
         this.skin = new Skin(Gdx.files.internal("Skins/skin/glassy-ui.json"));

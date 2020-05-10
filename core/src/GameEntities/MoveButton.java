@@ -23,7 +23,7 @@ public class MoveButton extends Button {
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
         this.setBounds(getX()-radius, getY()-radius,
-                diameter+radius, diameter+radius);
+                diameter*2, diameter*2);
     }
 
     @Override
