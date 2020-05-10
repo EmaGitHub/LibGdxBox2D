@@ -32,7 +32,7 @@ public class MenuPanel extends Table {
     private float PPM = GlobalVar.PPM;
     private float UHM = GlobalVar.UHM;
     private float height = 0;
-    private float maxHeightInUHM = (GlobalVar.heightInUHM-6);
+    private float maxHeightInUHM = (GlobalVar.heightInUHM-6); // =14
     private float maxHeight = (maxHeightInUHM*UHM);
 
     private TextButton settingsButton;
@@ -59,7 +59,6 @@ public class MenuPanel extends Table {
         titleStyle.fontColor = Color.WHITE;
 
         gameTitle = new Label("Project", titleStyle);
-        gameTitle.setSize(4*PPM, 2*PPM);
         gameTitle.setAlignment(Align.center);
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/HennyPenny-Regular.otf"));
@@ -87,9 +86,9 @@ public class MenuPanel extends Table {
             }
         });
 
-        this.add(gameTitle).top().padBottom(PPM).row();
-        this.add(settingsButton).padBottom(PPM/2).row();
-        this.add(exitButton).width(7*PPM).height(3*PPM).row();
+        this.add(gameTitle).top().padBottom(UHM*3).row();
+        this.add(settingsButton).padBottom(UHM/2).row();
+        this.add(exitButton).row();
     }
 
     public float getHeightAnimation(){

@@ -59,16 +59,13 @@ public class AbstractScreen extends ScreenAdapter {
     }
 
     @Override
-    public void show(){                                                             // Prima funzione chiamata
+    public void show(){                                                                     // Prima funzione chiamata
         world = new World(new Vector2(0, -9.8f), false);    	//-9.8f
         stage = new Stage(game.viewport, game.batch);
-
         touchPoint = new Vector3();
         b2dr = new Box2DDebugRenderer();
         objectFactory = new ObjectFactory(this.world, this.stage);
-
         menu = new MenuPanel(game);
-
 
         if(scoreBoardVisible) {
             scoreBoard = new ScoreBoard();
