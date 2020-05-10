@@ -32,8 +32,8 @@ public class MenuPanel extends Table {
     private float PPM = GlobalVar.PPM;
     private float UHM = GlobalVar.UHM;
     private float height = 0;
-    private float maxHeightInUHM = (GlobalVar.heightInUHM-5);
-    private float maxHeight = (maxHeightInUHM*UHM)-GlobalVar.safeAreaInsetTop;
+    private float maxHeightInUHM = (GlobalVar.heightInUHM-6);
+    private float maxHeight = (maxHeightInUHM*UHM);
 
     private TextButton settingsButton;
     private TextButton exitButton;
@@ -96,7 +96,7 @@ public class MenuPanel extends Table {
             }
                 return height-=PPM;
         }
-        else if(height < maxHeight) return height+=PPM;
+        else if(height < maxHeight) return height+=UHM;
         return height;
     }
 
@@ -109,7 +109,7 @@ public class MenuPanel extends Table {
         gl.glEnable(GL20.GL_BLEND);
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);                    // Circle shadow
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0.4f,0.6f,1f, 0.6f);  //0.7
         shapeRenderer.rect(-5*PPM, maxHeight/2, PPM*10, -this.getHeightAnimation());
         shapeRenderer.end();
