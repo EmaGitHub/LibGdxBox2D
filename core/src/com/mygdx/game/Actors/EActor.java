@@ -41,7 +41,7 @@ public class EActor extends Actor {
         move.setStartPosition(getX(), getY());
         move.setX(getX());
         move.setY(GlobalVar.heightInUHM*UHM/2 - 3*PPM);
-        move.setDuration(2);
+        move.setDuration(3);
 
         rotate = new RotateToAction();
         rotate.setRotation(150);

@@ -39,37 +39,12 @@ public class HomeScreen extends AbstractScreen {
     public void show(){                                             // Prima funzione chiamata in Screen
         super.show();
         createScreenContent();
-
-        startButton.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new GameScreen(game));
-            }
-        });
-        exitButton.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.exit();
-            }
-        });
-        rootButton.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new RootScreen(game));
-            }
-        });
+        stage.addActor(gameTitle);
+        stage.addActor(testButton);
+        stage.addActor(debugButton);
+        stage.addActor(startButton);
+        stage.addActor(exitButton);
+        stage.addActor(rootButton);
     }
 
     private void createScreenContent(){
@@ -88,9 +63,9 @@ public class HomeScreen extends AbstractScreen {
         gameTitle.setAlignment(Align.center);
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/HennyPenny-Regular.otf"));
-
         parameter.size = (int)PPM/3*2;
         textFont = generator.generateFont(parameter);
+
         Label.LabelStyle textStyle = new Label.LabelStyle();
         textStyle.font = textFont;
         textStyle.fontColor = Color.WHITE;
@@ -119,8 +94,11 @@ public class HomeScreen extends AbstractScreen {
         debugButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 GlobalVar.DEBUG = !GlobalVar.DEBUG;
-                return super.touchDown(event, x, y, pointer, button);
             }
         });
 
@@ -129,28 +107,52 @@ public class HomeScreen extends AbstractScreen {
         startButton.setSize(PPM*6, UHM*2);
         startButton.setPosition(-3*PPM,-3*UHM);
         startButton.getLabel().setAlignment(Align.center);
+        startButton.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new GameScreen(game));
+            }
+        });
 
         rootButton = new TextButton("",skin,"small");
         rootButton.setLabel(new Label("Root", textStyle));
         rootButton.setSize(PPM*6, UHM*2);
         rootButton.setPosition(-3*PPM,-6*UHM);
         rootButton.getLabel().setAlignment(Align.center);
+        rootButton.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new RootScreen(game));
+            }
+        });
 
         exitButton = new TextButton("",skin,"small");
         exitButton.setLabel(new Label("Exit", textStyle));
         exitButton.setSize(PPM*6, UHM*2);
         exitButton.setPosition(-3*PPM,-9*UHM);
         exitButton.getLabel().setAlignment(Align.center);
+        exitButton.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.exit();
+            }
+        });
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
-        stage.addActor(gameTitle);
-        stage.addActor(testButton);
-        stage.addActor(debugButton);
-        stage.addActor(startButton);
-        stage.addActor(exitButton);
-        stage.addActor(rootButton);
     }
 }
