@@ -67,6 +67,9 @@ public class AbstractScreen extends ScreenAdapter {
         b2dr = new Box2DDebugRenderer();
         objectFactory = new ObjectFactory(this.world, this.stage);
 
+        menu = new MenuPanel(game);
+
+
         if(scoreBoardVisible) {
             scoreBoard = new ScoreBoard();
             scoreBoard.setX(-PPM/2);
@@ -80,7 +83,7 @@ public class AbstractScreen extends ScreenAdapter {
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     if(!PAUSED) {
                         pauseGame();
-                        menu = new MenuPanel(game);
+                        stage.addActor(menu);
                         menu.openMenu(stage);
                         return false;
                     }
@@ -220,6 +223,7 @@ public class AbstractScreen extends ScreenAdapter {
     }
 
     public void closeMenuCallback(){
+        menu.remove();
         System.out.println("Callback");
         PAUSED = false;
         if(!FREEZED) resumeGame();
