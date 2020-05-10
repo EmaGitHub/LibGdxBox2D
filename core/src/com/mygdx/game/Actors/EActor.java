@@ -18,6 +18,7 @@ public class EActor extends Actor {
     Texture img;
     Sprite sprite;
     private float PPM = GlobalVar.PPM;
+    private float UHM = GlobalVar.UHM;
 
     private long startTime;
     private long elapsedTime;
@@ -39,7 +40,7 @@ public class EActor extends Actor {
         move = new MoveToAction();
         move.setStartPosition(getX(), getY());
         move.setX(getX());
-        move.setY(GlobalVar.heightInPPM*PPM/2 - 3*PPM);
+        move.setY(GlobalVar.heightInUHM*UHM/2 - 3*PPM);
         move.setDuration(2);
 
         rotate = new RotateToAction();
@@ -47,9 +48,7 @@ public class EActor extends Actor {
         rotate.setDuration(1f);
 
         sequence = new SequenceAction(move, rotate);
-        this.addAction(Actions.moveTo(getX(), (GlobalVar.heightInPPM*PPM-GlobalVar.safeAreaInsetTop)/2 - 3*PPM, 1));
-
-
+        this.addAction(Actions.moveTo(getX(), (GlobalVar.heightInUHM*UHM-GlobalVar.safeAreaInsetTop)/2 - 3*UHM, 1));
     }
 
     @Override
@@ -60,7 +59,5 @@ public class EActor extends Actor {
         batch.draw(sprite, this.getX()-sprite.getWidth()/2, this.getY()-sprite.getHeight()/2);
 
         //if(elapsedTime >= 2000 ) this.addAction(rotate);
-
-
     }
 }

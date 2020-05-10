@@ -32,12 +32,10 @@ public class AppGame extends Game {
 		// Screen aspect ratio definition
 		float PPM = screenWidth / GlobalVar.widthInPPM;
 		GlobalVar.PPM = PPM;
+		GlobalVar.UHM = screenHeight / GlobalVar.heightInUHM;
 		this.scale = (int) GlobalVar.SCALE;
-		float height = screenHeight / GlobalVar.PPM;
-		GlobalVar.heightInPPM = height;
-		System.out.println("Display aspect ratio: 12 x "+height);
+		System.out.println("Display aspect ratio: 12 x "+screenHeight / GlobalVar.PPM);
 
-		Vector2 safeAreaInset = getIOSSafeAreaInsets();
 		this.camera = new OrthographicCamera();
 		this.viewport = new StretchViewport(screenWidth,
 				screenHeight + GlobalVar.safeAreaInsetBottom, camera);

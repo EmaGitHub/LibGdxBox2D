@@ -20,7 +20,6 @@ public class RootScreen extends AbstractScreen {
         this.objectFactory.createScreen2Boundaries();
 
         EActor e = new EActor();
-
         super.stage.addActor(new EActor());
     }
 

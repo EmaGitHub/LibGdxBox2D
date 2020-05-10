@@ -17,9 +17,10 @@ public class ScoreBoard extends Actor {
     private Label scoreLabel;
     private Label scoreValue;
     private float PPM = GlobalVar.PPM;
+    private float UHM = GlobalVar.UHM;
     private BitmapFont font;
 
-    private float heigth = GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop;
+    private float height = GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop;
 
     private ShapeRenderer shapeRenderer;
 
@@ -40,12 +41,12 @@ public class ScoreBoard extends Actor {
 
         scoreLabel = new Label("Score ", titleStyle);
         scoreLabel.setSize(2*PPM, PPM);
-        scoreLabel.setPosition(PPM - PPM/16, heigth);
+        scoreLabel.setPosition(PPM - PPM/16, height);
         scoreLabel.setAlignment(Align.left);
 
         scoreValue = new Label("0", titleStyle);
         scoreValue.setSize(3*PPM, PPM);
-        scoreValue.setPosition(-4*PPM, heigth);
+        scoreValue.setPosition(-4*PPM, height);
         scoreValue.setAlignment(Align.right);
         this.scoreValue.setText(score);
     }
@@ -61,7 +62,7 @@ public class ScoreBoard extends Actor {
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0, 0, 0, 0.6f);
-        shapeRenderer.rect(-4*PPM, heigth,PPM*7, PPM);
+        shapeRenderer.rect(-4*PPM, height,PPM*7, PPM);
         shapeRenderer.end();
         gl.glDisable(GL20.GL_BLEND);
 

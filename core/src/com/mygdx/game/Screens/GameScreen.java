@@ -18,7 +18,7 @@ public class GameScreen extends AbstractScreen {
     public void show(){                                             // Prima funzione chiamata
         super.show();
         this.objectFactory.createScreen2Boundaries();
-        this.ball = this.objectFactory.createBounceBallObject(0, GlobalVar.heightInPPM*PPM/2 - 3*PPM, PPM);
+        this.ball = this.objectFactory.createBounceBallObject(0, GlobalVar.heightInUHM*UHM/2 - 3*UHM, PPM);
     }
 
     @Override

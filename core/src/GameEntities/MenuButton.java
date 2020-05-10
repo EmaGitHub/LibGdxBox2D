@@ -13,6 +13,7 @@ public class MenuButton extends Button {
 
     private ShapeRenderer shapeRenderer;
     private float PPM = GlobalVar.PPM;
+    private float UHM = GlobalVar.UHM;
     private float diameter = PPM;
     private float radius = diameter/2;
 
@@ -29,12 +30,12 @@ public class MenuButton extends Button {
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
 
-        Vector2 coords = new Vector2(-PPM/2, GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
+        Vector2 coords = new Vector2(-PPM/2, GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
         this.circleX =  coords.x+radius;
         this.circleY = coords.y+radius;
         this.linesInitialX = coords.x + radius/3;
         this.linesFinalX = coords.x + PPM*5/6;
-        this.baseY = GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop;
+        this.baseY = GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop;
     }
 
     @Override

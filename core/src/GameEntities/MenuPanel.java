@@ -30,13 +30,13 @@ public class MenuPanel extends Table {
     private boolean closing = false;
 
     private float PPM = GlobalVar.PPM;
+    private float UHM = GlobalVar.UHM;
     private float height = 0;
-    private float maxHeightInPPM = (GlobalVar.heightInPPM-6);
-    private float maxHeight = (maxHeightInPPM*PPM)-GlobalVar.safeAreaInsetTop;
+    private float maxHeightInUHM = (GlobalVar.heightInUHM-5);
+    private float maxHeight = (maxHeightInUHM*UHM)-GlobalVar.safeAreaInsetTop;
 
     private TextButton settingsButton;
     private TextButton exitButton;
-    private TextButton debugButton;
 
     BitmapFont titleFont;
     BitmapFont textFont;
@@ -69,17 +69,6 @@ public class MenuPanel extends Table {
         textStyle.font = textFont;
         textStyle.fontColor = Color.WHITE;
 
-        debugButton = new TextButton("",skin,"small");
-        debugButton.setLabel(new Label("Check-Debug", textStyle));
-        debugButton.getLabel().setAlignment(Align.center);
-        if(GlobalVar.DEBUG) debugButton.setChecked(true);
-        debugButton.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GlobalVar.DEBUG = !GlobalVar.DEBUG;
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
 
         settingsButton = new TextButton("",skin,"small");
         settingsButton.setLabel(new Label("Settings", textStyle));
@@ -134,7 +123,6 @@ public class MenuPanel extends Table {
     public void openMenu(Stage stage){
         stage.addActor(this);
         this.add(gameTitle).top().padBottom(PPM).row();
-        this.add(debugButton).padBottom(PPM/2).row();
         this.add(settingsButton).padBottom(PPM/2).row();
         this.add(exitButton).width(7*PPM).height(3*PPM).row();
     }
