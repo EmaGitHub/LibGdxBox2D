@@ -57,18 +57,18 @@ public class MenuPanel extends Table {
         Label.LabelStyle titleStyle = new Label.LabelStyle();
         titleStyle.font = titleFont;
         titleStyle.fontColor = Color.WHITE;
+
         gameTitle = new Label("Project", titleStyle);
         gameTitle.setSize(4*PPM, 2*PPM);
         gameTitle.setAlignment(Align.center);
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/HennyPenny-Regular.otf"));
-
         parameter.size = (int)PPM;
         textFont = generator.generateFont(parameter);
+
         Label.LabelStyle textStyle = new Label.LabelStyle();
         textStyle.font = textFont;
         textStyle.fontColor = Color.WHITE;
-
 
         settingsButton = new TextButton("",skin,"small");
         settingsButton.setLabel(new Label("Settings", textStyle));
@@ -86,13 +86,18 @@ public class MenuPanel extends Table {
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
+
+        this.add(gameTitle).top().padBottom(PPM).row();
+        this.add(settingsButton).padBottom(PPM/2).row();
+        this.add(exitButton).width(7*PPM).height(3*PPM).row();
     }
 
     public float getHeightAnimation(){
         if(closing) {
             if(height<=0) {
-                this.remove();
-                ((AbstractScreen)this.appGame.getScreen()).closeMenuCallback();
+                ((AbstractScreen) this.appGame.getScreen()).closeMenuCallback();
+                closing = false;
+                return height=0;
             }
                 return height-=PPM;
         }
@@ -122,9 +127,6 @@ public class MenuPanel extends Table {
 
     public void openMenu(Stage stage){
         stage.addActor(this);
-        this.add(gameTitle).top().padBottom(PPM).row();
-        this.add(settingsButton).padBottom(PPM/2).row();
-        this.add(exitButton).width(7*PPM).height(3*PPM).row();
     }
 
     public void closeMenu(){
