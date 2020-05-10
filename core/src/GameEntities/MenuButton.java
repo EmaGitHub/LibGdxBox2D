@@ -28,8 +28,6 @@ public class MenuButton extends Button {
         setSize(diameter, diameter);
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
-        this.setBounds(getX()-radius, getY()-radius,
-                diameter*2, diameter*2);
 
         Vector2 coords = new Vector2(-PPM/2, GlobalVar.heightInPPM*PPM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
         this.circleX =  coords.x+radius;

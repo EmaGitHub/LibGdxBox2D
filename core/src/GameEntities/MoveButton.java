@@ -22,8 +22,6 @@ public class MoveButton extends Button {
         setSize(diameter, diameter);
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
-        this.setBounds(getX()-radius, getY()-radius,
-                diameter*2, diameter*2);
     }
 
     @Override
