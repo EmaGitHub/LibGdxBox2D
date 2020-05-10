@@ -61,7 +61,7 @@ public class MenuPanel extends Table {
         gameTitle.setSize(4*PPM, 2*PPM);
         gameTitle.setAlignment(Align.center);
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Cagliostro-Regular.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/HennyPenny-Regular.otf"));
 
         parameter.size = (int)PPM;
         textFont = generator.generateFont(parameter);
