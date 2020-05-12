@@ -32,7 +32,7 @@ public class MenuPanel extends Table {
     private float PPM = GlobalVar.PPM;
     private float UHM = GlobalVar.UHM;
     private float height = 0;
-    private float maxHeight = (GlobalVar.heightInUHM*UHM) - 2*PPM - GlobalVar.safeAreaInsetBottom - GlobalVar.safeAreaInsetBottom;
+    private float maxHeight = (GlobalVar.heightInUHM*UHM) - 2*PPM;// - GlobalVar.safeAreaInsetBottom - GlobalVar.safeAreaInsetBottom;
     private boolean restAdded = false;
     private float rest;
 
@@ -45,9 +45,8 @@ public class MenuPanel extends Table {
     public MenuPanel(final AppGame game){
         this.setWidth(10*PPM);
         this.setHeight(maxHeight);
-        this.setPosition(-getWidth()/2, -(maxHeight)/2);
+        this.setPosition(-getWidth()/2, -(maxHeight)/2); // - GlobalVar.safeAreaInsetBottom);
         rest = maxHeight%UHM;
-        System.out.println("max height "+this.maxHeight+" rest "+rest);
 
         appGame = game;
         shapeRenderer = new ShapeRenderer();
