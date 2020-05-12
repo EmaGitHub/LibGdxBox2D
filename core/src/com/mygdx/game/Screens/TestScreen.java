@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class TestScreen extends AbstractScreen {
 
-    ArrayList<BounceBall> balls;
+    ArrayList<BounceBall> balls = new ArrayList<>();;
 
     public TestScreen(AppGame game){
         super(game);
@@ -16,7 +16,6 @@ public class TestScreen extends AbstractScreen {
     @Override
     public void show(){                                             // Prima funzione chiamata
         super.show();
-        balls = new ArrayList<>();
         this.objectFactory.createScreen3Boundaries();
     }
 

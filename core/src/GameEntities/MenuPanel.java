@@ -32,8 +32,9 @@ public class MenuPanel extends Table {
     private float PPM = GlobalVar.PPM;
     private float UHM = GlobalVar.UHM;
     private float height = 0;
-    private float maxHeightInUHM = (GlobalVar.heightInUHM-6); // =14
-    private float maxHeight = (maxHeightInUHM*UHM);
+    private float maxHeight = (GlobalVar.heightInUHM*UHM) - 2*PPM - GlobalVar.safeAreaInsetBottom - GlobalVar.safeAreaInsetBottom;
+    private boolean restAdded = false;
+    private float rest;
 
     private TextButton settingsButton;
     private TextButton exitButton;
@@ -44,7 +45,10 @@ public class MenuPanel extends Table {
     public MenuPanel(final AppGame game){
         this.setWidth(10*PPM);
         this.setHeight(maxHeight);
-        this.setPosition(-getWidth()/2, -(getHeight())/2);
+        this.setPosition(-getWidth()/2, -(maxHeight)/2);
+        rest = maxHeight%UHM;
+        System.out.println("max height "+this.maxHeight+" rest "+rest);
+
         appGame = game;
         shapeRenderer = new ShapeRenderer();
         this.skin = new Skin(Gdx.files.internal("Skins/skin/glassy-ui.json"));
@@ -93,14 +97,19 @@ public class MenuPanel extends Table {
 
     public float getHeightAnimation(){
         if(closing) {
-            if(height<=0) {
+            if(height <= UHM) {
                 ((AbstractScreen) this.appGame.getScreen()).closeMenuCallback();
                 closing = false;
-                return height=0;
+                restAdded = false;
+                return height = 0;
             }
-                return height-=PPM;
+                return height -= PPM;
         }
-        else if(height < maxHeight) return height+=UHM;
+        else if(height < maxHeight-UHM) return height += UHM;
+        if(!restAdded) {
+            this.height += rest;
+            restAdded = true;
+        }
         return height;
     }
 
@@ -115,7 +124,8 @@ public class MenuPanel extends Table {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0.4f,0.6f,1f, 0.6f);  //0.7
-        shapeRenderer.rect(-5*PPM, maxHeight/2, PPM*10, -this.getHeightAnimation());
+        shapeRenderer.rect(-5*PPM, (maxHeight)/2, PPM*10,
+                -this.getHeightAnimation() );
         shapeRenderer.end();
 
         gl.glDisable(GL20.GL_BLEND);

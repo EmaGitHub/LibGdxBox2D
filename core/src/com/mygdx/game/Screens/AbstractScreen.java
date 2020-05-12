@@ -37,7 +37,6 @@ public class AbstractScreen extends ScreenAdapter {
     protected float UHM;
 
     protected ObjectFactory objectFactory;
-
     protected Vector3 touchPoint;
     protected boolean firstTouch = true;
 
