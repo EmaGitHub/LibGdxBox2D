@@ -32,7 +32,8 @@ public class MenuPanel extends Table {
     private float PPM = GlobalVar.PPM;
     private float UHM = GlobalVar.UHM;
     private float height = 0;
-    private float maxHeight = (GlobalVar.heightInUHM*UHM) - 2*PPM;// - GlobalVar.safeAreaInsetBottom - GlobalVar.safeAreaInsetBottom;
+    private float maxHeight = (GlobalVar.heightInUHM*UHM) - 2*PPM - GlobalVar.safeAreaInsetTop;
+    private float menuBackgroundPosition = (maxHeight - GlobalVar.safeAreaInsetTop)/2;
     private boolean restAdded = false;
     private float rest;
 
@@ -45,7 +46,7 @@ public class MenuPanel extends Table {
     public MenuPanel(final AppGame game){
         this.setWidth(10*PPM);
         this.setHeight(maxHeight);
-        this.setPosition(-getWidth()/2, -(maxHeight)/2); // - GlobalVar.safeAreaInsetBottom);
+        this.setPosition(-getWidth()/2, -(maxHeight + GlobalVar.safeAreaInsetTop)/2);
         rest = maxHeight%UHM;
 
         appGame = game;
@@ -104,7 +105,7 @@ public class MenuPanel extends Table {
             }
                 return height -= PPM;
         }
-        else if(height < maxHeight-UHM) return height += UHM;
+        else if(height < maxHeight - UHM) return height += UHM;
         if(!restAdded) {
             this.height += rest;
             restAdded = true;
@@ -123,7 +124,7 @@ public class MenuPanel extends Table {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0.4f,0.6f,1f, 0.6f);  //0.7
-        shapeRenderer.rect(-5*PPM, (maxHeight)/2, PPM*10,
+        shapeRenderer.rect(-5*PPM, menuBackgroundPosition, PPM*10,
                 -this.getHeightAnimation() );
         shapeRenderer.end();
 
