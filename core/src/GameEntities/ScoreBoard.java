@@ -41,7 +41,7 @@ public class ScoreBoard extends Actor {
 
         scoreLabel = new Label("Score ", titleStyle);
         scoreLabel.setSize(2*PPM, PPM);
-        scoreLabel.setPosition(PPM - PPM/16, height);
+        scoreLabel.setPosition(PPM - PPM/16, height + PPM/16);
         scoreLabel.setAlignment(Align.left);
 
         scoreValue = new Label("0", titleStyle);
