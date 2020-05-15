@@ -37,6 +37,6 @@ public class EActor extends Actor {
 
         batch.draw(sprite, getX(), getY(), 3*PPM, 2*PPM);
 
-        if(elapsedTime >= 1000) this.addAction(Actions.moveTo(getX(), (GlobalVar.heightInUHM*UHM-GlobalVar.safeAreaInsetTop)/2 - 4*UHM, 1f));
+        if(elapsedTime >= 0) this.addAction(Actions.moveTo(getX(), (GlobalVar.heightInUHM*UHM-GlobalVar.safeAreaInsetTop)/2 - 4*UHM, 1f));
     }
 }

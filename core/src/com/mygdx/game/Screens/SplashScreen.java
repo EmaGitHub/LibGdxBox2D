@@ -34,20 +34,17 @@ public class SplashScreen extends AbstractScreen {
 
         splashImg = new Image(texture);
         splashImg.setOrigin(splashImg.getWidth()/2, splashImg.getHeight()/2);
+        splashImg.setPosition(-texture.getWidth()/2 + 2*PPM, -texture.getHeight()/2 + 4*UHM);
         splashImg.toFront();
-        System.out.println(stage);
-        stage.addActor(splashImg);
     }
 
     @Override
     public void show(){                                             // Prima funzione chiamata
         super.show();
-
-        splashImg.setPosition(-texture.getWidth()/2 + 2*PPM, -texture.getHeight()/2 + 4*UHM);
-
-        splashImg.addAction(sequence(alpha(0f),scaleTo(0.5f, 0.5f),             //Actions.alpha
-                parallel(fadeIn(2f, Interpolation.pow2),
-                        scaleTo(2f, 2f, 2.5f, Interpolation.pow5),
+        stage.addActor(splashImg);
+        splashImg.addAction(sequence(alpha(0.1f),scaleTo(0.1f, 0.1f),             //Actions.alpha
+                parallel(fadeIn(2f, Interpolation.swing),
+                        scaleTo(2f, 2f, 3f, Interpolation.pow3),
                         moveTo(-splashImg.getWidth()/2, -splashImg.getHeight()/2, 2f, Interpolation.swing))
                 //,delay(1.5f), fadeOut(1f)
         ));

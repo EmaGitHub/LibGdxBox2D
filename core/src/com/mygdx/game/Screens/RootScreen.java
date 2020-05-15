@@ -1,7 +1,7 @@
 package com.mygdx.game.Screens;
 
 import com.mygdx.game.Actors.EActor;
-import com.mygdx.game.Actors.ObjContainer;
+import com.mygdx.game.Actors.LineContainer;
 import com.mygdx.game.AppGame;
 
 public class RootScreen extends AbstractGameScreen {
@@ -18,8 +18,7 @@ public class RootScreen extends AbstractGameScreen {
         this.objectFactory.createScreen2Boundaries();
         System.out.println("Root Screen");
 
-        ObjContainer oc = new ObjContainer(this.game.camera);
-
+        LineContainer oc = new LineContainer(0*PPM, -5*UHM, 5*PPM);
         stage.addActor(oc);
         stage.addActor(new EActor());
     }
