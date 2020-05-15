@@ -27,7 +27,7 @@ public class HomeScreen extends AbstractScreen {
     TextButton debugButton;
     TextButton rootButton;
 
-    public HomeScreen(AppGame game){
+    public HomeScreen(final AppGame game){
         super(game);
         skin = new Skin(Gdx.files.internal("Skins/skin/glassy-ui.json"));
         menuButtonVisible = false;

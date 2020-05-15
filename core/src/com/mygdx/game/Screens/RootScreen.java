@@ -6,7 +6,7 @@ import com.mygdx.game.AppGame;
 
 public class RootScreen extends AbstractScreen {
 
-    public RootScreen(AppGame game){
+    public RootScreen(final AppGame game){
         super(game);
         super.freezeButtonVisible = false;
         super.moveButtonVisible = false;

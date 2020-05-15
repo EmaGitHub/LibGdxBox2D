@@ -7,7 +7,7 @@ import com.mygdx.game.RealObjects.LoadingSpinner;
 public class LoadingScreen extends AbstractScreen {
 
 
-    public LoadingScreen(AppGame game){
+    public LoadingScreen(final AppGame game){
         super(game);
         super.freezeButtonVisible = false;
         super.moveButtonVisible = false;

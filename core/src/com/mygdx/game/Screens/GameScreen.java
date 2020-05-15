@@ -8,7 +8,7 @@ public class GameScreen extends AbstractScreen {
 
     BounceBall ball;
 
-    public GameScreen(AppGame game){
+    public GameScreen(final AppGame game){
         super(game);
         super.freezeButtonVisible = false;
         super.moveButtonVisible = false;

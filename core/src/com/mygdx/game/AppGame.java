@@ -76,4 +76,10 @@ public class AppGame extends Game {
 		camera.setToOrtho(false, width/scale, scale);
 		viewport.update(width/scale, height/scale);
 	}
+
+	@Override
+	public void dispose() {
+		batch.dispose();
+		getScreen().dispose();
+	}
 }

@@ -9,7 +9,7 @@ public class TestScreen extends AbstractScreen {
 
     ArrayList<BounceBall> balls = new ArrayList<>();;
 
-    public TestScreen(AppGame game){
+    public TestScreen(final AppGame game){
         super(game);
     }
 

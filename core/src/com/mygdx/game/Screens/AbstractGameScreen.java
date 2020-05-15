@@ -2,9 +2,7 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -22,13 +20,7 @@ import GameEntities.MenuPanel;
 import GameEntities.MoveButton;
 import GameEntities.ScoreBoard;
 
-public class AbstractScreen extends ScreenAdapter {
-
-    protected AppGame game;
-    protected World world;
-    protected Stage stage;
-    protected OrthographicCamera camera;
-    protected Box2DDebugRenderer b2dr;
+public class AbstractGameScreen extends AbstractScreen {
 
     protected boolean PAUSED = false;
     protected boolean FREEZED = false;
@@ -50,8 +42,8 @@ public class AbstractScreen extends ScreenAdapter {
     MoveButton moveButton;
     protected boolean moveButtonVisible = true;
 
-    public AbstractScreen(final AppGame game){
-        this.game = game;
+    public AbstractGameScreen(final AppGame game){
+        super(game);
         this.PPM = GlobalVar.PPM;
         this.UHM = GlobalVar.UHM;
         this.camera = game.camera;
