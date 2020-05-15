@@ -24,10 +24,6 @@ public class SplashScreen extends AbstractScreen {
 
     public SplashScreen(final AppGame game){
         super(game);
-        menuButtonVisible = false;
-        freezeButtonVisible = false;
-        moveButtonVisible = false;
-        scoreBoardVisible = false;
 
         pixmapGreater = new Pixmap(Gdx.files.internal("Images/sphere.png"));
         pixmapOk = new Pixmap(4*(int)PPM, 4*(int)PPM, pixmapGreater.getFormat());

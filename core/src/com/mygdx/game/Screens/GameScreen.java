@@ -4,7 +4,7 @@ import com.mygdx.game.AppGame;
 import com.mygdx.game.RealObjects.BounceBall;
 import com.mygdx.game.Utils.GlobalVar;
 
-public class GameScreen extends AbstractScreen {
+public class GameScreen extends AbstractGameScreen {
 
     BounceBall ball;
 
@@ -15,7 +15,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     @Override
-    public void show(){                                             // Prima funzione chiamata
+    public void show(){
         super.show();
         this.objectFactory.createScreen3Boundaries();
         this.ball = this.objectFactory.createBounceBallObject(0, GlobalVar.heightInUHM*UHM/2 - 3*UHM, PPM);

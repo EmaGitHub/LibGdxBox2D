@@ -4,7 +4,7 @@ import com.mygdx.game.Actors.EActor;
 import com.mygdx.game.Actors.ObjContainer;
 import com.mygdx.game.AppGame;
 
-public class RootScreen extends AbstractScreen {
+public class RootScreen extends AbstractGameScreen {
 
     public RootScreen(final AppGame game){
         super(game);

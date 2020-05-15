@@ -9,10 +9,6 @@ public class LoadingScreen extends AbstractScreen {
 
     public LoadingScreen(final AppGame game){
         super(game);
-        super.freezeButtonVisible = false;
-        super.moveButtonVisible = false;
-        super.menuButtonVisible = false;
-
     }
 
     @Override

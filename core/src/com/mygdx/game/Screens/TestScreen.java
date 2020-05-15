@@ -5,7 +5,7 @@ import com.mygdx.game.RealObjects.BounceBall;
 
 import java.util.ArrayList;
 
-public class TestScreen extends AbstractScreen {
+public class TestScreen extends AbstractGameScreen {
 
     ArrayList<BounceBall> balls = new ArrayList<>();;
 

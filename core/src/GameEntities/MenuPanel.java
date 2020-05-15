@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.AppGame;
-import com.mygdx.game.Screens.AbstractScreen;
+import com.mygdx.game.Screens.AbstractGameScreen;
 import com.mygdx.game.Utils.GlobalVar;
 
 
@@ -98,7 +98,7 @@ public class MenuPanel extends Table {
     public float getHeightAnimation(){
         if(closing) {
             if(height <= UHM) {
-                ((AbstractScreen) this.appGame.getScreen()).closeMenuCallback();
+                ((AbstractGameScreen) this.appGame.getScreen()).closeMenuCallback();
                 closing = false;
                 restAdded = false;
                 return height = 0;
