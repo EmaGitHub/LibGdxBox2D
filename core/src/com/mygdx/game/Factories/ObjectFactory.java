@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.RealObjects.BounceBall;
+import com.mygdx.game.RealObjects.LoadingSpinner;
 import com.mygdx.game.Utils.GlobalVar;
 
 public class ObjectFactory {
@@ -28,6 +29,12 @@ public class ObjectFactory {
         this.stage.addActor(ball);
         body.setTransform(new Vector2(x/PPM, y/PPM), 0);
         return ball;
+    }
+
+    public LoadingSpinner createLoadingSpinner(float diam){
+        LoadingSpinner spinner = new LoadingSpinner(diam);
+        this.stage.addActor(spinner);
+        return spinner;
     }
 
     public void createBox(float x, float y, float width, float height){

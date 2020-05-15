@@ -4,19 +4,26 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Screens.HomeScreen;
+import com.mygdx.game.Screens.SplashScreen;
 import com.mygdx.game.Utils.GlobalVar;
 
 public class AppGame extends Game {
 
 	float screenWidth, screenHeight;
 	public OrthographicCamera camera;
+	public AssetManager assetsManager = new AssetManager();                                          //per gestione caricamento
+
 	private int scale;
+	public BitmapFont font;
+
 	public Viewport viewport;
 	public SpriteBatch batch;
 	public Screen homeScreen;
@@ -36,6 +43,9 @@ public class AppGame extends Game {
 		this.scale = (int) GlobalVar.SCALE;
 		System.out.println("Display aspect ratio: 12 x "+screenHeight / GlobalVar.PPM);
 
+		assetsManager = new AssetManager();                                          //per gestione caricamento
+        font = new BitmapFont();
+
 		this.camera = new OrthographicCamera();
 		this.viewport = new StretchViewport(screenWidth,
 				screenHeight + GlobalVar.safeAreaInsetBottom, camera);
@@ -44,7 +54,7 @@ public class AppGame extends Game {
 		batch = new SpriteBatch();
 
 		homeScreen = new HomeScreen(this);
-		setScreen(homeScreen);
+		setScreen(new SplashScreen(this));
 
 		Gdx.app.log("Gdx version", com.badlogic.gdx.Version.VERSION);
 	}

@@ -147,14 +147,15 @@ public class AbstractScreen extends ScreenAdapter {
     public void render(float delta){
         // Update Logic
         this.update();
+
         // Draw Render
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         game.batch.setProjectionMatrix(camera.combined);
-        stage.setDebugAll(GlobalVar.DEBUG);
         this.stage.act(delta);
         this.stage.draw();
+
+        stage.setDebugAll(GlobalVar.DEBUG);                             //Debug
         if(GlobalVar.DEBUG)
             b2dr.render(this.world, this.camera.combined.scl(PPM));
     }
