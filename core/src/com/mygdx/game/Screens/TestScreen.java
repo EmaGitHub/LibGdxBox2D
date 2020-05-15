@@ -38,4 +38,9 @@ public class TestScreen extends AbstractScreen {
         for(BounceBall ball: balls)
             ball.resumeObject();
     }
+
+    @Override
+    public void hide() {
+        super.hide();
+    }
 }

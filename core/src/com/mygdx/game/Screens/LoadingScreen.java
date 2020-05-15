@@ -29,11 +29,6 @@ public class LoadingScreen extends AbstractScreen {
     }
 
     @Override
-    public void hide(){
-        super.hide();
-    }
-
-    @Override
     public void render(float delta) {
         super.render(delta);
         update(delta);
@@ -49,5 +44,10 @@ public class LoadingScreen extends AbstractScreen {
         for(int i = 0; i < 10000; i++) {
             game.assetsManager.load("Sprites/globe-resized.png", Texture.class);
         }
+    }
+
+    @Override
+    public void hide(){
+        super.hide();
     }
 }

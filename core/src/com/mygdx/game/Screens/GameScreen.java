@@ -27,12 +27,6 @@ public class GameScreen extends AbstractScreen {
     }
 
     @Override
-    public void hide(){
-        super.hide();
-        this.ball.dispose();
-    }
-
-    @Override
     protected void freezeScene() {
         super.freezeScene();                    //gravity
         this.ball.freezeObject();
@@ -42,5 +36,10 @@ public class GameScreen extends AbstractScreen {
     protected void resumeScene() {
         super.resumeScene();                    //gravity
         this.ball.resumeObject();
+    }
+
+    @Override
+    public void hide(){
+        super.hide();
     }
 }

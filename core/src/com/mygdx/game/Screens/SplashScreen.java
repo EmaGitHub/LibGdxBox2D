@@ -26,7 +26,7 @@ public class SplashScreen extends AbstractScreen {
         super.show();
 
         pixmapGreater = new Pixmap(Gdx.files.internal("Images/sphere.png"));
-        pixmapOk = new Pixmap(200, 200, pixmapGreater.getFormat());
+        pixmapOk = new Pixmap(5*(int)PPM, 5*(int)PPM, pixmapGreater.getFormat());
         pixmapOk.drawPixmap(pixmapGreater,
                 0, 0, pixmapGreater.getWidth(), pixmapGreater.getHeight(),
                 0, 0, pixmapOk.getWidth(), pixmapOk.getHeight()

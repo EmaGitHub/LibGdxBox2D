@@ -21,6 +21,7 @@ public class HomeScreen extends AbstractScreen {
 
     Label gameTitle;
     TextButton startButton;
+
     TextButton exitButton;
     TextButton testButton;
     TextButton debugButton;
@@ -154,5 +155,10 @@ public class HomeScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
     }
 }

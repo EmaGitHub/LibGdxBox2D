@@ -239,7 +239,7 @@ public class AbstractScreen extends ScreenAdapter {
 
     @Override
     public void hide(){
-        super.hide();
+        this.stage.dispose();
         Gdx.input.setInputProcessor(null);
     }
 }
