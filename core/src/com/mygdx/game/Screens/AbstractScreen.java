@@ -60,7 +60,7 @@ public class AbstractScreen extends ScreenAdapter {
         this.stage.act(delta);
         this.stage.draw();
 
-        stage.setDebugAll(GlobalVar.DEBUG);                             //Debug
+        stage.setDebugAll(GlobalVar.DEBUG);                             //Debug All
         if(GlobalVar.DEBUG)
             b2dr.render(this.world, this.camera.combined.scl(PPM));
     }
@@ -79,6 +79,12 @@ public class AbstractScreen extends ScreenAdapter {
             GlobalVar.DEBUG = !GlobalVar.DEBUG;
         }
         listenTouchInput();
+    }
+
+    @Override
+    public void resize (int width, int height){
+        game.viewport.update((int)(width), (int)(height));
+        camera.setToOrtho(false, width, height);
     }
 
     protected void listenTouchInput(){

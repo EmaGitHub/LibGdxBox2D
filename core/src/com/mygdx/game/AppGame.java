@@ -15,13 +15,14 @@ import com.mygdx.game.Screens.HomeScreen;
 import com.mygdx.game.Screens.SplashScreen;
 import com.mygdx.game.Utils.GlobalVar;
 
+import static com.mygdx.game.Utils.GlobalVar.screenHeight;
+import static com.mygdx.game.Utils.GlobalVar.screenWidth;
+
 public class AppGame extends Game {
 
-	float screenWidth, screenHeight;
 	public OrthographicCamera camera;
 	public AssetManager assetsManager = new AssetManager();                                          //per gestione caricamento
 
-	private int scale;
 	public BitmapFont font;
 
 	public Viewport viewport;
@@ -40,11 +41,12 @@ public class AppGame extends Game {
 		float PPM = screenWidth / GlobalVar.widthInPPM;
 		GlobalVar.PPM = PPM;
 		GlobalVar.UHM = screenHeight / GlobalVar.heightInUHM;
-		this.scale = (int) GlobalVar.SCALE;
-		System.out.println("Display aspect ratio: 12 x "+screenHeight / GlobalVar.PPM);
+		System.out.println("Display aspect ratio: 12 x "+screenHeight / GlobalVar.PPM+ " " +
+				"\nScale width: "+GlobalVar.getScaleWidth()+ ", Scale height: "+GlobalVar.getScaleHeight());
 
 		assetsManager = new AssetManager();                                          //per gestione caricamento
         font = new BitmapFont();
+		font.getData().setScale(GlobalVar.getScaleWidth());
 
 		this.camera = new OrthographicCamera();
 		this.viewport = new StretchViewport(screenWidth,
@@ -69,12 +71,6 @@ public class AppGame extends Game {
 			}
 		}
 		return new Vector2();
-	}
-
-	@Override
-	public void resize (int width, int height){
-		camera.setToOrtho(false, width/scale, scale);
-		viewport.update(width/scale, height/scale);
 	}
 
 	@Override

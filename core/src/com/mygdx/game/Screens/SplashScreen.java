@@ -45,7 +45,7 @@ public class SplashScreen extends AbstractScreen {
         splashImg.addAction(sequence(alpha(0.1f),scaleTo(0.1f, 0.1f),             //Actions.alpha
                 parallel(fadeIn(2f, Interpolation.swing),
                         scaleTo(2f, 2f, 3f, Interpolation.pow3),
-                        moveTo(-splashImg.getWidth()/2, -splashImg.getHeight()/2, 2f, Interpolation.swing))
+                        moveTo(-splashImg.getWidth()/2, -splashImg.getHeight()/2, 3f, Interpolation.swing))
                 //,delay(1.5f), fadeOut(1f)
         ));
     }

@@ -19,8 +19,7 @@ public class FramesFactory {
         this.world = world;
     }
 
-    public Body createStaticBody(float x, float y, float width, float height){
-
+    public Body createRectStaticBody(float x, float y, float width, float height){
         Body pBody;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -36,8 +35,7 @@ public class FramesFactory {
         return pBody;
     }
 
-    public Body createBallBody(float x, float y, float diam){
-
+    public Body createCircleDinamicBody(float x, float y, float diam){
         Body pBody;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -54,8 +52,24 @@ public class FramesFactory {
         circleFixture.density=1.0f;
         circleFixture.restitution = 0.8f;       //0,8f
         circleFixture.friction=0.6f;
-
         pBody.createFixture(circleFixture);
+
+        shape.dispose();
+        return pBody;
+    }
+
+    public Body createRectDinamicBody(float x, float y, float width, float height){
+        Body pBody;
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(x/PPM, y/PPM);
+        bodyDef.fixedRotation = true;
+        pBody = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(width/2/PPM, height/2/PPM );				//calcolato dal punto centrale
+
+        pBody.createFixture(shape, 1.0f);
         shape.dispose();
         return pBody;
     }

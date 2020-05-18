@@ -2,7 +2,6 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.AppGame;
-import com.mygdx.game.RealObjects.LoadingSpinner;
 
 public class LoadingScreen extends AbstractScreen {
 
@@ -15,7 +14,6 @@ public class LoadingScreen extends AbstractScreen {
     public void show(){
         super.show();
         System.out.println("Loading Screen");
-        LoadingSpinner spinner = this.objectFactory.createLoadingSpinner(2*UHM);
         this.queueAssets();
     }
 
@@ -37,9 +35,7 @@ public class LoadingScreen extends AbstractScreen {
     }
 
     private void queueAssets(){
-        for(int i = 0; i < 10000; i++) {
-            game.assetsManager.load("Sprites/globe-resized.png", Texture.class);
-        }
+        game.assetsManager.load("Sprites/globe-resized.png", Texture.class);
     }
 
     @Override

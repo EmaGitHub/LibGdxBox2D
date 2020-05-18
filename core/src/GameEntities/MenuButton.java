@@ -31,8 +31,8 @@ public class MenuButton extends Button {
         this.setTouchable(Touchable.enabled);
 
         Vector2 coords = new Vector2(-PPM/2, GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
-        this.circleX =  coords.x+radius;
-        this.circleY = coords.y+radius;
+        this.circleX =  coords.x + radius;
+        this.circleY = coords.y + radius;
         this.linesInitialX = coords.x + radius/3;
         this.linesFinalX = coords.x + PPM*5/6;
         this.baseY = GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop;

@@ -24,6 +24,7 @@ public class HomeScreen extends AbstractScreen {
 
     TextButton exitButton;
     TextButton testButton;
+    TextButton tilesButton;
     TextButton debugButton;
     TextButton rootButton;
 
@@ -38,6 +39,7 @@ public class HomeScreen extends AbstractScreen {
         createScreenContent();
         stage.addActor(gameTitle);
         stage.addActor(testButton);
+        stage.addActor(tilesButton);
         stage.addActor(debugButton);
         stage.addActor(startButton);
         stage.addActor(exitButton);
@@ -70,8 +72,8 @@ public class HomeScreen extends AbstractScreen {
         testButton = new TextButton("",skin,"small");
         testButton.setLabel(new Label("Test", textStyle));
         testButton.getLabel().setAlignment(Align.center);
-        testButton.setSize(PPM*6, UHM*2);
-        testButton.setPosition(-3*PPM,2*UHM);
+        testButton.setSize(PPM*4, UHM*2);
+        testButton.setPosition(-5*PPM,2*UHM);
         testButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -80,6 +82,22 @@ public class HomeScreen extends AbstractScreen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(new TestScreen(game));
+            }
+        });
+
+        tilesButton = new TextButton("",skin,"small");
+        tilesButton.setLabel(new Label("Tiles", textStyle));
+        tilesButton.getLabel().setAlignment(Align.center);
+        tilesButton.setSize(PPM*4, UHM*2);
+        tilesButton.setPosition(PPM,2*UHM);
+        tilesButton.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new TilesScreen(game));
             }
         });
 

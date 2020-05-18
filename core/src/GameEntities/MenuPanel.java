@@ -84,15 +84,14 @@ public class MenuPanel extends Table {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("Exit");
                 game.setScreen(game.homeScreen);
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
 
-        this.add(gameTitle).top().padBottom(UHM*3).row();
-        this.add(settingsButton).padBottom(UHM/2).row();
-        this.add(exitButton).row();
+        this.add(gameTitle).height(UHM).padBottom(UHM*5).row();
+        this.add(settingsButton).height(2*UHM).padBottom(UHM).row();
+        this.add(exitButton).height(2*UHM).row();
     }
 
     public float getHeightAnimation(){

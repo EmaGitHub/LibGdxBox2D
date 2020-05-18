@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="12" height="32" tilewidth="30" tileheight="20" infinite="0" nextlayerid="3" nextobjectid="7">
+ <tileset firstgid="1" name="tileset" tilewidth="30" tileheight="20" tilecount="256" columns="8">
+  <image source="../tileset.png" width="256" height="641"/>
+ </tileset>
+ <tileset firstgid="257" name="metheorite" tilewidth="30" tileheight="20" tilecount="441" columns="21">
+  <image source="../metheorite.png" width="650" height="433"/>
+ </tileset>
+ <layer id="1" name="Tile-Layer" width="12" height="32">
+  <data encoding="base64" compression="zlib">
+   eJz7w8DA8JeBONAJxFeA+CqR6ieSqD4TiO8A8V0i1RcC8RMgfkqk+kogfgPEb4lU3wjEX4D4K5HqQeHzh4H48BwNH/yAluHTxjD0wocTiLmAmBtKdzHgDx9BIBYCYmEkGl/4gMJECoilgVgeiBUYiA8fkF81GEZO+gGBoZZ+0AEofAB3rUsz
+  </data>
+ </layer>
+ <objectgroup id="2" name="Collision-Layer">
+  <object id="2" x="30.7811" y="2.88573">
+   <polygon points="0,0 7.69527,13.4667 3.84763,35.5906 2.88573,62.524 6.73336,97.1528 -5.77145,126.972 8.65718,154.867 0,174.105 8.65718,209.696 -2.88573,239.515 0.961908,256.83 5.77145,269.334 2.88573,300.115 8.65718,324.163 5.77145,335.706 -4.80954,362.639 7.69527,395.344 0,413.621 7.69527,453.059 -2.88573,481.916 0,501.154 9.61908,511.735 2.88573,540.593 6.73336,569.45 3.84763,589.65 -3.84763,605.04 3.84763,625.24 8.65718,636.783 -31.743,635.821 -30.7811,-2.88573"/>
+  </object>
+  <object id="3" x="337.63" y="1.92382">
+   <polygon points="0,0 23.0858,-0.961908 23.0858,637.745 -8.65718,636.783 3.84763,610.812 -7.69527,586.764 -3.84763,540.593 -5.77145,526.164 -7.69527,512.697 2.88573,486.726 -29.1421,457.652 -38.4992,439.782 -95.1896,437.994 -124.711,418.484 -126.418,375.876 2.77731,375.416 -6.73336,342.439 -3.84763,290.496 -9.61908,277.03 1.92382,251.058 -6.73336,225.087 -4.80954,183.725 -10.581,155.829 4.80954,132.743 -9.61908,103.886 -3.84763,61.5621 -9.61908,35.5906 3.84763,12.5048"/>
+  </object>
+ </objectgroup>
+</map>
