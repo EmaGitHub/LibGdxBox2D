@@ -17,6 +17,7 @@ public class MenuButton extends Button {
     private float diameter = PPM;
     private float radius = diameter/2;
 
+    private float x, y;
     private float circleX;
     private float circleY;
     private float linesInitialX;
@@ -25,14 +26,14 @@ public class MenuButton extends Button {
 
     private boolean menuSelected = false;
 
-    public MenuButton() {
+    public MenuButton(float x, float y) {
         setSize(diameter*2, diameter*2);
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
-        setX(-PPM);
-        setY(GlobalVar.heightInUHM*UHM/2 - PPM*2 - GlobalVar.safeAreaInsetTop);
+        setX(x-PPM);
+        setY(y + GlobalVar.heightInUHM*UHM/2 - PPM*2 - GlobalVar.safeAreaInsetTop);
 
-        Vector2 coords = new Vector2(-PPM/2, GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
+        Vector2 coords = new Vector2(x-PPM/2, y+GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
         this.circleX =  coords.x + radius;
         this.circleY = coords.y + radius;
         this.linesInitialX = coords.x + radius/3;

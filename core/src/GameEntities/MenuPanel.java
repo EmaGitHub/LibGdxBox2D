@@ -23,6 +23,7 @@ import com.mygdx.game.Utils.GlobalVar;
 public class MenuPanel extends Table {
 
     private AppGame appGame;
+    private float x, y;
 
     ShapeRenderer shapeRenderer;
     Label gameTitle;
@@ -32,8 +33,8 @@ public class MenuPanel extends Table {
     private float PPM = GlobalVar.PPM;
     private float UHM = GlobalVar.UHM;
     private float height = 0;
-    private float maxHeight = (GlobalVar.heightInUHM*UHM) - 2*PPM - GlobalVar.safeAreaInsetTop;
-    private float menuBackgroundPosition = (maxHeight - GlobalVar.safeAreaInsetTop)/2;
+    private float maxHeight;
+    private float menuBackgroundPosition;
     private boolean restAdded = false;
     private float rest;
 
@@ -43,10 +44,15 @@ public class MenuPanel extends Table {
     BitmapFont titleFont;
     BitmapFont textFont;
 
-    public MenuPanel(final AppGame game){
+    public MenuPanel(float x, float y, final AppGame game){
+
+        this.x = x;
+        this.y = y;
         this.setWidth(10*PPM);
+        maxHeight = (GlobalVar.heightInUHM*UHM) - 2*PPM - GlobalVar.safeAreaInsetTop;
+        menuBackgroundPosition = (maxHeight - GlobalVar.safeAreaInsetTop)/2;
         this.setHeight(maxHeight);
-        this.setPosition(-getWidth()/2, -(maxHeight + GlobalVar.safeAreaInsetTop)/2);
+        this.setPosition(x-getWidth()/2, y-(maxHeight + GlobalVar.safeAreaInsetTop)/2);
         rest = maxHeight%UHM;
 
         appGame = game;
@@ -123,7 +129,7 @@ public class MenuPanel extends Table {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0.4f,0.6f,1f, 0.6f);  //0.7
-        shapeRenderer.rect(-5*PPM, menuBackgroundPosition, PPM*10,
+        shapeRenderer.rect(x-5*PPM, menuBackgroundPosition, PPM*10,
                 -this.getHeightAnimation() );
         shapeRenderer.end();
 

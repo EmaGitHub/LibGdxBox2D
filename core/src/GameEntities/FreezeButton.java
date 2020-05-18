@@ -9,8 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.mygdx.game.Utils.GlobalVar;
 
-import static com.mygdx.game.Utils.GlobalVar.UHM;
-
 public class FreezeButton extends Button {
 
     private ShapeRenderer shapeRenderer;
@@ -20,12 +18,12 @@ public class FreezeButton extends Button {
 
     private boolean gameInPause = false;
 
-    public FreezeButton() {
+    public FreezeButton(float x, float y) {
         setSize(diameter*2, diameter*2);
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
-        setX(4*PPM);
-        setY(-GlobalVar.heightInUHM*UHM/2);
+        setX(x);
+        setY(y);
     }
 
     @Override

@@ -36,12 +36,12 @@ public class AbstractGameScreen extends AbstractScreen {
     @Override
     public void show(){                                                                     // Prima funzione chiamata
         if(scoreBoardVisible) {
-            scoreBoard = new ScoreBoard();
+            scoreBoard = new ScoreBoard(0, GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
             this.stage.addActor(scoreBoard);
         }
         if(menuButtonVisible) {
-            menu = new MenuPanel(game);
-            menuButton = new MenuButton();
+            menu = new MenuPanel(0, 0, game);
+            menuButton = new MenuButton(0, 0);
             menuButton.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -64,7 +64,7 @@ public class AbstractGameScreen extends AbstractScreen {
             this.stage.addActor(menuButton);
         }
         if(freezeButtonVisible) {
-            freezeButton = new FreezeButton();
+            freezeButton = new FreezeButton(4*PPM, -GlobalVar.heightInUHM*UHM/2);
             freezeButton.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -80,12 +80,10 @@ public class AbstractGameScreen extends AbstractScreen {
                     if(FREEZED && !PAUSED) unfreeze();
                 }
             });
-            freezeButton.setX(4*PPM);
-            freezeButton.setY(-GlobalVar.heightInUHM*UHM/2);
             this.stage.addActor(freezeButton);
         }
         if(moveButtonVisible) {
-            moveButton = new MoveButton();
+            moveButton = new MoveButton(-6*PPM, -GlobalVar.heightInUHM*UHM/2);
             moveButton.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -101,8 +99,6 @@ public class AbstractGameScreen extends AbstractScreen {
                     if(FREEZED && !PAUSED) unfreeze();
                 }
             });
-            moveButton.setX(-6*PPM);
-            moveButton.setY(-GlobalVar.heightInUHM*UHM/2);
             this.stage.addActor(moveButton);
         }
         Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
