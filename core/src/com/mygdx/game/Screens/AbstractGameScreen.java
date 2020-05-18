@@ -21,7 +21,7 @@ public class AbstractGameScreen extends AbstractScreen {
 
     MenuButton menuButton;
     protected boolean menuButtonVisible = true;
-    private MenuPanel menu;
+    protected MenuPanel menu;
     ScoreBoard scoreBoard;
     protected boolean scoreBoardVisible = true;
     FreezeButton freezeButton;
@@ -37,8 +37,6 @@ public class AbstractGameScreen extends AbstractScreen {
     public void show(){                                                                     // Prima funzione chiamata
         if(scoreBoardVisible) {
             scoreBoard = new ScoreBoard();
-            scoreBoard.setX(-PPM/2);
-            scoreBoard.setY(GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
             this.stage.addActor(scoreBoard);
         }
         if(menuButtonVisible) {
@@ -63,8 +61,6 @@ public class AbstractGameScreen extends AbstractScreen {
                     }
                 }
             });
-            menuButton.setX(-PPM);
-            menuButton.setY(GlobalVar.heightInUHM*UHM/2 - PPM*2 - GlobalVar.safeAreaInsetTop);
             this.stage.addActor(menuButton);
         }
         if(freezeButtonVisible) {
@@ -122,11 +118,6 @@ public class AbstractGameScreen extends AbstractScreen {
                 touched();
             }
         }
-    }
-
-    @Override
-    public void render(float delta){
-        super.render(delta);
     }
 
     protected void pauseGame() {

@@ -29,6 +29,8 @@ public class MenuButton extends Button {
         setSize(diameter*2, diameter*2);
         shapeRenderer = new ShapeRenderer();
         this.setTouchable(Touchable.enabled);
+        setX(-PPM);
+        setY(GlobalVar.heightInUHM*UHM/2 - PPM*2 - GlobalVar.safeAreaInsetTop);
 
         Vector2 coords = new Vector2(-PPM/2, GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
         this.circleX =  coords.x + radius;
