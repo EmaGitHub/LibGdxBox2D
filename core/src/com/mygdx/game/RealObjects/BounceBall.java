@@ -19,7 +19,6 @@ public class BounceBall extends Object{
     TextureRegion currentFrame;
     TextureRegion pausedFrame;
     Animation<TextureRegion> framesAnimation;
-    private boolean DEBUG;
     private boolean PAUSED;
 
     public BounceBall(Body body, float diam){
@@ -28,14 +27,13 @@ public class BounceBall extends Object{
         this.diam = diam;
         this.rad = diam/2;
         setOrigin(rad, rad);
-        this.DEBUG = GlobalVar.DEBUG;
         this.framesAnimation = SpritesFactory.getBallFrames();
         body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y);		//per muovere numero metri al secondo
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(currentFrame, body.getPosition().x*PPM - rad,
+        if(!GlobalVar.DEBUG) batch.draw(currentFrame, body.getPosition().x*PPM - rad,
                 body.getPosition().y*PPM - rad,
                 diam, diam);
     }

@@ -33,19 +33,6 @@ public class HomeScreen extends AbstractScreen {
         skin = new Skin(Gdx.files.internal("Skins/skin/glassy-ui.json"));
     }
 
-    @Override
-    public void show(){                                             // Prima funzione chiamata in Screen
-        super.show();
-        createScreenContent();
-        stage.addActor(gameTitle);
-        stage.addActor(testButton);
-        stage.addActor(tilesButton);
-        stage.addActor(debugButton);
-        stage.addActor(startButton);
-        stage.addActor(exitButton);
-        stage.addActor(rootButton);
-    }
-
     private void createScreenContent(){
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Griffin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -167,8 +154,16 @@ public class HomeScreen extends AbstractScreen {
     }
 
     @Override
-    public void render(float delta) {
-        super.render(delta);
+    public void show(){                                             // Prima funzione chiamata in Screen
+        super.show();
+        createScreenContent();
+        stage.addActor(gameTitle);
+        stage.addActor(testButton);
+        stage.addActor(tilesButton);
+        stage.addActor(debugButton);
+        stage.addActor(startButton);
+        stage.addActor(exitButton);
+        stage.addActor(rootButton);
     }
 
     @Override

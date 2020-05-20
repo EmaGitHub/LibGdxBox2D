@@ -28,7 +28,7 @@ public class AbstractGameScreenTiled extends AbstractGameScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        tmr.render();
+        if(!GlobalVar.DEBUG) tmr.render();
     }
 
     @Override
