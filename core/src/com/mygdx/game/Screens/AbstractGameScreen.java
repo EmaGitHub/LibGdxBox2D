@@ -128,12 +128,12 @@ public class AbstractGameScreen extends AbstractScreen {
     }
 
     protected void freezeScene(){
-        Gdx.app.log("Info", "Game freezed");
+        Gdx.app.log("Info", "Scene freezed");
         this.world.setGravity(new Vector2(0, 0));
     }
 
     protected void resumeScene(){
-        Gdx.app.log("Info", "Game resumed");
+        Gdx.app.log("Info", "Scene resumed");
         this.world.setGravity(new Vector2(0, -9.8f));
     }
 
