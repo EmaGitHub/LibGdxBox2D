@@ -4,9 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.mygdx.game.Utils.GlobalVar;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
@@ -14,11 +12,6 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 public class LineContainer extends Group {
 
     private float PPM = GlobalVar.PPM;
-    private float UHM = GlobalVar.UHM;
-
-    MoveToAction move;
-    SequenceAction sequence;
-    RotateToAction rotate;
 
     private long startTime;
     private long elapsedTime;
@@ -29,7 +22,7 @@ public class LineContainer extends Group {
     public LineContainer(float x, float y, float lenght){
         startTime = System.currentTimeMillis();
         shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setColor(1, 1, 1, 1f);
+        shapeRenderer.setColor(getColor());
         this.lenght = lenght;
         setSize(lenght, PPM/5);
         setOrigin(getX(), getHeight()/2);
@@ -63,4 +56,5 @@ public class LineContainer extends Group {
 
         this.addAction(sequence(delay, rotateToAction));
     }
+
 }

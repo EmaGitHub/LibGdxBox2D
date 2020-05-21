@@ -61,7 +61,7 @@ public class MenuPanel extends Table {
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Griffin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (int)PPM*2;
+        parameter.size = (int)UHM*2;
         titleFont = generator.generateFont(parameter);
 
         Label.LabelStyle titleStyle = new Label.LabelStyle();
@@ -128,7 +128,12 @@ public class MenuPanel extends Table {
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0.4f,0.6f,1f, 0.6f);  //0.7
+        shapeRenderer.setColor(0.4f,0.2f,1f, 0.8f);  //0.7
+        shapeRenderer.rect(x-5*PPM, menuBackgroundPosition, PPM*10,
+                -this.getHeightAnimation() );
+        shapeRenderer.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.rect(x-5*PPM, menuBackgroundPosition, PPM*10,
                 -this.getHeightAnimation() );
         shapeRenderer.end();
