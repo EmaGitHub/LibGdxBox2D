@@ -5,12 +5,13 @@ import com.mygdx.game.Actors.LineContainer;
 import com.mygdx.game.AppGame;
 import com.mygdx.game.RealObjects.LoadingSpinner;
 
+import GameEntities.Controllers;
+
 public class RootScreen extends AbstractGameScreen {
 
     public RootScreen(final AppGame game){
         super(game);
-        super.freezeButtonVisible = false;
-        super.moveButtonVisible = false;
+        controllers = new Controllers(0, 0,false, false, game);
     }
 
     @Override
@@ -33,15 +34,5 @@ public class RootScreen extends AbstractGameScreen {
     @Override
     public void hide(){
         super.hide();
-    }
-
-    @Override
-    protected void freezeScene() {
-        super.freezeScene();
-    }
-
-    @Override
-    protected void resumeScene() {
-        super.resumeScene();
     }
 }

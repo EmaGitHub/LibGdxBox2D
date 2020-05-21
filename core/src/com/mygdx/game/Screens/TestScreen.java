@@ -5,12 +5,15 @@ import com.mygdx.game.RealObjects.BounceBall;
 
 import java.util.ArrayList;
 
+import GameEntities.Controllers;
+
 public class TestScreen extends AbstractGameScreen {
 
     ArrayList<BounceBall> balls = new ArrayList<>();;
 
     public TestScreen(final AppGame game){
         super(game);
+        controllers = new Controllers(0, 0, game);
     }
 
     @Override
@@ -20,9 +23,15 @@ public class TestScreen extends AbstractGameScreen {
     }
 
     @Override
+    public void render(float delta) {
+        super.clear();
+        super.render(delta);
+    }
+
+    @Override
     public void touched(){
         balls.add(this.objectFactory.createBounceBallObject(touchPoint.x, touchPoint.y, PPM));
-        super.scoreBoard.updateValue(this.balls.size());
+        super.controllers.updateValue(this.balls.size());
     }
 
     @Override

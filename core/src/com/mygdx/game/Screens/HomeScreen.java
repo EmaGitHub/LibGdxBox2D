@@ -154,6 +154,12 @@ public class HomeScreen extends AbstractScreen {
     }
 
     @Override
+    public void render(float delta) {
+        super.clear();
+        super.render(delta);
+    }
+
+    @Override
     public void show(){                                             // Prima funzione chiamata in Screen
         super.show();
         createScreenContent();

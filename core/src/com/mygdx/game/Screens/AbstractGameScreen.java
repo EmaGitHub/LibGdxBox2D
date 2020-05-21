@@ -1,108 +1,91 @@
 package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.mygdx.game.AppGame;
-import com.mygdx.game.Utils.GlobalVar;
 
-import GameEntities.FreezeButton;
-import GameEntities.MenuButton;
-import GameEntities.MenuPanel;
-import GameEntities.MoveButton;
-import GameEntities.ScoreBoard;
+import GameEntities.Controllers;
 
 public class AbstractGameScreen extends AbstractScreen {
 
     protected boolean PAUSED = false;
     protected boolean FREEZED = false;
 
-    MenuButton menuButton;
-    protected boolean menuButtonVisible = true;
-    protected MenuPanel menu;
-    ScoreBoard scoreBoard;
-    protected boolean scoreBoardVisible = true;
-    FreezeButton freezeButton;
-    protected boolean freezeButtonVisible = true;
-    MoveButton moveButton;
-    protected boolean moveButtonVisible = true;
+    protected Controllers controllers;
 
     public AbstractGameScreen(final AppGame game){
         super(game);
     }
 
     @Override
-    public void show(){                                                                     // Prima funzione chiamata
-        if(scoreBoardVisible) {
-            scoreBoard = new ScoreBoard(0, GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
-            this.stage.addActor(scoreBoard);
-        }
-        if(menuButtonVisible) {
-            menu = new MenuPanel(0, 0, game);
-            menuButton = new MenuButton(0, 0);
-            menuButton.addListener(new InputListener(){
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if(!PAUSED) {
-                        pauseGame();
-                        stage.addActor(menu);
-                        menu.openMenu(stage);
-                        return false;
-                    }
-                    return true;
+    public void show(){
+        controllers.getMenuButton().addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if(!PAUSED) {
+                    pauseGame();
+                    controllers.getStage().addActor(controllers.getMenu());
+                    controllers.getMenu().openMenu(controllers.getStage());
+                    return false;
                 }
+                return true;
+            }
 
-                @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    if(PAUSED) {
-                        menu.closeMenu();
-                    }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if(PAUSED) {
+                    controllers.getMenu().closeMenu();
                 }
-            });
-            this.stage.addActor(menuButton);
-        }
-        if(freezeButtonVisible) {
-            freezeButton = new FreezeButton(4*PPM, -GlobalVar.heightInUHM*UHM/2);
-            freezeButton.addListener(new InputListener(){
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if(!FREEZED && !PAUSED) {
-                        freeze();
-                        return false;
-                    }
-                    return true;
+            }
+        });
+        controllers.getFreezeButton().addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if(!FREEZED && !PAUSED) {
+                    freeze();
+                    return false;
                 }
+                return true;
+            }
 
-                @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    if(FREEZED && !PAUSED) unfreeze();
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if(FREEZED && !PAUSED) unfreeze();
+            }
+        });
+        controllers.getMoveButton().addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if(!FREEZED && !PAUSED) {
+                    freeze();
+                    return false;
                 }
-            });
-            this.stage.addActor(freezeButton);
-        }
-        if(moveButtonVisible) {
-            moveButton = new MoveButton(-6*PPM, -GlobalVar.heightInUHM*UHM/2);
-            moveButton.addListener(new InputListener(){
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if(!FREEZED && !PAUSED) {
-                        freeze();
-                        return false;
-                    }
-                    return true;
-                }
+                return true;
+            }
 
-                @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    if(FREEZED && !PAUSED) unfreeze();
-                }
-            });
-            this.stage.addActor(moveButton);
-        }
-        Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
-        Gdx.input.setInputProcessor(stage);
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if(FREEZED && !PAUSED) unfreeze();
+            }
+        });
+        InputMultiplexer multiplexer = new InputMultiplexer();              // Input check
+        Gdx.input.setInputProcessor(multiplexer);
+        multiplexer.addProcessor(controllers.getStage());
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        controllers.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        controllers.resize(width, height);
     }
 
     @Override
@@ -119,13 +102,13 @@ public class AbstractGameScreen extends AbstractScreen {
     protected void pauseGame() {
         this.PAUSED = true;
         Gdx.app.log("Info", "Game in Pause");
-        this.menuButton.switchState();
+        controllers.getMenuButton().switchState();
         if(!FREEZED)this.freezeScene();
     }
 
     protected void resumeGame(){
         Gdx.app.log("Info", "Resume to Game");
-        this.menuButton.switchState();
+        controllers.getMenuButton().switchState();
         this.resumeScene();
         this.PAUSED = false;
     }
@@ -133,13 +116,13 @@ public class AbstractGameScreen extends AbstractScreen {
     protected void freeze() {
         this.FREEZED = true;
         Gdx.app.log("Info", "Stage freezed");
-        this.freezeButton.switchState();
+        controllers.getFreezeButton().switchState();
         this.freezeScene();
     }
 
     protected void unfreeze() {
         Gdx.app.log("Info", "Stage unfreezed");
-        this.freezeButton.switchState();
+        controllers.getFreezeButton().switchState();
         this.resumeScene();
         this.FREEZED = false;
     }
@@ -150,14 +133,15 @@ public class AbstractGameScreen extends AbstractScreen {
     }
 
     protected void resumeScene(){
+        Gdx.app.log("Info", "Game resumed");
         this.world.setGravity(new Vector2(0, -9.8f));
     }
 
     public void closeMenuCallback(){
-        menu.remove();
+        controllers.getMenu().remove();
         System.out.println("Callback");
         PAUSED = false;
         if(!FREEZED) resumeGame();
-        else menuButton.switchState();
+        else controllers.getMenuButton().switchState();
     }
 }

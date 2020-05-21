@@ -52,6 +52,7 @@ public class SplashScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
+        super.clear();
         super.render(delta);
 
         game.batch.begin();

@@ -43,9 +43,14 @@ public class AbstractScreen extends ScreenAdapter {
     }
 
     @Override
-    public void show(){                                                                     // Prima funzione chiamata
-        Gdx.input.setCatchKey(Input.Keys.BACK, true);               //evita la chiusura con bottone back
+    public void show(){
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);                   //evita la chiusura con bottone back
         Gdx.input.setInputProcessor(stage);
+    }
+
+    protected void clear(){
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     @Override
@@ -54,8 +59,6 @@ public class AbstractScreen extends ScreenAdapter {
         this.update();
 
         // Draw Render
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
         this.stage.act(delta);
         this.stage.draw();

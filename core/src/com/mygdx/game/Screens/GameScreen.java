@@ -5,14 +5,15 @@ import com.mygdx.game.AppGame;
 import com.mygdx.game.RealObjects.BounceBall;
 import com.mygdx.game.Utils.GlobalVar;
 
+import GameEntities.Controllers;
+
 public class GameScreen extends AbstractGameScreen {
 
     BounceBall ball;
 
     public GameScreen(final AppGame game){
         super(game);
-        super.freezeButtonVisible = false;
-        super.moveButtonVisible = false;
+        controllers = new Controllers(0, 0,false, false, game);
     }
 
     @Override
@@ -24,6 +25,7 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void render(float delta) {
+        super.clear();
         super.render(delta);
     }
 
@@ -44,18 +46,18 @@ public class GameScreen extends AbstractGameScreen {
     }
 
     @Override
+    protected void resumeScene() {
+        super.resumeScene();                    //gravity
+        this.ball.resumeObject();
+    }
+
+    @Override
     protected void cameraUpdate() {
         Vector3 position = camera.position;
         position.x =  0;                                          //player.getPosition().x * PPM;
         position.y = -GlobalVar.safeAreaInsetBottom;         //player.getPosition().y * PPM;
         camera.position.set(position);
         camera.update();
-    }
-
-    @Override
-    protected void resumeScene() {
-        super.resumeScene();                    //gravity
-        this.ball.resumeObject();
     }
 
     @Override
