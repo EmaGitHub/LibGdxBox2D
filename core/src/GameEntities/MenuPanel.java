@@ -28,7 +28,6 @@ public class MenuPanel extends Table {
     ShapeRenderer shapeRenderer;
     Label gameTitle;
     Skin skin;
-    private boolean closing = false;
 
     private float PPM = GlobalVar.PPM;
     private float UHM = GlobalVar.UHM;
@@ -43,6 +42,11 @@ public class MenuPanel extends Table {
 
     BitmapFont titleFont;
     BitmapFont textFont;
+
+    private float opacity = 0;
+    private boolean obscuring = false;
+    private boolean closing = false;
+    private boolean shapeClosing = false;
 
     public MenuPanel(float x, float y, final AppGame game){
 
@@ -141,7 +145,13 @@ public class MenuPanel extends Table {
         gl.glDisable(GL20.GL_BLEND);
 
         batch.begin();
-        super.draw(batch, parentAlpha);
+        super.draw(batch, this.getOpacity());
+    }
+
+    public float getOpacity(){
+        if(opacity<1 && !closing) return opacity+=0.04;
+        if(opacity>0 && closing) return opacity-=0.1;
+        return opacity;
     }
 
     public void openMenu(Stage stage){
