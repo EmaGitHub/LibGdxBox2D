@@ -93,6 +93,8 @@ public class Controllers {
     }
 
     public void draw(){
+
+        stage.setDebugAll(GlobalVar.DEBUG);
         stage.draw();
     }
 }

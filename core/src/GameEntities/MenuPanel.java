@@ -38,15 +38,14 @@ public class MenuPanel extends Table {
     private float rest;
 
     private TextButton settingsButton;
+    private TextButton debugButton;
     private TextButton exitButton;
 
     BitmapFont titleFont;
     BitmapFont textFont;
 
     private float opacity = 0;
-    private boolean obscuring = false;
     private boolean closing = false;
-    private boolean shapeClosing = false;
 
     public MenuPanel(float x, float y, final AppGame game){
 
@@ -87,6 +86,18 @@ public class MenuPanel extends Table {
         settingsButton.setLabel(new Label("Settings", textStyle));
         settingsButton.getLabel().setAlignment(Align.center);
 
+        debugButton = new TextButton("",skin,"small");
+        debugButton.setLabel(new Label("Debug", textStyle));
+        debugButton.getLabel().setAlignment(Align.center);
+        debugButton.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                GlobalVar.DEBUG = !GlobalVar.DEBUG;
+                return false;
+            }
+        });
+
+
         exitButton = new TextButton("", skin, "small");
         exitButton.setLabel(new Label("Exit", textStyle));
         exitButton.getLabel().setAlignment(Align.center);
@@ -95,11 +106,12 @@ public class MenuPanel extends Table {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(game.homeScreen);
-                return super.touchDown(event, x, y, pointer, button);
+                return false;
             }
         });
 
-        this.add(gameTitle).height(UHM).padBottom(UHM*5).row();
+        this.add(gameTitle).height(UHM).padBottom(UHM*6).row();
+        this.add(debugButton).height(2*UHM).padBottom(UHM).row();
         this.add(settingsButton).height(2*UHM).padBottom(UHM).row();
         this.add(exitButton).height(2*UHM).row();
     }
