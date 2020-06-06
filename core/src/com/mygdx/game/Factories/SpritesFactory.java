@@ -10,7 +10,7 @@ public class SpritesFactory {
     // Objects used
     private static Texture worldSheet;
 
-    public static Animation<TextureRegion> getBallFrames(){
+    public static Animation<TextureRegion> getGlobeFrames(){
         int FRAME_COLS = 9;
         int FRAME_ROWS = 8;
         // Load the sprite sheet as a Texture
@@ -32,11 +32,11 @@ public class SpritesFactory {
         return new Animation<>(0.010f, walkFrames);
     }
 
-    public static Animation<TextureRegion> getGlobeFrames(){
-        int FRAME_COLS = 9;
-        int FRAME_ROWS = 8;
+    public static Animation<TextureRegion> getTestFrames(){
+        int FRAME_COLS = 8;
+        int FRAME_ROWS = 5;
         // Load the sprite sheet as a Texture
-        worldSheet = new Texture(Gdx.files.internal("Sprites/globe.png"));
+        worldSheet = new Texture(Gdx.files.internal("Sprites/seaweed.png"));          //pref: globe-resized.png
         TextureRegion[][] tmp = TextureRegion.split(worldSheet,
                 worldSheet.getWidth() / FRAME_COLS,
                 worldSheet.getHeight() / FRAME_ROWS);
@@ -51,7 +51,7 @@ public class SpritesFactory {
             }
         }
         // Initialize the Animation with the frame interval and array of frames
-        return new Animation<>(0.010f, walkFrames);
+        return new Animation<>(0.10f, walkFrames);
     }
 
     public static Animation<TextureRegion> getSpinnerFrames(){

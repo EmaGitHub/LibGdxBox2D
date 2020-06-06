@@ -40,7 +40,7 @@ public class AbstractGameScreen extends AbstractScreen {
                     controllers.getMenu().closeMenu();
                 }
             }
-        });
+        });         //gestione controlli onScreen
         controllers.getFreezeButton().addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -83,12 +83,6 @@ public class AbstractGameScreen extends AbstractScreen {
     }
 
     @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-        controllers.resize(width, height);
-    }
-
-    @Override
     protected void listenTouchInput() {
         if(Gdx.input.isTouched() && !FREEZED && !PAUSED){
             if(firstTouch) firstTouch=false;
@@ -101,13 +95,11 @@ public class AbstractGameScreen extends AbstractScreen {
 
     protected void pauseGame() {
         this.PAUSED = true;
-        Gdx.app.log("Info", "Game in Pause");
         controllers.getMenuButton().switchState();
         if(!FREEZED)this.freezeScene();
     }
 
     protected void resumeGame(){
-        Gdx.app.log("Info", "Resume to Game");
         controllers.getMenuButton().switchState();
         this.resumeScene();
         this.PAUSED = false;
@@ -115,31 +107,26 @@ public class AbstractGameScreen extends AbstractScreen {
 
     protected void freeze() {
         this.FREEZED = true;
-        Gdx.app.log("Info", "Stage freezed");
         controllers.getFreezeButton().switchState();
         this.freezeScene();
     }
 
     protected void unfreeze() {
-        Gdx.app.log("Info", "Stage unfreezed");
         controllers.getFreezeButton().switchState();
         this.resumeScene();
         this.FREEZED = false;
     }
 
     protected void freezeScene(){
-        Gdx.app.log("Info", "Scene freezed");
         this.world.setGravity(new Vector2(0, 0));
     }
 
     protected void resumeScene(){
-        Gdx.app.log("Info", "Scene resumed");
         this.world.setGravity(new Vector2(0, -9.8f));
     }
 
     public void closeMenuCallback(){
         controllers.getMenu().remove();
-        System.out.println("Callback");
         PAUSED = false;
         if(!FREEZED) resumeGame();
         else controllers.getMenuButton().switchState();

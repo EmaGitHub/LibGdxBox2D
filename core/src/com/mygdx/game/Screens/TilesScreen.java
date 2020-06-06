@@ -4,12 +4,15 @@ import com.mygdx.game.AppGame;
 import com.mygdx.game.RealObjects.BounceBall;
 import com.mygdx.game.Utils.GlobalVar;
 
+import GameEntities.Controllers;
+
 public class TilesScreen extends AbstractGameScreenTiled {
 
     BounceBall ball;
 
     public TilesScreen(final AppGame game){
         super(game);
+        controllers = new Controllers(0, 0, game);
     }
 
     @Override

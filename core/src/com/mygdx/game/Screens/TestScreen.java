@@ -2,6 +2,7 @@ package com.mygdx.game.Screens;
 
 import com.mygdx.game.AppGame;
 import com.mygdx.game.RealObjects.BounceBall;
+import com.mygdx.game.Utils.GlobalVar;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,8 @@ public class TestScreen extends AbstractGameScreen {
     public void show(){                                             // Prima funzione chiamata
         super.show();
         this.objectFactory.createScreen3Boundaries();
+
+        this.objectFactory.createTestObject(0,0-UHM* GlobalVar.heightInUHM/2, 2*UHM);
     }
 
     @Override

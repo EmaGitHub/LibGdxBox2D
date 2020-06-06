@@ -63,10 +63,8 @@ public class AbstractScreen extends ScreenAdapter {
         this.stage.act(delta);
         this.stage.draw();
 
-
-        //if(GlobalVar.DEBUG)
-            stage.setDebugAll(GlobalVar.DEBUG);                             //Debug All
-            b2dr.render(this.world, this.camera.combined.scl(PPM));
+        stage.setDebugAll(GlobalVar.DEBUG);
+        b2dr.render(this.world, this.camera.combined.scl(PPM));
     }
 
     public void update() {

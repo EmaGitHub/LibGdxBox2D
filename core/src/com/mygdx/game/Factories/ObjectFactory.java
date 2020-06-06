@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.RealObjects.BounceBall;
 import com.mygdx.game.RealObjects.LoadingSpinner;
+import com.mygdx.game.RealObjects.Test;
 import com.mygdx.game.Utils.GlobalVar;
 
 import static com.mygdx.game.Utils.GlobalVar.screenHeight;
@@ -13,13 +14,11 @@ import static com.mygdx.game.Utils.GlobalVar.screenWidth;
 
 public class ObjectFactory {
 
-    private World world;
     private Stage stage;
     private float PPM;
     private FramesFactory frameFactory;
 
     public ObjectFactory(World world, Stage stage){
-        this.world = world;
         this.stage = stage;
         this.PPM = GlobalVar.PPM;
         this.frameFactory = new FramesFactory(world);
@@ -31,6 +30,14 @@ public class ObjectFactory {
         body.setTransform(new Vector2(x/PPM, y/PPM), 0);
         this.stage.addActor(ball);
         return ball;
+    }
+
+    public Test createTestObject(float x, float y, float diam){
+        Body body = this.frameFactory.createCircleDinamicBody(0, 0, diam);
+        Test test = new Test(body, diam);
+        body.setTransform(new Vector2(x/PPM, y/PPM), 0);
+        this.stage.addActor(test);
+        return test;
     }
 
     public LoadingSpinner createLoadingSpinner(float diam){

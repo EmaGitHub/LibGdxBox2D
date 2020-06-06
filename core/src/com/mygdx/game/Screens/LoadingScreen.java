@@ -1,10 +1,12 @@
 package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.AppGame;
 
 public class LoadingScreen extends AbstractScreen {
 
+    Timer.Task task = null;
 
     public LoadingScreen(final AppGame game){
         super(game);
@@ -14,23 +16,31 @@ public class LoadingScreen extends AbstractScreen {
     public void show(){
         super.show();
         System.out.println("Loading Screen");
+        this.objectFactory.createLoadingSpinner(3*UHM);
         this.queueAssets();
-    }
 
-    @Override
-    public void touched(){
-        //System.out.println("Touched "+touchPoint.x+", "+touchPoint.y);
+        float delay = 1; // seconds
+        if(this.task == null) this.task = new Timer.Task() {
+
+            @Override
+            public void run() {
+                game.setScreen(new GameScreen(game));
+                task.cancel();
+            }
+        };
+        else System.out.println("Task not null");
+        Timer.schedule(task, delay);
     }
 
     @Override
     public void render(float delta) {
+        clear();
         super.render(delta);
         update(delta);
     }
 
     private void update(float delta){
         if(game.assetsManager.update()){
-            game.setScreen(new GameScreen(game));
         }
     }
 

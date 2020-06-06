@@ -8,8 +8,6 @@ import com.mygdx.game.Utils.CustomOrthogonalTiledMapRenderer;
 import com.mygdx.game.Utils.GlobalVar;
 import com.mygdx.game.Utils.TiledObjectUtil;
 
-import GameEntities.Controllers;
-
 public class AbstractGameScreenTiled extends AbstractGameScreen {
 
     //Tiled Map
@@ -18,7 +16,6 @@ public class AbstractGameScreenTiled extends AbstractGameScreen {
 
     public AbstractGameScreenTiled(final AppGame game){
         super(game);
-        controllers = new Controllers(0, 0, game);
         map = new TmxMapLoader().load("Maps/test_map.tmx");
         TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("Collision-Layer").getObjects());
         tmr = new CustomOrthogonalTiledMapRenderer(map, GlobalVar.getScaleWidth(), GlobalVar.getScaleHeight());

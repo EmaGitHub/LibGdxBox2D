@@ -17,7 +17,6 @@ public class MenuButton extends Button {
     private float diameter = PPM;
     private float radius = diameter/2;
 
-    private float x, y;
     private float circleX;
     private float circleY;
     private float linesInitialX;
