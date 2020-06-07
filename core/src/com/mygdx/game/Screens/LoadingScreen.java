@@ -16,7 +16,7 @@ public class LoadingScreen extends AbstractScreen {
     public void show(){
         super.show();
         System.out.println("Loading Screen");
-        this.objectFactory.createLoadingSpinner(3*UHM);
+        this.objectFactory.createLoadingSpinner(5*UHM);
         this.queueAssets();
 
         float delay = 1; // seconds

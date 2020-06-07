@@ -45,6 +45,12 @@ public class HomeScreen extends AbstractScreen {
         table.add(exitButton).height(UHM).padBottom(PPM/2).row();
     }
 
+    @Override
+    public void show(){
+        super.show();
+        stage.addActor(table);
+    }
+
     private void createScreenContent(){
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Griffin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -155,12 +161,6 @@ public class HomeScreen extends AbstractScreen {
                 Gdx.app.exit();
             }
         });
-    }
-
-    @Override
-    public void show(){
-        super.show();
-        stage.addActor(table);
     }
 
     @Override

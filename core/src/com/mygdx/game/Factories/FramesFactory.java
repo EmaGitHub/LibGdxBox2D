@@ -39,7 +39,7 @@ public class FramesFactory {
         Body pBody;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(x/2/PPM, y/2/PPM);
+        bodyDef.position.set(x/PPM, y/PPM);
         bodyDef.fixedRotation = false;
         pBody = world.createBody(bodyDef);
 

@@ -1,7 +1,5 @@
 package com.mygdx.game.Screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -22,6 +20,8 @@ public class AbstractGameScreen extends AbstractScreen {
 
     @Override
     public void show(){
+        super.show();
+        super.inputMultiplexer.addProcessor(controllers.getStage());
         controllers.getMenuButton().addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -71,9 +71,6 @@ public class AbstractGameScreen extends AbstractScreen {
                 if(FREEZED && !PAUSED) unfreeze();
             }
         });
-        InputMultiplexer multiplexer = new InputMultiplexer();              // Input check
-        Gdx.input.setInputProcessor(multiplexer);
-        multiplexer.addProcessor(controllers.getStage());
     }
 
     @Override
@@ -84,12 +81,8 @@ public class AbstractGameScreen extends AbstractScreen {
 
     @Override
     protected void listenTouchInput() {
-        if(Gdx.input.isTouched() && !FREEZED && !PAUSED){
-            if(firstTouch) firstTouch=false;
-            else {
-                camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-                touched();
-            }
+        if(!FREEZED && !PAUSED){
+            super.listenTouchInput();
         }
     }
 

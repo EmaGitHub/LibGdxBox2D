@@ -25,11 +25,6 @@ public class RootScreen extends AbstractGameScreen {
     }
 
     @Override
-    public void touched(){
-        //System.out.println("Touched "+touchPoint.x+", "+touchPoint.y);
-    }
-
-    @Override
     public void hide(){
         super.hide();
     }

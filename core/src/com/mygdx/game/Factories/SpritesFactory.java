@@ -73,6 +73,6 @@ public class SpritesFactory {
             }
         }
         // Initialize the Animation with the frame interval and array of frames
-        return new Animation<>(0.05f, walkFrames);
+        return new Animation<>(0.06f, walkFrames);
     }
 }

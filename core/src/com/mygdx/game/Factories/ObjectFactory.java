@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.mygdx.game.RealObjects.Board;
 import com.mygdx.game.RealObjects.BounceBall;
 import com.mygdx.game.RealObjects.LoadingSpinner;
 import com.mygdx.game.RealObjects.Test;
@@ -30,6 +31,22 @@ public class ObjectFactory {
         body.setTransform(new Vector2(x/PPM, y/PPM), 0);
         this.stage.addActor(ball);
         return ball;
+    }
+
+    public Board createBoardObject(float x, float y, float xFin, float yFin){
+
+        float ord = yFin-y;
+        float asc = xFin-x;
+        if (ord == 0 && asc == 0) return null;
+        float ipo = (float)Math.sqrt(Math.pow(ord, 2) + Math.pow(asc, 2));
+
+        float angle = asc > 0 ? (float)Math.asin(ord/ipo) : -(float)Math.asin(ord/ipo);
+        Body body = this.frameFactory.createRectStaticBody(x, y, ipo, PPM/4);
+        Board board = new Board(body, 3*PPM);
+
+        body.setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
+        this.stage.addActor(board);
+        return board;
     }
 
     public Test createTestObject(float x, float y, float diam){

@@ -2,6 +2,7 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -26,18 +27,26 @@ public class AbstractScreen extends ScreenAdapter {
     protected float UHM;
 
     protected ObjectFactory objectFactory;
-    protected Vector3 touchPoint;
-    protected boolean firstTouch = true;
+
+    InputMultiplexer inputMultiplexer;
+    protected InputProcessorScreen inputProcessorScreen;
+    protected Boolean justTouched = true;
+    protected Vector3 touchPointDown;
+    protected Vector3 touchPointUp;
 
     public AbstractScreen(final AppGame game){
         this.game = game;
         this.PPM = GlobalVar.PPM;
         this.UHM = GlobalVar.UHM;
         this.camera = game.camera;
-
         world = new World(new Vector2(0, -9.8f), false);    	//-9.8f
         stage = new Stage(game.viewport, game.batch);
-        touchPoint = new Vector3();
+
+        inputMultiplexer = new InputMultiplexer();
+        inputProcessorScreen = new InputProcessorScreen(this);
+        touchPointDown = new Vector3();
+        touchPointUp = new Vector3();
+
         b2dr = new Box2DDebugRenderer();
         objectFactory = new ObjectFactory(this.world, this.stage);
     }
@@ -45,7 +54,9 @@ public class AbstractScreen extends ScreenAdapter {
     @Override
     public void show(){
         Gdx.input.setCatchKey(Input.Keys.BACK, true);                   //evita la chiusura con bottone back
-        Gdx.input.setInputProcessor(stage);
+        inputMultiplexer.addProcessor(inputProcessorScreen);
+        inputMultiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     protected void clear(){
@@ -85,21 +96,30 @@ public class AbstractScreen extends ScreenAdapter {
 
     @Override
     public void resize (int width, int height){
-        game.viewport.update((int)(width), (int)(height));
+        game.viewport.update((width), (height));
         camera.setToOrtho(false, width, height);
     }
 
     protected void listenTouchInput(){
         if(Gdx.input.isTouched()){
-            if(firstTouch) firstTouch=false;
-            else {
-                camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-                touched();
+            if(justTouched) {
+                justTouched = false;
+                //System.out.println("TOUCH DOWN IN ABSTRACT SCREEN "+Gdx.input.getX()+", "+Gdx.input.getY());
+                camera.unproject(touchPointDown.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             }
+            camera.unproject(touchPointUp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+            touched();
         }
     }
 
+    public void touchUp(){
+        this.touchEnd();
+        justTouched = true;
+    }
+
     protected void touched(){ }
+
+    protected void touchEnd(){ }
 
     protected void cameraUpdate() {
         Vector3 position = camera.position;
