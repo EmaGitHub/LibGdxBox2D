@@ -13,6 +13,10 @@ public class Object extends Actor {
         this.body = body;
     }
 
+    public Vector2 getPosition(){
+        return this.body.getPosition();
+    }
+
     public void freezeObject(){
         this.velocity = this.body.getLinearVelocity().cpy();
         this.body.setLinearVelocity(new Vector2(0f, 0f));
@@ -20,5 +24,9 @@ public class Object extends Actor {
 
     public void resumeObject(){
         this.body.setLinearVelocity(this.velocity.set(velocity.x, velocity.y));
+    }
+
+    public Body getBody() {
+        return body;
     }
 }

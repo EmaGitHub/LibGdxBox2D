@@ -98,6 +98,7 @@ public class AbstractScreen extends ScreenAdapter {
     public void resize (int width, int height){
         game.viewport.update((width), (height));
         camera.setToOrtho(false, width, height);
+        camera.zoom = 1;
     }
 
     protected void listenTouchInput(){

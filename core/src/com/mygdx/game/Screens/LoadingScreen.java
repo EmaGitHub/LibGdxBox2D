@@ -3,6 +3,7 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.AppGame;
+import com.mygdx.game.Screens.GameScreens.GameScreenFlowUp;
 
 public class LoadingScreen extends AbstractScreen {
 
@@ -24,7 +25,7 @@ public class LoadingScreen extends AbstractScreen {
 
             @Override
             public void run() {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreenFlowUp(game));
                 task.cancel();
             }
         };

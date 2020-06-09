@@ -1,10 +1,10 @@
-package com.mygdx.game.Screens;
+package com.mygdx.game.Screens.GameScreens;
 
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.AppGame;
 import com.mygdx.game.RealObjects.Board;
 import com.mygdx.game.RealObjects.BounceBall;
-import com.mygdx.game.Utils.GlobalVar;
+import com.mygdx.game.Screens.AbstractGameScreen;
 
 import GameEntities.Controllers;
 
@@ -15,7 +15,7 @@ public class GameScreen extends AbstractGameScreen {
 
     public GameScreen(final AppGame game){
         super(game);
-        controllers = new Controllers(0, 0,false, false, game);
+        controllers = new Controllers(0, 0,true, false, game);
     }
 
     @Override
@@ -23,6 +23,7 @@ public class GameScreen extends AbstractGameScreen {
         super.show();
         this.objectFactory.createScreen3Boundaries();
         this.ball = this.objectFactory.createBounceBallObject(PPM, 5*UHM, PPM);
+
     }
 
     @Override
@@ -33,15 +34,14 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void touched(){
-        //System.out.println("Touched "+touchPointDown.x+", "+touchPointDown.y+" to "+touchPointUp.x+", "+touchPointUp.y);
+        this.board = this.objectFactory.createBoardObject(touchPointDown.x, touchPointDown.y,
+                touchPointUp.x, touchPointUp.y);
     }
 
     @Override
     protected void touchEnd() {
 //        System.out.println("Touch end TOUCH START: "+touchPointDown.x+", "+touchPointDown.y
 //                +" TOUCH END: "+touchPointUp.x+", "+touchPointUp.y);
-        this.board = this.objectFactory.createBoardObject(touchPointDown.x, touchPointDown.y,
-                touchPointUp.x, touchPointUp.y);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class GameScreen extends AbstractGameScreen {
     protected void cameraUpdate() {
         Vector3 position = camera.position;
         position.x =  0;                                          //player.getPosition().x * PPM;
-        position.y = -GlobalVar.safeAreaInsetBottom;         //player.getPosition().y * PPM;
+        position.y =  this.ball.getY(); // - GlobalVar.safeAreaInsetBottom + this.ball.checkCameraBounds();
         camera.position.set(position);
         camera.update();
     }

@@ -14,9 +14,28 @@ public class FramesFactory {
     static World world;
     private float PPM = GlobalVar.PPM;
 
+    private Body boardBody;
+
     public FramesFactory(World world){
 
         this.world = world;
+    }
+
+    public Body getBoardBody(float x, float y, float width, float height){
+
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(x/PPM, y/PPM);
+        bodyDef.fixedRotation = true;
+        if (boardBody != null) world.destroyBody(boardBody);
+        boardBody = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(width/2/PPM, height/2/PPM );				//calcolato dal punto centrale
+
+        boardBody.createFixture(shape, 1.0f);
+        shape.dispose();
+        return boardBody;
     }
 
     public Body createRectStaticBody(float x, float y, float width, float height){
@@ -50,7 +69,7 @@ public class FramesFactory {
         FixtureDef circleFixture = new FixtureDef();
         circleFixture.shape = shape;
         circleFixture.density=1.0f;
-        circleFixture.restitution = 0.8f;       //0,8f
+        circleFixture.restitution = 1.1f;       //0.8f
         circleFixture.friction=0.6f;
         pBody.createFixture(circleFixture);
 

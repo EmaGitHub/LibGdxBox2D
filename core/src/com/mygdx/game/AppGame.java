@@ -40,6 +40,7 @@ public class AppGame extends Game {
 		// Screen aspect ratio definition
 		float PPM = screenWidth / GlobalVar.widthInPPM;
 		GlobalVar.PPM = PPM;
+		System.out.println("PPM: "+PPM);
 		GlobalVar.UHM = screenHeight / GlobalVar.heightInUHM;
 		System.out.println("Display aspect ratio: 12 x "+screenHeight / GlobalVar.PPM+ " " +
 				"\nScale width: "+GlobalVar.getScaleWidth()+ ", Scale height: "+GlobalVar.getScaleHeight());

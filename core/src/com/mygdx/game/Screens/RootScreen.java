@@ -16,7 +16,7 @@ public class RootScreen extends AbstractGameScreen {
     @Override
     public void show(){                                             // Prima funzione chiamata
         super.show();
-        this.objectFactory.createScreen2Boundaries();
+        this.objectFactory.createScreen2Boundaries(0, 0);
         System.out.println("Root Screen");
 
         LineContainer oc = new LineContainer(0*PPM, -5*UHM, 5*PPM);

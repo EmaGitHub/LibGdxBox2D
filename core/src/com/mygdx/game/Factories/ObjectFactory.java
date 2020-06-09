@@ -19,6 +19,8 @@ public class ObjectFactory {
     private float PPM;
     private FramesFactory frameFactory;
 
+    private Board board;
+
     public ObjectFactory(World world, Stage stage){
         this.stage = stage;
         this.PPM = GlobalVar.PPM;
@@ -41,11 +43,11 @@ public class ObjectFactory {
         float ipo = (float)Math.sqrt(Math.pow(ord, 2) + Math.pow(asc, 2));
 
         float angle = asc > 0 ? (float)Math.asin(ord/ipo) : -(float)Math.asin(ord/ipo);
-        Body body = this.frameFactory.createRectStaticBody(x, y, ipo, PPM/4);
-        Board board = new Board(body, 3*PPM);
+        Body boardBody = this.frameFactory.getBoardBody(x, y, ipo, PPM/4);
+        if (this.board == null) this.board = new Board(boardBody, 3*PPM);
 
-        body.setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
-        this.stage.addActor(board);
+        boardBody.setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
+        if(board.getStage() == null) this.stage.addActor(board);
         return board;
     }
 
@@ -67,9 +69,9 @@ public class ObjectFactory {
         this.frameFactory.createRectStaticBody(screenWidth/2, -1, screenWidth, 1);
     }
 
-    public void createScreen2Boundaries(){
-        this.frameFactory.createRectStaticBody(PPM*-6-1, PPM*0, 1, screenHeight);
-        this.frameFactory.createRectStaticBody(PPM*6+1, PPM*0, 1, screenHeight);
+    public void createScreen2Boundaries(float x, float y){
+        this.frameFactory.createRectStaticBody(PPM*-6-1, y, 1, screenHeight);
+        this.frameFactory.createRectStaticBody(PPM*6+1, y, 1, screenHeight);
     }
 
     public void createScreen3Boundaries(){
