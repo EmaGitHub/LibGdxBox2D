@@ -81,7 +81,7 @@ public class AbstractGameScreen extends AbstractScreen {
 
     @Override
     protected void listenTouchInput() {
-        if(!FREEZED && !PAUSED){
+        if(!PAUSED){
             super.listenTouchInput();
         }
     }

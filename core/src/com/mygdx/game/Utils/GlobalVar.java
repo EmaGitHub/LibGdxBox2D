@@ -8,10 +8,12 @@ public final class GlobalVar {
     public static float heightInUHM = 20;
     public static float UHM;
 
+    public static float boardHeight;
+
     public static float safeAreaInsetTop;
     public static float safeAreaInsetBottom;
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     public static float getScaleWidth(){ return widthInPPM*PPM/360f; }
     public static float getScaleHeight(){ return heightInUHM*UHM/640f; }

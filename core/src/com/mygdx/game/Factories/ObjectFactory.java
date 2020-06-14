@@ -1,5 +1,6 @@
 package com.mygdx.game.Factories;
 
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -17,14 +18,18 @@ public class ObjectFactory {
 
     private Stage stage;
     private float PPM;
-    private FramesFactory frameFactory;
+    private BodyFactory frameFactory;
 
+    private float halfWidth = screenWidth/2;
+    private float haltHeight = screenHeight/2;
     private Board board;
 
     public ObjectFactory(World world, Stage stage){
         this.stage = stage;
         this.PPM = GlobalVar.PPM;
-        this.frameFactory = new FramesFactory(world);
+        this.frameFactory = new BodyFactory(world);
+
+        GlobalVar.boardHeight = PPM/4;
     }
 
     public BounceBall createBounceBallObject(float x, float y, float diam){
@@ -43,8 +48,40 @@ public class ObjectFactory {
         float ipo = (float)Math.sqrt(Math.pow(ord, 2) + Math.pow(asc, 2));
 
         float angle = asc > 0 ? (float)Math.asin(ord/ipo) : -(float)Math.asin(ord/ipo);
-        Body boardBody = this.frameFactory.getBoardBody(x, y, ipo, PPM/4);
-        if (this.board == null) this.board = new Board(boardBody, 3*PPM);
+        Body boardBody = this.frameFactory.getBoardBody(x, y, ipo, GlobalVar.boardHeight);
+        if (this.board == null) this.board = new Board(boardBody);
+
+        float boardHalfMisure = GlobalVar.boardHeight/2 / PPM;
+        float boardExtension = (asc > 0)? x+ipo : x-ipo;
+
+        Polygon polygon = new Polygon(new float[]{x/PPM, y/PPM - boardHalfMisure,
+                                                    boardExtension/PPM, y/PPM - boardHalfMisure,
+                                                    boardExtension/PPM, y/PPM + boardHalfMisure,
+                                                     x/PPM, y/PPM + boardHalfMisure});
+        polygon.setOrigin(x/PPM, y/PPM);
+        double d = Math.toDegrees(angle);
+        polygon.rotate((float)d);
+
+        board.setPolygon(polygon);
+
+
+        boardBody.setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
+        if(board.getStage() == null) this.stage.addActor(board);
+        return board;
+    }
+
+
+
+    public Board createTableObject(float x, float y, float xFin, float yFin){
+
+        float ord = yFin-y;
+        float asc = xFin-x;
+        if (ord == 0 && asc == 0) return null;
+        float ipo = (float)Math.sqrt(Math.pow(ord, 2) + Math.pow(asc, 2));
+
+        float angle = asc > 0 ? (float)Math.asin(ord/ipo) : -(float)Math.asin(ord/ipo);
+        Body boardBody = this.frameFactory.getTableBody(x, y, ipo, PPM/4);
+        Board board = new Board(boardBody);
 
         boardBody.setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
         if(board.getStage() == null) this.stage.addActor(board);

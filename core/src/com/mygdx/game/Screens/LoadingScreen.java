@@ -16,7 +16,6 @@ public class LoadingScreen extends AbstractScreen {
     @Override
     public void show(){
         super.show();
-        System.out.println("Loading Screen");
         this.objectFactory.createLoadingSpinner(5*UHM);
         this.queueAssets();
 

@@ -12,6 +12,7 @@ public class GameScreen extends AbstractGameScreen {
 
     BounceBall ball;
     Board board;
+    Board testBoard;
 
     public GameScreen(final AppGame game){
         super(game);
@@ -34,8 +35,9 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void touched(){
-        this.board = this.objectFactory.createBoardObject(touchPointDown.x, touchPointDown.y,
+        this.testBoard = this.objectFactory.createBoardObject(touchPointDown.x, touchPointDown.y,
                 touchPointUp.x, touchPointUp.y);
+        this.board = board;
     }
 
     @Override

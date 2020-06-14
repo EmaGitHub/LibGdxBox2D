@@ -41,8 +41,8 @@ public class Controllers {
 
         menu = new MenuPanel(x, y, game);
         menuButton = new MenuButton(x, y);
-        freezeButton = new FreezeButton(x+4*PPM, y-GlobalVar.heightInUHM*UHM/2);
-        moveButton = new MoveButton(-6*PPM, -GlobalVar.heightInUHM*UHM/2);
+        freezeButton = new FreezeButton(-6*PPM, -GlobalVar.heightInUHM*UHM/2);
+        moveButton = new MoveButton(x+4*PPM, y-GlobalVar.heightInUHM*UHM/2);
         scoreBoard = new ScoreBoard(0, GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
 
         stage.addActor(scoreBoard);
