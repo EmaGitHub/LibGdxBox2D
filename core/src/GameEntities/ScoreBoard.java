@@ -23,7 +23,7 @@ public class ScoreBoard extends Actor {
 
     private ShapeRenderer shapeRenderer;
 
-    private int score = 0;
+    private float score = 1.00f;
 
     public ScoreBoard(float x, float y) {
 
@@ -49,7 +49,7 @@ public class ScoreBoard extends Actor {
         scoreValue.setSize(3*PPM, PPM);
         scoreValue.setPosition(x-4*PPM, y);
         scoreValue.setAlignment(Align.right);
-        this.scoreValue.setText(score);
+        this.scoreValue.setText(String.valueOf(score));
     }
 
     public void draw(Batch batch, float parentAlpha) {
@@ -72,8 +72,8 @@ public class ScoreBoard extends Actor {
         this.scoreValue.draw(batch, parentAlpha);
     }
 
-    public void updateValue(int value){
+    public void updateValue(float value){
         this.score = value;
-        this.scoreValue.setText(value);
+        this.scoreValue.setText(String.valueOf(value));
     }
 }

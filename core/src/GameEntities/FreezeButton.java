@@ -72,7 +72,5 @@ public class FreezeButton extends Button {
         batch.begin();
     }
 
-    public void switchState(){
-        this.gameInPause = !this.gameInPause;
-    }
+    public void switchState(){ this.gameInPause = !this.gameInPause; }
 }

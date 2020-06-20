@@ -1,5 +1,7 @@
 package com.mygdx.game.Screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -71,6 +73,15 @@ public class AbstractGameScreen extends AbstractScreen {
                 if(FREEZED && !PAUSED) unfreeze();
             }
         });
+    }
+
+    @Override
+    protected void inputUpdate() {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            if (!FREEZED && !PAUSED) this.freeze();
+            else if(FREEZED && !PAUSED) unfreeze();
+        }
+        super.inputUpdate();
     }
 
     @Override

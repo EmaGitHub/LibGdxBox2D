@@ -1,5 +1,7 @@
 package com.mygdx.game.Screens.GameScreens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -51,15 +53,15 @@ public class GameScreenFlowUp extends AbstractGameScreen {
         this.objectFactory.createScreen2Boundaries(0, UHM*10);
         this.ball = this.objectFactory.createBounceBallObject(0, 1*UHM, PPM);
 
-        this.board = this.objectFactory.createBoardObject(-2*PPM, -8*UHM, 2*PPM, -8*UHM);
+        this.trajectoryActor = new TrajectoryActor(this.objectFactory);
+
+        this.board = this.objectFactory.createBoardObject(-2*PPM, -8*UHM, 2*PPM, -8*UHM, 1.0f);
 
         this.objectFactory.createTableObject(-6*PPM, 6*UHM, -4*PPM, 6*UHM);
         this.objectFactory.createTableObject(2*PPM, 6*UHM, 6*PPM, 6*UHM);
         this.objectFactory.createTableObject(-6*PPM, 13*UHM, 0*UHM, 13*UHM);
         this.objectFactory.createTableObject(3*PPM, 13*UHM, 6*PPM, 13*UHM);
         this.objectFactory.createTableObject(-4*PPM, 20*UHM, 6*PPM, 20*UHM);
-
-        this.trajectoryActor = new TrajectoryActor();
     }
 
     public TrajectoryActor getTrajectoryActor(){
@@ -76,51 +78,67 @@ public class GameScreenFlowUp extends AbstractGameScreen {
             this.objectFactory.createScreen2Boundaries(0, this.topBound * UHM + 20 * UHM);
             this.topBound += 20;
         }
-
-
+        // disegno polygon board
         shapeRenderer.setColor(Color.CYAN);
         shapeRenderer.setProjectionMatrix(this.camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         if(this.board.getPolygon() != null) {
-
-            //System.out.println("DRAW BOARD POLYGON (vertices: "+Arrays.toString(this.getPolygon().getVertices()));
             shapeRenderer.polygon(this.board.getPolygon().getTransformedVertices());
         }
         shapeRenderer.end();
-
     }
-
-
 
     @Override
     public void touched(){
         Board board = this.objectFactory.createBoardObject(touchPointDown.x, touchPointDown.y,
-                touchPointUp.x, touchPointUp.y);
+                touchPointUp.x, touchPointUp.y, this.controllers.getRestitution());
         if(board != null) {
-            //System.out.println("BOARD CREATED != NULL "+board);
             this.board = board;
-            if(this.trajectoryActor != null) this.trajectoryActor.setBoard(this.board);
+            if(this.trajectoryActor != null) {
+                this.trajectoryActor.setBoard(this.board);
+                this.trajectoryActor.setBounceTrajectorySetted(false);
+            }
         }
     }
 
     @Override
-    protected void touchEnd() { }
+    protected void touchEnd() {
+    }
+
+    protected void inputUpdate() {
+        super.inputUpdate();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            this.controllers.setRestitution(this.controllers.getRestitution()+0.02f);
+            this.board.setBoardRestitution(this.controllers.getRestitution());
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+            this.controllers.setRestitution(this.controllers.getRestitution()-0.02f);
+            this.board.setBoardRestitution(this.controllers.getRestitution());
+        }
+    }
 
     @Override
     protected void freezeScene() {
 
-        System.out.println("FREEZE "+this.board);
-        this.trajectoryActor = new TrajectoryActor();
+        //System.out.println("FREEZE ");
+        this.trajectoryActor = new TrajectoryActor(this.objectFactory);
         if(this.board != null) {
-            //System.out.println("IN FREEZE CALL SET BOARD "+this.board);
             this.trajectoryActor.setBoard(this.board);
         }
         this.stage.addActor(this.trajectoryActor);
-        this.trajectoryActor.setStartPoint(new Vector2(this.ball.getBody().getPosition().x, this.ball.getBody().getPosition().y));
-        this.trajectoryActor.setStartVelocity(new Vector2(this.ball.getBody().getLinearVelocity().x, this.ball.getBody().getLinearVelocity().y));
+        this.trajectoryActor.setStartPoint(new Vector2(this.ball.getBody().getPosition()));
+        this.trajectoryActor.setStartVelocity(new Vector2(this.ball.getBody().getLinearVelocity()));
 
+//        BounceBall b = this.objectFactory.createBounceBallObject(this.ball.getBody().getPosition().x*PPM,
+//                                                this.ball.getBody().getPosition().y*PPM, PPM, true);
+//        b.getBody().setLinearVelocity(this.ball.getBody().getLinearVelocity());
         super.freezeScene();                    //gravity
         this.ball.freezeObject();
+    }
+
+
+    public void update() {
+        super.update();
     }
 
     @Override

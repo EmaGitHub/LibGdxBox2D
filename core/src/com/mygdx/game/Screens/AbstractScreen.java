@@ -39,8 +39,10 @@ public class AbstractScreen extends ScreenAdapter {
         this.PPM = GlobalVar.PPM;
         this.UHM = GlobalVar.UHM;
         this.camera = game.camera;
+
         world = new World(new Vector2(0, -9.8f), false);    	//-9.8f
         stage = new Stage(game.viewport, game.batch);
+        objectFactory = new ObjectFactory(this.world, this.stage);
 
         inputMultiplexer = new InputMultiplexer();
         inputProcessorScreen = new InputProcessorScreen(this);
@@ -48,7 +50,6 @@ public class AbstractScreen extends ScreenAdapter {
         touchPointUp = new Vector3();
 
         b2dr = new Box2DDebugRenderer();
-        objectFactory = new ObjectFactory(this.world, this.stage);
     }
 
     @Override
@@ -98,7 +99,7 @@ public class AbstractScreen extends ScreenAdapter {
     public void resize (int width, int height){
         game.viewport.update((width), (height));
         camera.setToOrtho(false, width, height);
-        camera.zoom = 1;
+        camera.zoom = 1f;
     }
 
     protected void listenTouchInput(){

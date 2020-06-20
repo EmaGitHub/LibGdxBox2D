@@ -9,10 +9,6 @@ public class Object extends Actor {
     protected Body body;
     private Vector2 velocity;
 
-    public Object(Body body){
-        this.body = body;
-    }
-
     public Vector2 getPosition(){
         return this.body.getPosition();
     }
@@ -26,7 +22,7 @@ public class Object extends Actor {
         this.body.setLinearVelocity(this.velocity.set(velocity.x, velocity.y));
     }
 
-    public Body getBody() {
-        return body;
-    }
+    public void setBody(Body body) {this.body = body;}
+
+    public Body getBody() { return body; }
 }

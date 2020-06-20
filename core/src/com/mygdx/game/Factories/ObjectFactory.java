@@ -3,6 +3,7 @@ package com.mygdx.game.Factories;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.RealObjects.Board;
@@ -17,30 +18,28 @@ import static com.mygdx.game.Utils.GlobalVar.screenWidth;
 public class ObjectFactory {
 
     private Stage stage;
+    private Stage bounceStage;
     private float PPM;
-    private BodyFactory frameFactory;
+    private BodyFactory bodyFactory;
 
-    private float halfWidth = screenWidth/2;
-    private float haltHeight = screenHeight/2;
     private Board board;
 
     public ObjectFactory(World world, Stage stage){
         this.stage = stage;
         this.PPM = GlobalVar.PPM;
-        this.frameFactory = new BodyFactory(world);
-
+        this.bodyFactory = new BodyFactory(world);
         GlobalVar.boardHeight = PPM/4;
     }
 
     public BounceBall createBounceBallObject(float x, float y, float diam){
-        Body body = this.frameFactory.createCircleDinamicBody(0, 0, diam);
+        Body body = this.bodyFactory.createCircleDinamicBody(0, 0, diam);
         BounceBall ball = new BounceBall(body, diam);
         body.setTransform(new Vector2(x/PPM, y/PPM), 0);
         this.stage.addActor(ball);
         return ball;
     }
 
-    public Board createBoardObject(float x, float y, float xFin, float yFin){
+    public Board createBoardObject(float x, float y, float xFin, float yFin, float restitution){
 
         float ord = yFin-y;
         float asc = xFin-x;
@@ -48,29 +47,40 @@ public class ObjectFactory {
         float ipo = (float)Math.sqrt(Math.pow(ord, 2) + Math.pow(asc, 2));
 
         float angle = asc > 0 ? (float)Math.asin(ord/ipo) : -(float)Math.asin(ord/ipo);
-        Body boardBody = this.frameFactory.getBoardBody(x, y, ipo, GlobalVar.boardHeight);
-        if (this.board == null) this.board = new Board(boardBody);
 
-        float boardHalfMisure = GlobalVar.boardHeight/2 / PPM;
+        if (this.board == null) { this.board = new Board(); }
+        FixtureDef fixture = this.board.getFixture();
+        Body boardBody = this.bodyFactory.getBoardBody(x, y, fixture);
+        this.board.setWidth(ipo);
+        this.board.setHeight(GlobalVar.boardHeight);
+        boardBody.setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
+
+        this.board.setBody(boardBody);
+        this.board.setBoardRestitution(restitution);
+
+        float boardHalfMisure = (GlobalVar.boardHeight + PPM)   /2   /PPM;
         float boardExtension = (asc > 0)? x+ipo : x-ipo;
 
-        Polygon polygon = new Polygon(new float[]{x/PPM, y/PPM - boardHalfMisure,
-                                                    boardExtension/PPM, y/PPM - boardHalfMisure,
-                                                    boardExtension/PPM, y/PPM + boardHalfMisure,
-                                                     x/PPM, y/PPM + boardHalfMisure});
+        Polygon polygon = asc > 0 ? new Polygon(new float[]{(x-PPM/3)/PPM, y/PPM - boardHalfMisure,
+                                                    (boardExtension + PPM/3)/PPM, y/PPM - boardHalfMisure,
+                                                    (boardExtension + PPM/3)/PPM, y/PPM + boardHalfMisure,
+                                                     (x-PPM/3)/PPM, y/PPM + boardHalfMisure}) :
+                                    new Polygon(new float[]{(x+PPM/3)/PPM, y/PPM - boardHalfMisure,
+                                                    (boardExtension - PPM/3)/PPM, y/PPM - boardHalfMisure,
+                                                    (boardExtension - PPM/3)/PPM, y/PPM + boardHalfMisure,
+                                                    (x+PPM/3)/PPM, y/PPM + boardHalfMisure});
+
         polygon.setOrigin(x/PPM, y/PPM);
         double d = Math.toDegrees(angle);
+        this.board.setAngle(d);
         polygon.rotate((float)d);
 
         board.setPolygon(polygon);
 
-
-        boardBody.setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
         if(board.getStage() == null) this.stage.addActor(board);
+
         return board;
     }
-
-
 
     public Board createTableObject(float x, float y, float xFin, float yFin){
 
@@ -80,16 +90,17 @@ public class ObjectFactory {
         float ipo = (float)Math.sqrt(Math.pow(ord, 2) + Math.pow(asc, 2));
 
         float angle = asc > 0 ? (float)Math.asin(ord/ipo) : -(float)Math.asin(ord/ipo);
-        Body boardBody = this.frameFactory.getTableBody(x, y, ipo, PPM/4);
-        Board board = new Board(boardBody);
+        Body tableBody = this.bodyFactory.getTableBody(x, y, ipo, PPM/4);
+        Board table = new Board();
+        table.setBody(tableBody);
 
-        boardBody.setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
+        tableBody.setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
         if(board.getStage() == null) this.stage.addActor(board);
         return board;
     }
 
     public Test createTestObject(float x, float y, float diam){
-        Body body = this.frameFactory.createCircleDinamicBody(0, 0, diam);
+        Body body = this.bodyFactory.createCircleDinamicBody(0, 0, diam);
         Test test = new Test(body, diam);
         body.setTransform(new Vector2(x/PPM, y/PPM), 0);
         this.stage.addActor(test);
@@ -103,25 +114,25 @@ public class ObjectFactory {
     }
 
     public void createScreen1BoundaryTiledWorld(){
-        this.frameFactory.createRectStaticBody(screenWidth/2, -1, screenWidth, 1);
+        this.bodyFactory.createRectStaticBody(screenWidth/2, -1, screenWidth, 1);
     }
 
     public void createScreen2Boundaries(float x, float y){
-        this.frameFactory.createRectStaticBody(PPM*-6-1, y, 1, screenHeight);
-        this.frameFactory.createRectStaticBody(PPM*6+1, y, 1, screenHeight);
+        this.bodyFactory.createRectStaticBody(PPM*-6-1, y, 1, screenHeight);
+        this.bodyFactory.createRectStaticBody(PPM*6+1, y, 1, screenHeight);
     }
 
     public void createScreen3Boundaries(){
-        this.frameFactory.createRectStaticBody(PPM*-6-1, PPM*0, 1, screenHeight);
-        this.frameFactory.createRectStaticBody(PPM*6+1, PPM*0, 1, screenHeight);
-        this.frameFactory.createRectStaticBody(PPM*0, -screenHeight/2-1, screenWidth, 1);
+        this.bodyFactory.createRectStaticBody(PPM*-6-1, PPM*0, 1, screenHeight);
+        this.bodyFactory.createRectStaticBody(PPM*6+1, PPM*0, 1, screenHeight);
+        this.bodyFactory.createRectStaticBody(PPM*0, -screenHeight/2-1, screenWidth, 1);
     }
 
     public void createScreen4Boundaries(){
-        this.frameFactory.createRectStaticBody(PPM*-6-1, PPM*0, 1, screenHeight);       //x-1
-        this.frameFactory.createRectStaticBody(PPM*6+1, PPM*0, 1, screenHeight);        //x+1
-        this.frameFactory.createRectStaticBody(PPM*0, -screenHeight/2-1-2*PPM, screenHeight, 4*PPM);      //y-1
-        this.frameFactory.createRectStaticBody(PPM*0, screenHeight/2+1+2, screenHeight, 1);       //y+1
+        this.bodyFactory.createRectStaticBody(PPM*-6-1, PPM*0, 1, screenHeight);       //x-1
+        this.bodyFactory.createRectStaticBody(PPM*6+1, PPM*0, 1, screenHeight);        //x+1
+        this.bodyFactory.createRectStaticBody(PPM*0, -screenHeight/2-1-2*PPM, screenHeight, 4*PPM);      //y-1
+        this.bodyFactory.createRectStaticBody(PPM*0, screenHeight/2+1+2, screenHeight, 1);       //y+1
     }
 
 }

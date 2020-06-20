@@ -22,7 +22,8 @@ public class BounceBall extends Object{
     private boolean PAUSED;
 
     public BounceBall(Body body, float diam){
-        super(body);
+        super();
+        super.setBody(body);
         stateTime = 0f;
         this.diam = diam;
         this.rad = diam/2;
@@ -37,6 +38,12 @@ public class BounceBall extends Object{
                 body.getPosition().y*PPM - rad,
                 diam, diam);
     }
+
+//    @Override
+//    public Actor hit(float x, float y, boolean touchable) {
+//        System.out.println("HIT "+this.body.getLinearVelocity());
+//        return super.hit(x, y, touchable);
+//    }
 
     @Override
     public void act(float delta) {

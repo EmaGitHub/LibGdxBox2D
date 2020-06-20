@@ -22,7 +22,8 @@ public class Test extends Object{
     private boolean PAUSED;
 
     public Test(Body body, float diam){
-        super(body);
+        super();
+        super.setBody(body);
         stateTime = 0f;
         this.diam = diam;
         this.rad = diam/2;

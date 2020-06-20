@@ -9,6 +9,7 @@ public final class GlobalVar {
     public static float UHM;
 
     public static float boardHeight;
+    public static int boardCreated;
 
     public static float safeAreaInsetTop;
     public static float safeAreaInsetBottom;

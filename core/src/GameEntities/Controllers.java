@@ -28,6 +28,9 @@ public class Controllers {
     private MenuPanel menu;
     private FreezeButton freezeButton;
     private MoveButton moveButton;
+    private ForceRange forceRange;
+
+    Float restitution = 1.0f;
 
     public Controllers(float relativeX, float relativeY, boolean freezeButtonVisible, boolean moveButtonVisible, AppGame game){
         this.x = relativeX;
@@ -44,6 +47,9 @@ public class Controllers {
         freezeButton = new FreezeButton(-6*PPM, -GlobalVar.heightInUHM*UHM/2);
         moveButton = new MoveButton(x+4*PPM, y-GlobalVar.heightInUHM*UHM/2);
         scoreBoard = new ScoreBoard(0, GlobalVar.heightInUHM*UHM/2 - PPM - PPM/2 - GlobalVar.safeAreaInsetTop);
+        forceRange = new ForceRange();
+
+        //stage.addActor(forceRange);
 
         stage.addActor(scoreBoard);
         stage.addActor(menuButton);
@@ -79,6 +85,12 @@ public class Controllers {
     public Stage getStage() {
         return stage;
     }
+
+    public void setRestitution(float value){
+        this.scoreBoard.updateValue(value);
+        this.restitution = value; }
+
+    public float getRestitution(){ return restitution; }
 
     protected void cameraUpdate() {
         Vector3 position = cam.position;

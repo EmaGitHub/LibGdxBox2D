@@ -32,7 +32,7 @@ public class TestScreen extends AbstractGameScreen {
 
     @Override
     public void touched(){
-        balls.add(this.objectFactory.createBounceBallObject(touchPointUp.x, touchPointUp.y, PPM));
+        if (!FREEZED) balls.add(this.objectFactory.createBounceBallObject(touchPointUp.x, touchPointUp.y, PPM));
         super.controllers.updateValue(this.balls.size());
     }
 

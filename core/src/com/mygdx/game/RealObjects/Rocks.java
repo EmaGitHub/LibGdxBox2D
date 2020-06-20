@@ -12,7 +12,8 @@ public class Rocks extends Object{
     Texture frame;
 
     public Rocks(Body body, float width, float height, int type){
-        super(body);
+        super();
+        super.setBody(body);
         setOrigin(width/2, height/2);
         this.setSize(width, height);
         this.frame = new Texture(Gdx.files.internal("Images/rock"+type+".png"));
