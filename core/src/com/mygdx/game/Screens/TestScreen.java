@@ -20,8 +20,6 @@ public class TestScreen extends AbstractGameScreen {
     public void show(){                                             // Prima funzione chiamata
         super.show();
         this.objectFactory.createScreen3Boundaries();
-
-        //this.objectFactory.createTestObject(0*PPM,0-UHM* GlobalVar.heightInUHM/2, 2*UHM);
     }
 
     @Override

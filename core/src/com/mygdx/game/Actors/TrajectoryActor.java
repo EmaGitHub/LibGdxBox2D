@@ -63,16 +63,6 @@ public class TrajectoryActor extends Actor {
         this.ballEquation.startVelocity = velocity;
     }
 
-    public void setBounceStartPoint(Vector2 startPoint){
-        this.bounceEquation.startPoint = startPoint;
-    }
-    public void setBounceStartVelocity(Vector2 velocity){
-        this.bounceEquation.startVelocity = velocity;
-    }
-    public void resetchangedAngle(){
-        this.changedAngle = false;
-    }
-
     public boolean setFirstDraw(boolean value){
         this.firstDraw = value;
         return true;
@@ -80,7 +70,6 @@ public class TrajectoryActor extends Actor {
     public void setBounceTrajectorySetted(boolean value){
         this.bounceTrajectorySetted = value;
     }
-
 
     public Vector2 getStartPoint(){ return this.ballEquation.startPoint; }
 
@@ -119,6 +108,8 @@ public class TrajectoryActor extends Actor {
             t += timeSeparation;
             x2 = ballEquation.getX(t)*PPM;
             y2 = ballEquation.getY(t)*PPM;
+            if(y2 > y1) this.upDirection = true;
+            else this.upDirection = false;
 
             if(firstDraw) {
                 shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
@@ -128,7 +119,6 @@ public class TrajectoryActor extends Actor {
             }
             if(this.board != null && this.isCollision(new Vector2(x1/PPM, y1/PPM), new Vector2(x2/PPM, y2/PPM))) {
                 this.setBounceTrajectory(x1, y1,x2, y2);
-                if(y2 < y1) this.upDirection = false;
                 firstDraw = false;
             }
             batch.begin();
@@ -136,18 +126,24 @@ public class TrajectoryActor extends Actor {
 
         if (bounceTrajectorySetted == true){
 
+
+
             for (int j = 0; j < trajectoryPointCount; j++) {
 
-                x1b = bounceEquation.getX(tBounce) * PPM;
-                y1b = bounceEquation.getY(tBounce) * PPM;
-                tBounce += timeSeparation;
-                x2b = bounceEquation.getX(tBounce) * PPM;
-                y2b = bounceEquation.getY(tBounce) * PPM;
+                batch.end();
 
-                shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-                shapeRenderer.line(x1b, y1b, x2b, y2b);
-                shapeRenderer.end();
+//                x1b = bounceEquation.getX(tBounce) * PPM;
+//                y1b = bounceEquation.getY(tBounce) * PPM;
+//                tBounce += timeSeparation;
+//                x2b = bounceEquation.getX(tBounce) * PPM;
+//                y2b = bounceEquation.getY(tBounce) * PPM;
+//
+//                shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+//                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//                shapeRenderer.line(x1b, y1b, x2b, y2b);
+//                shapeRenderer.end();
+
+                batch.begin();
             }
         }
     }
@@ -161,13 +157,10 @@ public class TrajectoryActor extends Actor {
             float ord = abs((y2-y1)/PPM);
             double angleSin = ord/ipo;
             double angle = Math.asin(angleSin) + Math.toRadians(this.board.getDeg360Angle()*2);
-
-            //System.out.println("TRAJ. ANGLE "+(x2 - x1)+" BOARD ANGLE "+(x2 - x1)/PPM+" dfr "+Math.pow((x2 - x1)/PPM, 2));
-
+            
             float xVelocity = (float) (ipo * PPM * Math.cos(angle));  //3.33
             float yVelocity = (float) (ipo * PPM * Math.sin(angle));
 
-            //System.out.println("EXTI POS "+x2+" . "+y2+" EXIT VECTOR "+xVelocity+" . "+yVelocity);
 
             this.bounceEquation.startPoint = firstCollisionPoint;
             this.bounceEquation.startVelocity = new Vector2(xVelocity, yVelocity);
@@ -179,7 +172,6 @@ public class TrajectoryActor extends Actor {
     public void setBoard(Board board){
         //System.out.println("ANGLE "+Math.toDegrees(board.getBody().getAngle()));
         this.board = board;
-        this.resetchangedAngle();
     }
 
     public boolean isCollision(Vector2 lineStart, Vector2 lineEnd){

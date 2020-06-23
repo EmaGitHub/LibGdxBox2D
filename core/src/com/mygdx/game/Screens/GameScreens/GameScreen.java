@@ -36,7 +36,7 @@ public class GameScreen extends AbstractGameScreen {
     @Override
     public void touched(){
         this.testBoard = this.objectFactory.createBoardObject(touchPointDown.x, touchPointDown.y,
-                touchPointUp.x, touchPointUp.y, 1.0f);
+                touchPointUp.x, touchPointUp.y);
         this.board = board;
     }
 

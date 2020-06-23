@@ -2,7 +2,6 @@ package com.mygdx.game.Screens.GameScreens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -55,7 +54,7 @@ public class GameScreenFlowUp extends AbstractGameScreen {
 
         this.trajectoryActor = new TrajectoryActor(this.objectFactory);
 
-        this.board = this.objectFactory.createBoardObject(-2*PPM, -8*UHM, 2*PPM, -8*UHM, 1.0f);
+        this.board = this.objectFactory.createBoardObject(-2*PPM, -8*UHM, 2*PPM, -8*UHM);
 
         this.objectFactory.createTableObject(-6*PPM, 6*UHM, -4*PPM, 6*UHM);
         this.objectFactory.createTableObject(2*PPM, 6*UHM, 6*PPM, 6*UHM);
@@ -79,19 +78,19 @@ public class GameScreenFlowUp extends AbstractGameScreen {
             this.topBound += 20;
         }
         // disegno polygon board
-        shapeRenderer.setColor(Color.CYAN);
-        shapeRenderer.setProjectionMatrix(this.camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        if(this.board.getPolygon() != null) {
-            shapeRenderer.polygon(this.board.getPolygon().getTransformedVertices());
-        }
-        shapeRenderer.end();
+//        shapeRenderer.setColor(Color.CYAN);
+//        shapeRenderer.setProjectionMatrix(this.camera.combined);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//        if(this.board.getPolygon() != null) {
+//            shapeRenderer.polygon(this.board.getPolygon().getTransformedVertices());
+//        }
+//        shapeRenderer.end();
     }
 
     @Override
     public void touched(){
         Board board = this.objectFactory.createBoardObject(touchPointDown.x, touchPointDown.y,
-                touchPointUp.x, touchPointUp.y, this.controllers.getRestitution());
+                touchPointUp.x, touchPointUp.y);
         if(board != null) {
             this.board = board;
             if(this.trajectoryActor != null) {

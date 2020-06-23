@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.RealObjects.Board;
 import com.mygdx.game.RealObjects.BounceBall;
 import com.mygdx.game.RealObjects.LoadingSpinner;
-import com.mygdx.game.RealObjects.Test;
 import com.mygdx.game.Utils.GlobalVar;
 
 import static com.mygdx.game.Utils.GlobalVar.screenHeight;
@@ -18,11 +17,11 @@ import static com.mygdx.game.Utils.GlobalVar.screenWidth;
 public class ObjectFactory {
 
     private Stage stage;
-    private Stage bounceStage;
     private float PPM;
     private BodyFactory bodyFactory;
 
     private Board board;
+    private BounceBall ball;
 
     public ObjectFactory(World world, Stage stage){
         this.stage = stage;
@@ -32,35 +31,40 @@ public class ObjectFactory {
     }
 
     public BounceBall createBounceBallObject(float x, float y, float diam){
+
+        if (this.ball == null) { this.ball = new BounceBall(); }
         Body body = this.bodyFactory.createCircleDinamicBody(0, 0, diam);
-        BounceBall ball = new BounceBall(body, diam);
-        body.setTransform(new Vector2(x/PPM, y/PPM), 0);
+        this.ball.setBody(body);
+        this.ball.getBody().setTransform(x/PPM, y/PPM, 0);
+        this.ball.setDiam(diam);
+
+        FixtureDef fixture = this.ball.getFixture();
+        this.ball.createFixture(fixture);
+
         this.stage.addActor(ball);
         return ball;
     }
 
-    public Board createBoardObject(float x, float y, float xFin, float yFin, float restitution){
-
+    public Board createBoardObject(float x, float y, float xFin, float yFin){
         float ord = yFin-y;
         float asc = xFin-x;
         if (ord == 0 && asc == 0) return null;
         float ipo = (float)Math.sqrt(Math.pow(ord, 2) + Math.pow(asc, 2));
-
         float angle = asc > 0 ? (float)Math.asin(ord/ipo) : -(float)Math.asin(ord/ipo);
 
         if (this.board == null) { this.board = new Board(); }
-        FixtureDef fixture = this.board.getFixture();
-        Body boardBody = this.bodyFactory.getBoardBody(x, y, fixture);
+        Body boardBody = this.bodyFactory.getBoardBody(x, y);
+        this.board.setBody(boardBody);
+        this.board.getBody().setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
         this.board.setWidth(ipo);
         this.board.setHeight(GlobalVar.boardHeight);
-        boardBody.setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
 
-        this.board.setBody(boardBody);
-        this.board.setBoardRestitution(restitution);
+        FixtureDef fixture = this.board.getFixture();
+        this.board.createFixture(fixture);
 
+        // board polygon
         float boardHalfMisure = (GlobalVar.boardHeight + PPM)   /2   /PPM;
         float boardExtension = (asc > 0)? x+ipo : x-ipo;
-
         Polygon polygon = asc > 0 ? new Polygon(new float[]{(x-PPM/3)/PPM, y/PPM - boardHalfMisure,
                                                     (boardExtension + PPM/3)/PPM, y/PPM - boardHalfMisure,
                                                     (boardExtension + PPM/3)/PPM, y/PPM + boardHalfMisure,
@@ -78,7 +82,6 @@ public class ObjectFactory {
         board.setPolygon(polygon);
 
         if(board.getStage() == null) this.stage.addActor(board);
-
         return board;
     }
 
@@ -90,21 +93,19 @@ public class ObjectFactory {
         float ipo = (float)Math.sqrt(Math.pow(ord, 2) + Math.pow(asc, 2));
 
         float angle = asc > 0 ? (float)Math.asin(ord/ipo) : -(float)Math.asin(ord/ipo);
-        Body tableBody = this.bodyFactory.getTableBody(x, y, ipo, PPM/4);
+
         Board table = new Board();
+        Body tableBody = this.bodyFactory.getTableBody(x, y);
         table.setBody(tableBody);
+        table.getBody().setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
+        table.setWidth(ipo);
+        table.setHeight(GlobalVar.boardHeight);
 
-        tableBody.setTransform(new Vector2((x+asc/2)/PPM, (y+ord/2)/PPM), angle);
-        if(board.getStage() == null) this.stage.addActor(board);
-        return board;
-    }
+        FixtureDef fixture = table.getFixture();
+        table.createFixture(fixture);
 
-    public Test createTestObject(float x, float y, float diam){
-        Body body = this.bodyFactory.createCircleDinamicBody(0, 0, diam);
-        Test test = new Test(body, diam);
-        body.setTransform(new Vector2(x/PPM, y/PPM), 0);
-        this.stage.addActor(test);
-        return test;
+        this.stage.addActor(table);
+        return table;
     }
 
     public LoadingSpinner createLoadingSpinner(float diam){

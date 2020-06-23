@@ -16,36 +16,23 @@ public class BodyFactory {
     private float PPM = GlobalVar.PPM;
 
     private Body boardBody;
+    private Body ballBody;
 
     public BodyFactory(World world){
-
         this.world = world;
     }
 
-    public Body getTableBody(float x, float y, float width, float height){
+    public Body getTableBody(float x, float y){
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(x/PPM, y/PPM);
         bodyDef.fixedRotation = true;
         Body body = world.createBody(bodyDef);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/2/PPM, height/2/PPM );				//calcolato dal punto centrale
-
-        FixtureDef tableFixture = new FixtureDef();
-        tableFixture.shape = shape;
-        tableFixture.density=1.0f;
-        tableFixture.restitution = .8f;
-
-        tableFixture.friction=0.6f;
-        body.createFixture(tableFixture);
-
-        shape.dispose();
         return body;
     }
 
-    public Body getBoardBody(float x, float y, FixtureDef boardFixture) {
+    public Body getBoardBody(float x, float y) {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -56,18 +43,6 @@ public class BodyFactory {
             world.destroyBody(boardBody);
         }
         boardBody = world.createBody(bodyDef);
-
-//        PolygonShape shape = new PolygonShape();
-//        shape.setAsBox(width / 2 / PPM, height / 2 / PPM);                //calcolato dal punto centrale
-//
-//        FixtureDef boardsFixture = new FixtureDef();
-//        boardFixture.shape = shape;
-//        boardFixture.density = 1.0f;
-//        boardFixture.restitution = 1.0f;
-//        boardFixture.friction = 0.6f;
-
-        boardBody.createFixture(boardFixture);
-
         return boardBody;
     }
 
@@ -94,12 +69,11 @@ public class BodyFactory {
     }
 
     public Body createCircleDinamicBody(float x, float y, float diam){
-        Body pBody;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x/PPM, y/PPM);
         bodyDef.fixedRotation = false;
-        pBody = world.createBody(bodyDef);
+        this.ballBody = world.createBody(bodyDef);
 
         CircleShape shape = new CircleShape();
         shape.setPosition(new Vector2(x/2/PPM, y/2/PPM));				//calcolato dal punto centrale
@@ -108,12 +82,12 @@ public class BodyFactory {
         FixtureDef circleFixture = new FixtureDef();
         circleFixture.shape = shape;
         circleFixture.density=1.0f;
-        circleFixture.restitution = 1.0f;       //0.8f
+        circleFixture.restitution = 0.0f;       //0.8f
         circleFixture.friction=0.6f;
-        pBody.createFixture(circleFixture);
+        this.ballBody.createFixture(circleFixture);
 
         shape.dispose();
-        return pBody;
+        return this.ballBody;
     }
 
     public Body createRectDinamicBody(float x, float y, float width, float height){

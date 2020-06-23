@@ -40,8 +40,8 @@ public class Board extends Object{
         else return getNewFixture();
     }
 
-    public void setFixture(FixtureDef fixture){
-        this.fixtureDef = fixture;
+    public void createFixture(FixtureDef fixture){
+        this.getBody().createFixture(fixture);
     }
 
     public FixtureDef getNewFixture(){
@@ -51,9 +51,14 @@ public class Board extends Object{
         FixtureDef boardFixture = new FixtureDef();
         boardFixture.shape = shape;
         boardFixture.density = 1.0f;
-        boardFixture.restitution = 1.0f;
+        boardFixture.restitution = 0.0f;
         boardFixture.friction = 0.6f;
+        shape.dispose();
         return boardFixture;
+    }
+
+    public void createPolygon(){
+
     }
 
     @Override
@@ -80,8 +85,6 @@ public class Board extends Object{
     }
 
     public void  setBoardRestitution(float restitution){
-
-        //this.getBody().destroyFixture();
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / 2 / PPM, height / 2 / PPM);                //calcolato dal punto centrale
