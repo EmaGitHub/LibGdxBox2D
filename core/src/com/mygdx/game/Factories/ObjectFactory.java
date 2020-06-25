@@ -3,7 +3,6 @@ package com.mygdx.game.Factories;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.RealObjects.Board;
@@ -34,12 +33,9 @@ public class ObjectFactory {
 
         if (this.ball == null) { this.ball = new BounceBall(); }
         Body body = this.bodyFactory.createCircleDinamicBody(0, 0, diam);
+        body.setTransform(x/PPM, y/PPM, 0);
         this.ball.setBody(body);
-        this.ball.getBody().setTransform(x/PPM, y/PPM, 0);
         this.ball.setDiam(diam);
-
-        FixtureDef fixture = this.ball.getFixture();
-        this.ball.createFixture(fixture);
 
         this.stage.addActor(ball);
         return ball;
@@ -59,8 +55,7 @@ public class ObjectFactory {
         this.board.setWidth(ipo);
         this.board.setHeight(GlobalVar.boardHeight);
 
-        FixtureDef fixture = this.board.getFixture();
-        this.board.createFixture(fixture);
+        this.board.createFixture(this.board.getFixture());
 
         // board polygon
         float boardHalfMisure = (GlobalVar.boardHeight + PPM)   /2   /PPM;
@@ -101,8 +96,7 @@ public class ObjectFactory {
         table.setWidth(ipo);
         table.setHeight(GlobalVar.boardHeight);
 
-        FixtureDef fixture = table.getFixture();
-        table.createFixture(fixture);
+        table.createFixture(table.getFixture());
 
         this.stage.addActor(table);
         return table;

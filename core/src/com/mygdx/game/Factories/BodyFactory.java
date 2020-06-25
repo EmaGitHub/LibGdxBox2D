@@ -42,7 +42,7 @@ public class BodyFactory {
             GlobalVar.boardCreated++;
             world.destroyBody(boardBody);
         }
-        boardBody = world.createBody(bodyDef);
+        this.boardBody = world.createBody(bodyDef);
         return boardBody;
     }
 
@@ -82,7 +82,7 @@ public class BodyFactory {
         FixtureDef circleFixture = new FixtureDef();
         circleFixture.shape = shape;
         circleFixture.density=1.0f;
-        circleFixture.restitution = 0.0f;       //0.8f
+        circleFixture.restitution = 1.0f;       //0.8f
         circleFixture.friction=0.6f;
         this.ballBody.createFixture(circleFixture);
 

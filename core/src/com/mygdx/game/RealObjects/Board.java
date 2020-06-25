@@ -53,7 +53,7 @@ public class Board extends Object{
         boardFixture.density = 1.0f;
         boardFixture.restitution = 0.0f;
         boardFixture.friction = 0.6f;
-        shape.dispose();
+        //shape.dispose();
         return boardFixture;
     }
 

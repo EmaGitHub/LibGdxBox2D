@@ -24,15 +24,19 @@ public class GameScreenFlowUp extends AbstractGameScreen {
     //this.trajectorySprite = new
 
     float difference = 0;
-    float bottomLimit = 0;
-    float bottomLimitBase = 0;
+    float cameraPosY = 0;
+    float cameraPosYBase = 0;
 
     boolean topLimitUpdated = true;
-    float topLimit = 5;
-    float topLimitBase = 5;
+    float topLimit = 6;
+    float topLimitBase = 6;
+
+    boolean bottomLimitUpdated = true;
+    float bottomLimit = -6;
+    float bottomLimitBase = -6;
 
     float ballYValue;
-    float prevBallYValue;
+    float prevBallYValue = 0;
 
     float topBound;
 
@@ -50,7 +54,7 @@ public class GameScreenFlowUp extends AbstractGameScreen {
         super.show();
         this.objectFactory.createScreen3Boundaries();
         this.objectFactory.createScreen2Boundaries(0, UHM*10);
-        this.ball = this.objectFactory.createBounceBallObject(0, 1*UHM, PPM);
+        this.ball = this.objectFactory.createBounceBallObject(0, 1*PPM, PPM);
 
         this.trajectoryActor = new TrajectoryActor(this.objectFactory);
 
@@ -63,9 +67,9 @@ public class GameScreenFlowUp extends AbstractGameScreen {
         this.objectFactory.createTableObject(-4*PPM, 20*UHM, 6*PPM, 20*UHM);
     }
 
-    public TrajectoryActor getTrajectoryActor(){
-        return this.trajectoryActor;
-    }
+//    public TrajectoryActor getTrajectoryActor(){
+//        return this.trajectoryActor;
+//    }
 
     @Override
     public void render(float delta) {
@@ -155,21 +159,37 @@ public class GameScreenFlowUp extends AbstractGameScreen {
 
         this.ballYValue = this.ball.getPosition().y;
 
-        if (this.ballYValue > this.prevBallYValue) {
+        if (this.ballYValue > this.prevBallYValue) {                //se sale
+            if (!this.bottomLimitUpdated) {
+                this.bottomLimit = bottomLimitBase + this.cameraPosY / PPM;
+                this.topLimit = topLimitBase + this.cameraPosY / PPM;
+                this.bottomLimitUpdated = true;
+                this.cameraPosYBase = this.cameraPosY;
+            }
             this.topLimitUpdated = false;
             this.difference = ballYValue - this.topLimit;
             if(difference > 0){
-                this.bottomLimit =  difference * PPM + this.bottomLimitBase;
+                this.cameraPosY =  difference * PPM + this.cameraPosYBase;
             }
         }
-        else {
+        else  {                                                      //se scende
             if (!this.topLimitUpdated) {
-                this.topLimit = topLimitBase + this.bottomLimit / PPM;
-                this.bottomLimitBase = this.bottomLimit;
+                this.bottomLimit = bottomLimitBase + this.cameraPosY / PPM;
+                this.topLimit = topLimitBase + this.cameraPosY / PPM;
                 this.topLimitUpdated = true;
+                this.cameraPosYBase = this.cameraPosY;
+            }
+            this.bottomLimitUpdated = false;
+            this.difference = this.bottomLimit - this.ballYValue;
+            if(difference > 0){
+                float pos = this.cameraPosYBase - difference * PPM;
+                if (pos < 0) this.cameraPosY = 0;
+                else this.cameraPosY = pos;
             }
         }
-        position.y = -GlobalVar.safeAreaInsetBottom + this.bottomLimit;
+
+
+        position.y = -GlobalVar.safeAreaInsetBottom + this.cameraPosY;
 
         this.prevBallYValue = this.ballYValue;
         camera.position.set(position);
